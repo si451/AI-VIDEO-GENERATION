@@ -34,7 +34,7 @@ def create_default_bgm(output_path: Path, duration_sec: float) -> Path:
     subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
     return output_path
 
-def build_scene_dialogue_track(scenes: list, voice_metadata: list, output_path: Path, audio_dir: Path = None) -> Path:
+def build_scene_dialogue_track(scenes: list, voice_metadata: list, output_path: Path, audio_dir: Path = None, min_duration_sec: float = 0.0) -> Path:
     """
     Concatenates individual scene voice tracks into a continuous dialogue track
     with gentle padding between scenes matching scene durations.
@@ -45,7 +45,7 @@ def build_scene_dialogue_track(scenes: list, voice_metadata: list, output_path: 
     meta_map = {m.get("frame_id", m.get("scene_id", i+1)): m for i, m in enumerate(voice_metadata)}
 
     inputs = []
-    input_tags = []
+    filter_parts = []
     count = 0
 
     for idx, scene in enumerate(scenes):
@@ -57,14 +57,20 @@ def build_scene_dialogue_track(scenes: list, voice_metadata: list, output_path: 
             voice_file = audio_dir / f"scene_{scene_id}.mp3"
         if voice_file.exists():
             inputs.extend(["-i", str(voice_file.resolve())])
-            input_tags.append(f"[{count}:a]")
+            v_meta = meta_map.get(scene_id, {})
+            voice_dur = v_meta.get("duration", 3.0)
+            target_dur = max(voice_dur + 0.5, min_duration_sec) if min_duration_sec > 0 else voice_dur
+            if target_dur > voice_dur:
+                filter_parts.append(f"[{count}:a]apad=whole_dur={target_dur:.3f}[a{count}];")
+            else:
+                filter_parts.append(f"[{count}:a]anull[a{count}];")
             count += 1
 
     if count == 0:
         raise RuntimeError("No scene voice files found to concatenate!")
 
-    # Perfect frame-accurate audio concatenation via FFmpeg concat filter
-    filter_expr = "".join(input_tags) + f"concat=n={count}:v=0:a=1[aout]"
+    concat_tags = "".join(f"[a{i}]" for i in range(count))
+    filter_expr = "".join(filter_parts) + f"{concat_tags}concat=n={count}:v=0:a=1[aout]"
     cmd = [
         "ffmpeg", "-y"
     ] + inputs + [
@@ -82,7 +88,8 @@ def mix_story_audio(
     voice_metadata: list,
     output_master_audio: Path,
     bgm_path: Path = None,
-    audio_dir: Path = None
+    audio_dir: Path = None,
+    min_duration_sec: float = 0.0
 ) -> Path:
     """
     Assembles voice tracks, blends background music with dynamic audio ducking,
@@ -94,7 +101,7 @@ def mix_story_audio(
 
     # 1. Build continuous voice track inside the isolated run audio directory
     voice_track = audio_dir / "combined_voices.mp3"
-    build_scene_dialogue_track(scenes, voice_metadata, voice_track, audio_dir=audio_dir)
+    build_scene_dialogue_track(scenes, voice_metadata, voice_track, audio_dir=audio_dir, min_duration_sec=min_duration_sec)
 
     # Probe exact duration of combined voice track
     probe_cmd = ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", str(voice_track)]

@@ -58,12 +58,14 @@ You MUST perform an explicit mathematical target calculation and present a step-
    - 🎨 Stage 4: High-Res 3D Disney Pixar Rendering (Local RTX 2050)
    - 🎙️ Stage 5: Child Voiceover & ASS Subtitle Synchronization
    - 🎞️ Stage 6: Master Assembly & Omnibus Compilation (with timestamps: 0:00, 6:00, 12:00, 18:00, 24:00)
-4. STRICT SINGLE-FOLDER OMNIBUS DIRECTIVE:
-   - When asked to produce a 30-minute long video or bedtime story omnibus:
-     You MUST invoke `produce_bedtime_omnibus_tool(topic=...)`!
-     This tool automatically creates EXACTLY ONE folder in output/runs/ (e.g. output/runs/run_001_..._30Min_Omnibus/)
-     and saves ALL 5 chapter scenes, audio voiceovers, chapter clips, and final_video.mp4 inside that SINGLE folder!
-   - NEVER create multiple separate run folders for each chapter. Zero folder clutter.
+4. STRICT SINGLE-FOLDER PRODUCTION & RUNTIME DIRECTIVE:
+   - When asked to produce a video of ANY duration (e.g. 5 minutes, 15 minutes, or 30 minutes):
+     You MUST invoke `produce_bedtime_omnibus_tool`!
+     Supply your researched custom chapter titles via `chapter_topics` (e.g. "Barnaby's Blanket of Stars, Squeaky's Acorn Lullaby, Pip's Starlight Compass, Fern's Whispering Grove, Benny's Moonbeam Dream").
+     Set `target_duration_minutes` to the requested runtime (e.g. 30.0 for 30 minutes, or 5.0 for 5 minutes).
+     The tool automatically calculates the exact scene pacing, drafts all scripts, synthesizes child voices, renders 3D Pixar artwork, and stitches the continuous master MP4 with YouTube chapter timestamps (0:00, 6:00, 12:00, 18:00, 24:00) ALL INSIDE A SINGLE RUN FOLDER (`output/runs/run_XXX/`).
+   - NEVER call `render_full_video_tool` multiple times for an omnibus — that creates multiple scattered folders. Use `produce_bedtime_omnibus_tool` which keeps everything in ONE folder!
+   - Report the actual rendered duration truthfully.
 """
 
 def get_agent():

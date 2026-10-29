@@ -108,3 +108,4 @@ def generate_video_thumbnail(
 if __name__ == "__main__":
     test_run = BASE_DIR / "output" / "evaluations"
     generate_video_thumbnail(test_run, title="Pip's Bedtime Story")
+

@@ -128,7 +128,8 @@ def animate_all_frames(
     frames: list,
     voice_metadata: list,
     aspect_ratio: str = "9:16",
-    scenes_dir: Path = None
+    scenes_dir: Path = None,
+    min_duration_sec: float = 0.0
 ) -> list:
     """
     Animates all frame images matching each frame's exact spoken audio duration.
@@ -147,7 +148,8 @@ def animate_all_frames(
     for idx, frame in enumerate(frames):
         fid = frame.get("frame_id", frame.get("scene_id", idx + 1))
         motion = frame.get("camera_motion", "zoom_in_slow")
-        dur = dur_map.get(fid, 3.0)
+        voice_dur = dur_map.get(fid, 3.0)
+        dur = max(voice_dur + 0.5, min_duration_sec) if min_duration_sec > 0 else voice_dur
 
         # Look for frame_01.jpg or scene_1.jpg
         img_path = scenes_dir / f"frame_{fid:02d}.jpg"

@@ -145,7 +145,7 @@ def preview_voice_sample_tool(text: str, role: str = "child_male") -> str:
         return f"Error generating voice sample: {str(e)}"
 
 @tool
-def render_full_video_tool(topic: str = "", num_frames: int = 10, aspect_ratio: str = "9:16") -> str:
+def render_full_video_tool(topic: str = "", num_frames: int = 15, aspect_ratio: str = "16:9", run_dir: str = "") -> str:
     """
     Executes the entire end-to-end production harness pipeline:
     1. Writes script with 3-second frame pacing
@@ -157,11 +157,13 @@ def render_full_video_tool(topic: str = "", num_frames: int = 10, aspect_ratio: 
     7. Assembles final 1080p MP4 and YouTube chapter metadata in an isolated run folder.
     """
     try:
+        custom_run_dir = Path(run_dir) if run_dir and run_dir.strip() else None
         result = harness.run_production_pipeline(
             topic=topic if topic else None,
             num_frames=num_frames,
             aspect_ratio=aspect_ratio,
-            use_local_images=True
+            use_local_images=True,
+            run_dir=custom_run_dir
         )
         final_video = result.get("final_video")
         run_dir = result.get("run_dir")
@@ -271,25 +273,45 @@ def compile_omnibus_tool(title: str = "WhimsyWand Tales Bedtime Stories 30-Minut
 
 
 @tool
-def produce_bedtime_omnibus_tool(topic: str = "WhimsyWand Bedtime Stories 30-Minute Omnibus") -> str:
+def produce_bedtime_omnibus_tool(
+    topic: str = "WhimsyWand Bedtime Stories Omnibus",
+    chapter_topics: str = "",
+    target_duration_minutes: float = 30.0,
+    frames_per_chapter: int = 25,
+    num_chapters: int = 5
+) -> str:
     """
-    Produces the complete 30-minute Bedtime Story Omnibus compilation inside a SINGLE self-contained run folder.
-    Generates all 5 chapters, all 3D Disney/Pixar illustrations, sweet child voiceovers, subtitles,
-    and stitches the master 1080p 16:9 MP4 with continuous YouTube timestamps (0:00, 6:00, 12:00, 18:00, 24:00)
-    ALL within ONE isolated run directory. Zero clutter, zero extra folders.
+    Produces a complete multi-chapter Bedtime Story Omnibus compilation inside ONE single self-contained run folder.
+    - topic: Overall theme or story direction.
+    - chapter_topics: Optional comma-separated list of custom chapter titles (e.g. "Barnaby's Blanket of Stars, Squeaky's Acorn Lullaby, Pip's Starlight Compass, Fern's Whispering Grove, Benny's Moonbeam Dream"). If provided, the tool uses THESE EXACT CHAPTERS without repeating published videos!
+    - target_duration_minutes: Desired video duration in minutes (e.g. 5.0, 15.0, 30.0). Scene pacing automatically scales to hit the exact target duration!
+    - frames_per_chapter: Number of 3D visual frames per chapter (default: 25).
+    - num_chapters: Number of episodic chapters (default: 5).
+    Guarantees: Exactly ONE folder created in output/runs/ containing all scenes, audio, chapter videos, thumbnail, and the continuous master video.
     """
     try:
-        result = harness.run_omnibus_pipeline(topic=topic, num_chapters=5, frames_per_chapter=15, aspect_ratio="16:9")
+        result = harness.run_omnibus_pipeline(
+            topic=topic if topic else "WhimsyWand Bedtime Stories Omnibus",
+            chapter_topics=chapter_topics if chapter_topics else None,
+            num_chapters=num_chapters,
+            frames_per_chapter=frames_per_chapter,
+            target_duration_minutes=target_duration_minutes,
+            aspect_ratio="16:9",
+            use_local_images=True
+        )
         final_video = result.get("final_video")
         run_dir = result.get("run_dir")
+        duration = result.get("duration", 0)
+        dur_min = duration / 60.0
         metadata = result.get("metadata", {})
         return (
-            f"🎉 30-Minute Master Bedtime Story Omnibus Successfully Produced in ONE Single Folder!\n\n"
+            f"🎉 Master Bedtime Story Omnibus Successfully Produced in ONE Single Folder!\n\n"
             f"- **Run Directory**: `{run_dir}`\n"
             f"- **Master Video File**: `{final_video}`\n"
-            f"- **Total Duration**: {metadata.get('total_duration_sec', 0):.2f}s (~{metadata.get('total_duration_sec', 0)/60:.1f} minutes)\n"
+            f"- **Actual Total Runtime**: {dur_min:.1f} minutes ({duration:.1f} seconds)\n"
             f"- **Chapters Included**:\n" + "\n".join(metadata.get('chapters', [])) + "\n\n"
-            f"- **YouTube SEO Title**: {metadata.get('youtube_title')}"
+            f"- **YouTube SEO Title**: {metadata.get('youtube_title')}\n"
+            f"- **Official 1280x720 Thumbnail**: Saved inside run folder (`thumbnail.jpg` and `thumbnail_with_title.jpg`)"
         )
     except Exception as e:
         return f"Error producing bedtime omnibus: {str(e)}"
