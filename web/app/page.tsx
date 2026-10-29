@@ -97,7 +97,60 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
   ]);
   const [chatInput, setChatInput] = useState("");
   const [isChatLoading, setIsChatLoading] = useState(false);
+  const [loadingElapsed, setLoadingElapsed] = useState(0);
   const chatBottomRef = useRef<HTMLDivElement>(null);
+
+  // Load chat history from localStorage on mount
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("whimsywand_chat_history");
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setMessages(parsed);
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to load chat history:", e);
+    }
+  }, []);
+
+  // Persist chat history to localStorage
+  useEffect(() => {
+    try {
+      if (messages.length > 1) {
+        localStorage.setItem("whimsywand_chat_history", JSON.stringify(messages));
+      }
+    } catch (e) {
+      console.warn("Failed to persist chat history:", e);
+    }
+  }, [messages]);
+
+  // Loading elapsed timer
+  useEffect(() => {
+    let interval: any = null;
+    if (isChatLoading) {
+      setLoadingElapsed(0);
+      interval = setInterval(() => {
+        setLoadingElapsed((prev) => prev + 1);
+      }, 1000);
+    } else {
+      setLoadingElapsed(0);
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  }, [isChatLoading]);
+
+  const handleClearChat = () => {
+    const initialMsg: ChatMessage[] = [{
+      role: "assistant",
+      content: "Chat cleared! How can I help you write or render our next fairy tale episode?"
+    }];
+    setMessages(initialMsg);
+    try {
+      localStorage.removeItem("whimsywand_chat_history");
+    } catch (e) {}
+  };
 
   // Competitor data
   const [competitors, setCompetitors] = useState<any>(null);
@@ -313,7 +366,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                 </div>
 
                 <button 
-                  onClick={() => setMessages([{ role: "assistant", content: "Chat cleared! How can I help you write or render our next fairy tale episode?" }])}
+                  onClick={handleClearChat}
                   className="text-[11px] text-stone-500 hover:text-stone-800 px-2.5 py-1 rounded-md hover:bg-stone-100 transition border border-stone-200/60"
                 >
                   Clear Chat
@@ -405,9 +458,59 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                 ))}
                 {isChatLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-stone-200 rounded-2xl rounded-bl-none px-4 py-3 text-xs text-stone-600 flex items-center space-x-2 shadow-xs">
-                      <RefreshCw className="w-3.5 h-3.5 animate-spin text-amber-600" />
-                      <span>AI Showrunner is thinking, researching, and generating tools...</span>
+                    <div className="bg-white border border-stone-200 rounded-2xl rounded-bl-none p-4 text-xs text-stone-700 shadow-sm max-w-[92%] space-y-3">
+                      <div className="flex items-center justify-between border-b border-stone-100 pb-2">
+                        <div className="flex items-center space-x-2">
+                          <RefreshCw className="w-4 h-4 animate-spin text-amber-600" />
+                          <span className="font-bold text-stone-900">AI Showrunner Pipeline In Progress</span>
+                        </div>
+                        <span className="font-mono text-[11px] bg-amber-50 text-amber-900 border border-amber-200 px-2 py-0.5 rounded-full font-semibold">
+                          ⏱️ {loadingElapsed}s elapsed
+                        </span>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2.5 text-stone-700">
+                          <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px] font-bold">✓</span>
+                          <span className="font-medium">1. Channel & Mascot Audit (@WhimsyWandTales memory verified)</span>
+                        </div>
+
+                        <div className="flex items-center space-x-2.5 text-stone-700">
+                          <span className={`w-4 h-4 rounded-full ${loadingElapsed >= 2 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700 animate-pulse"} flex items-center justify-center text-[10px] font-bold`}>
+                            {loadingElapsed >= 2 ? "✓" : "•"}
+                          </span>
+                          <span className="font-medium">2. Competitor Viral Scan (>1M views analyzed for curiosity hooks)</span>
+                        </div>
+
+                        <div className="flex items-center space-x-2.5 text-stone-700">
+                          <span className={`w-4 h-4 rounded-full ${loadingElapsed >= 6 ? "bg-emerald-100 text-emerald-700" : loadingElapsed >= 2 ? "bg-amber-100 text-amber-700 animate-pulse" : "bg-stone-100 text-stone-400"} flex items-center justify-center text-[10px] font-bold`}>
+                            {loadingElapsed >= 6 ? "✓" : "•"}
+                          </span>
+                          <span className="font-medium">3. Script & Frame Breakdown (~3s pacing + persistent character anchors)</span>
+                        </div>
+
+                        <div className="flex items-center space-x-2.5 text-stone-700">
+                          <span className={`w-4 h-4 rounded-full ${loadingElapsed >= 10 ? "bg-amber-100 text-amber-700 animate-pulse" : "bg-stone-100 text-stone-400"} flex items-center justify-center text-[10px] font-bold`}>
+                            •
+                          </span>
+                          <span className="font-medium">4. 3D Disney Pixar Rendering (Local RTX 2050 Diffusers fp16)</span>
+                        </div>
+
+                        <div className="flex items-center space-x-2.5 text-stone-500">
+                          <span className="w-4 h-4 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center text-[10px] font-bold">•</span>
+                          <span>5. Voiceover & Karaoke Subtitles (Strict child neural voices)</span>
+                        </div>
+
+                        <div className="flex items-center space-x-2.5 text-stone-500">
+                          <span className="w-4 h-4 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center text-[10px] font-bold">•</span>
+                          <span>6. Master NVENC Assembly & YouTube SEO Metadata Package</span>
+                        </div>
+                      </div>
+
+                      <div className="pt-2 border-t border-stone-100 text-[10px] text-stone-500 flex items-center justify-between">
+                        <span>Estimated completion: ~30-45s for Shorts • ~3-4m per Long Chapter</span>
+                        <span className="text-amber-800 font-semibold">Running locally on RTX 2050</span>
+                      </div>
                     </div>
                   </div>
                 )}

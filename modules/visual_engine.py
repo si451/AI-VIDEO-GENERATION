@@ -26,20 +26,17 @@ os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 MODEL_ID = "Yntec/DisneyPixarCartoon768"
 
 QUALITY_BOOSTER = (
-    "masterpiece, best quality, ultra-detailed 3D Disney Pixar animation style, "
-    "adorable cute character design, volumetric studio lighting, vibrant colors, "
-    "soft subsurface scattering, clean 3d render, 8k uhd"
+    "3D Disney Pixar animation style, cute character design, volumetric studio lighting, vibrant colors, clean render, 8k"
 )
 
 NEGATIVE_PROMPT = (
-    "ugly, deformed, disfigured, poor details, bad anatomy, bad paws, mutated limbs, "
-    "blurry, low quality, dark, scary, photorealistic, realistic, noisy, cropped, artifact"
+    "ugly, deformed, bad anatomy, bad limbs, blurry, low quality, photorealistic, realistic, noisy, cropped"
 )
 
 _global_pipe = None
 
 def get_pipeline():
-    """Loads and caches the DisneyPixarCartoon768 pipeline in VRAM (fp16)."""
+    """Loads and caches the DisneyPixarCartoon768 pipeline in VRAM (fp16) with ultra-safe memory management."""
     global _global_pipe
     if _global_pipe is not None:
         return _global_pipe
@@ -47,7 +44,7 @@ def get_pipeline():
     print(f"\n[Visual Engine] Loading local model '{MODEL_ID}' onto {torch.cuda.get_device_name(0)}...")
     start_load = time.time()
     
-    from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
+    from diffusers import StableDiffusionPipeline, EulerDiscreteScheduler
 
     pipe = StableDiffusionPipeline.from_pretrained(
         MODEL_ID,
@@ -56,9 +53,10 @@ def get_pipeline():
         safety_checker=None,
         token=HF_TOKEN
     )
-    # DPMSolver scheduler achieves high quality in 25 steps!
-    pipe.scheduler = DPMSolverMultistepScheduler.from_config(pipe.scheduler.config)
+    # Euler scheduler is robust, fast, and eliminates all off-by-one boundary index bugs
+    pipe.scheduler = EulerDiscreteScheduler.from_config(pipe.scheduler.config)
     pipe.enable_attention_slicing()  # Keeps VRAM well within 4GB limit (~2.1 GB)
+    pipe.enable_vae_slicing()
     pipe.to("cuda")
 
     print(f"[Visual Engine] Model loaded in {time.time() - start_load:.2f}s! (VRAM: {torch.cuda.memory_allocated() / 1024**2:.2f} MB)")
@@ -73,6 +71,11 @@ def free_gpu():
         _global_pipe = None
     gc.collect()
     torch.cuda.empty_cache()
+    if torch.cuda.is_available():
+        try:
+            torch.cuda.ipc_collect()
+        except Exception:
+            pass
     print(f"[Visual Engine] GPU Memory freed! Current VRAM: {torch.cuda.memory_allocated() / 1024**2:.2f} MB")
 
 def generate_frame_image(
@@ -101,7 +104,8 @@ def generate_frame_image(
         width, height = LONG_IMG_WIDTH, LONG_IMG_HEIGHT      # 768x512
 
     pipe = get_pipeline()
-    generator = torch.Generator(device="cuda").manual_seed(seed)
+    # CRITICAL FIX: CPU generator avoids float32/fp16 mismatch on Windows CUDA
+    generator = torch.Generator(device="cpu").manual_seed(seed)
 
     # Enhance prompt with Pixar aesthetic boosters
     enhanced_prompt = f"{prompt}, {QUALITY_BOOSTER}"
@@ -114,7 +118,7 @@ def generate_frame_image(
         negative_prompt=NEGATIVE_PROMPT,
         width=width,
         height=height,
-        num_inference_steps=25,
+        num_inference_steps=20,
         guidance_scale=7.5,
         generator=generator
     ).images[0]
@@ -150,16 +154,17 @@ def generate_all_frame_images(
     rendered_paths = []
     print(f"\n[Visual Engine] Generating {len(frames)} high quality frames ({aspect_ratio}) with Yntec/DisneyPixarCartoon768...")
 
-    for idx, frame in enumerate(frames):
-        fid = frame.get("frame_id", frame.get("scene_id", idx + 1))
-        prompt = frame.get("visual_prompt", "")
-        # Increment seed deterministically per frame to get situational diversity while keeping characters consistent
-        frame_seed = master_seed + (fid * 17)
-        path = generate_frame_image(fid, prompt, aspect_ratio=aspect_ratio, seed=frame_seed, output_dir=output_dir)
-        rendered_paths.append(path)
-
-    if auto_free_vram:
-        free_gpu()
+    try:
+        for idx, frame in enumerate(frames):
+            fid = frame.get("frame_id", frame.get("scene_id", idx + 1))
+            prompt = frame.get("visual_prompt", "")
+            # Increment seed deterministically per frame to get situational diversity while keeping characters consistent
+            frame_seed = master_seed + (fid * 17)
+            path = generate_frame_image(fid, prompt, aspect_ratio=aspect_ratio, seed=frame_seed, output_dir=output_dir)
+            rendered_paths.append(path)
+    finally:
+        if auto_free_vram:
+            free_gpu()
 
     return rendered_paths
 

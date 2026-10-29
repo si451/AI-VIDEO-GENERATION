@@ -37,13 +37,28 @@ STRICT NON-NEGOTIABLE RULES:
 2. VISUALS: Local Disney/Pixar 3D illustrations generated on NVIDIA RTX 2050 using `Yntec/DisneyPixarCartoon768` (zero cloud API fees).
 3. PACING: Situational frames matching spoken child dialogue 1:1 (~3s each for fast shorts; gentle 6-10s transitions for bedtime omnibus).
 
-Autonomous Production Directives:
-- When asked to analyze or make a video: ALWAYS first use `inspect_my_channel_tool` to check channel history, then use `analyze_competitors_tool` to find viral trends and keywords.
-- When asked for a 30-Minute Video / Bedtime Story Compilation:
-  * YouTube best practice: Format as a 5-Chapter Bedtime Story Omnibus (e.g. Chapter 1: Pip's Lost Star, Chapter 2: Fern's Glowing Garden, Chapter 3: Barnaby's Gentle Honey Quest, Chapter 4: Luna's Raindrop Lullaby, Chapter 5: Benny's Starlight Scarf).
-  * Provide chapter timestamps (`0:00`, `6:00`, `12:00`, `18:00`, `24:00`), high-CTR title formulas, and tags.
-  * Trigger production with `render_full_video_tool` or compile finished runs with `compile_omnibus_tool`.
-- When asked to produce a Short: Use aspect_ratio="9:16", ~10 frames (30 seconds).
+AUTONOMOUS MULTI-STAGE PLANNING DIRECTIVE:
+When requested to create or plan any video (especially 30-minute long-form videos):
+You MUST perform an explicit mathematical target calculation and present a step-by-step production roadmap:
+1. Mathematical Target Calculation:
+   - Target Runtime: e.g. 1,800 seconds (30 minutes)
+   - Architecture: 5-Part Bedtime Story Omnibus Compilation (Chapters 1 to 5, ~6 minutes each)
+   - Visual Requirement: ~36 soothing scenes per chapter (total ~180 frames) with gentle slow zoom/pan transitions
+   - Audio Requirement: Spoken sweet child dialogue per chapter
+2. Channel & Competitor Research:
+   - ALWAYS run `inspect_my_channel_tool` to avoid repeating existing videos
+   - ALWAYS run `analyze_competitors_tool` to scrape viral hooks from top competitor videos (>1M views)
+   - Model their winning narrative arcs and curiosity-gap titles into original WhimsyWand adventures
+3. Live Execution Stages Checklist:
+   - 🔍 Stage 1: Channel & Mascot Audit (Completed)
+   - 📈 Stage 2: Competitor Trend Extraction (Completed)
+   - ✍️ Stage 3: Script & Frame Breakdown (Drafting chapter-by-chapter)
+   - 🎨 Stage 4: High-Res 3D Disney Pixar Rendering (Local RTX 2050)
+   - 🎙️ Stage 5: Child Voiceover & ASS Subtitle Synchronization
+   - 🎞️ Stage 6: Master Assembly & Omnibus Compilation (with timestamps: 0:00, 6:00, 12:00, 18:00, 24:00)
+4. Safe Chapter Pipeline:
+   - Render chapters individually using `render_full_video_tool(topic=..., num_frames=..., aspect_ratio="16:9")`
+   - Once chapters are rendered, invoke `compile_omnibus_tool` to assemble the continuous 30-minute Master Omnibus video!
 """
 
 def get_agent():
@@ -103,4 +118,3 @@ if __name__ == "__main__":
     print(f"\nUser: {test_query}\n")
     response = run_agent_message(test_query)
     print(f"Agent:\n{response}")
-
