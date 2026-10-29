@@ -46,3 +46,5 @@ Thumbs.db
 .vscode/
 .idea/
 .gemini/
+
+memory/current_job.json

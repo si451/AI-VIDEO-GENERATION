@@ -22,6 +22,9 @@ from modules.visual_engine import generate_frame_image, free_gpu
 from modules.tts_engine import generate_scene_voice
 from agent import run_agent_message
 import harness
+from modules.progress_tracker import tracker
+import threading
+import uuid
 
 app = FastAPI(title="AI Kids Cartoon Video Harness API", version="2.0")
 
@@ -214,15 +217,67 @@ def get_run_details(run_id: str):
         "character_bible": story_data.get("character_bible", {})
     }
 
+def _run_agent_worker(job_id: str, message: str, thread_id: str):
+    tracker.start_job(job_id=job_id, title=message[:50], total_frames=15, aspect_ratio="16:9")
+    try:
+        reply = run_agent_message(message, thread_id=thread_id)
+        if tracker.is_active:
+            tracker.complete_job(reply=reply)
+        else:
+            tracker.latest_reply = reply
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        tracker.fail_job(str(e))
+
 @app.post("/api/agent/chat")
 def chat_with_agent(req: ChatRequest):
-    try:
-        reply = run_agent_message(req.message, thread_id=req.thread_id or "default_user")
-        return {"reply": reply}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    job_id = str(uuid.uuid4())[:8]
+    if tracker.is_active:
+        return {
+            "status": "busy",
+            "job_id": tracker.job_id,
+            "message": f"A production task is already running: {tracker.detail}"
+        }
+    
+    t = threading.Thread(
+        target=_run_agent_worker,
+        args=(job_id, req.message, req.thread_id or "default_user"),
+        daemon=True
+    )
+    t.start()
+    return {"status": "started", "job_id": job_id}
+
+@app.get("/api/agent/status")
+@app.get("/api/production/status")
+def get_production_status():
+    return tracker.to_dict()
+
+@app.post("/api/production/stop")
+def stop_production():
+    from modules.visual_engine import free_gpu
+    free_gpu()
+    tracker.fail_job("Production cancelled by user.")
+    return {"status": "stopped", "message": "Production halted and GPU memory released."}
+
+@app.post("/api/production/clean")
+def clean_production_runs():
+    runs_dir = OUTPUT_DIR / "runs"
+    deleted = 0
+    if runs_dir.exists():
+        import shutil
+        for r in runs_dir.iterdir():
+            if r.is_dir():
+                try:
+                    shutil.rmtree(r)
+                    deleted += 1
+                except Exception:
+                    pass
+    tracker.reset()
+    return {"status": "cleaned", "deleted_runs": deleted}
 
 def _run_production_task(job_id: str, topic: Optional[str], num_frames: int, aspect_ratio: str):
+    tracker.start_job(job_id, title=topic or "One-Click Production", total_frames=num_frames, aspect_ratio=aspect_ratio)
     generation_jobs[job_id] = {"status": "processing", "progress": 10, "step": "Auditing channel & researching competitors..."}
     try:
         result = harness.run_production_pipeline(

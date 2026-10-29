@@ -3,17 +3,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { 
-  Play, 
-  MessageSquare, 
-  Film, 
-  Sparkles, 
-  Copy, 
-  Check, 
-  Send, 
-  RefreshCw, 
-  Video, 
-  Flame, 
+import {
+  Play,
+  MessageSquare,
+  Film,
+  Sparkles,
+  Copy,
+  Check,
+  Send,
+  RefreshCw,
+  Video,
+  Flame,
   Award,
   Compass,
   Wand2,
@@ -23,7 +23,10 @@ import {
   ExternalLink,
   ChevronRight,
   BookOpen,
-  Volume2
+  Volume2,
+  Trash2,
+  StopCircle,
+  CheckCircle
 } from "lucide-react";
 
 interface RunItem {
@@ -98,7 +101,54 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
   const [chatInput, setChatInput] = useState("");
   const [isChatLoading, setIsChatLoading] = useState(false);
   const [loadingElapsed, setLoadingElapsed] = useState(0);
+  const [liveStatus, setLiveStatus] = useState<any>(null);
+  const pollingRef = useRef<any>(null);
   const chatBottomRef = useRef<HTMLDivElement>(null);
+
+  // Stop polling helper
+  const stopPolling = () => {
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current);
+      pollingRef.current = null;
+    }
+  };
+
+  // Start polling production status
+  const startPolling = () => {
+    stopPolling();
+    pollingRef.current = setInterval(async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/production/status`);
+        if (res.ok) {
+          const data = await res.json();
+          setLiveStatus(data);
+          
+          if (!data.is_active) {
+            stopPolling();
+            setIsChatLoading(false);
+            
+            if (data.error) {
+              setMessages((prev) => {
+                const last = prev[prev.length - 1];
+                if (last?.content?.includes(data.error)) return prev;
+                return [...prev, { role: "assistant", content: `❌ **Production Error**: ${data.error}` }];
+              });
+            } else if (data.latest_reply) {
+              setMessages((prev) => {
+                const last = prev[prev.length - 1];
+                if (last?.content === data.latest_reply) return prev;
+                return [...prev, { role: "assistant", content: data.latest_reply }];
+              });
+            }
+            fetchStats();
+            fetchRuns();
+          }
+        }
+      } catch (e) {
+        console.warn("Status poll error:", e);
+      }
+    }, 1500);
+  };
 
   // Load chat history from localStorage on mount
   useEffect(() => {
@@ -149,7 +199,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
     setMessages(initialMsg);
     try {
       localStorage.removeItem("whimsywand_chat_history");
-    } catch (e) {}
+    } catch (e) { }
   };
 
   // Competitor data
@@ -226,6 +276,24 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
     fetchStats();
     fetchRuns();
     fetchMyChannel();
+
+    // Check if an existing production job is in progress on the server (handles page refresh seamlessly)
+    const checkActiveJob = async () => {
+      try {
+        const res = await fetch(`${API_BASE}/api/production/status`);
+        if (res.ok) {
+          const data = await res.json();
+          setLiveStatus(data);
+          if (data.is_active) {
+            setIsChatLoading(true);
+            startPolling();
+          }
+        }
+      } catch (e) { }
+    };
+    checkActiveJob();
+
+    return () => stopPolling();
   }, []);
 
   useEffect(() => {
@@ -237,6 +305,33 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
   useEffect(() => {
     chatBottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isChatLoading]);
+
+  const handleStopProduction = async () => {
+    try {
+      await fetch(`${API_BASE}/api/production/stop`, { method: "POST" });
+      stopPolling();
+      setIsChatLoading(false);
+      setMessages((prev) => [...prev, { role: "assistant", content: "🛑 **Production stopped by user**. GPU resources released." }]);
+    } catch (e: any) {
+      console.warn("Stop error:", e);
+    }
+  };
+
+  const handleCleanRuns = async () => {
+    if (!confirm("Are you sure you want to clean all previous output runs to start fresh?")) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/production/clean`, { method: "POST" });
+      if (res.ok) {
+        fetchStats();
+        fetchRuns();
+        setSelectedRunId(null);
+        setRunDetail(null);
+        setMessages((prev) => [...prev, { role: "assistant", content: "🧹 **All previous output runs cleaned**. Workspace is pristine and ready for your first official long video production!" }]);
+      }
+    } catch (e: any) {
+      console.warn("Clean runs error:", e);
+    }
+  };
 
   // Send message to agent
   const handleSendMessage = async (textToSend?: string) => {
@@ -256,15 +351,18 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
       });
       if (res.ok) {
         const data = await res.json();
-        setMessages([...newMessages, { role: "assistant", content: data.reply }]);
-        fetchStats();
-        fetchRuns();
+        if (data.status === "busy") {
+          setMessages([...newMessages, { role: "assistant", content: `⏳ **Production already in progress**: ${data.message}` }]);
+        }
+        startPolling();
       } else {
-        setMessages([...newMessages, { role: "assistant", content: "❌ Error connecting to AI Showrunner Agent." }]);
+        const errData = await res.json().catch(() => ({}));
+        const errDetail = errData.detail || "Server error";
+        setMessages([...newMessages, { role: "assistant", content: `❌ **Error connecting to AI Showrunner Agent**: ${errDetail}` }]);
+        setIsChatLoading(false);
       }
     } catch (e: any) {
-      setMessages([...newMessages, { role: "assistant", content: `❌ Error: ${e.message}` }]);
-    } finally {
+      setMessages([...newMessages, { role: "assistant", content: `❌ **Network Connection Error**: ${e.message}` }]);
       setIsChatLoading(false);
     }
   };
@@ -308,33 +406,29 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
           <nav className="flex space-x-1 bg-stone-100/80 p-1 rounded-xl border border-stone-200/70">
             <button
               onClick={() => setActiveTab("studio")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                activeTab === "studio" ? "bg-white text-stone-900 shadow-xs border border-stone-200/80" : "text-stone-600 hover:text-stone-900"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeTab === "studio" ? "bg-white text-stone-900 shadow-xs border border-stone-200/80" : "text-stone-600 hover:text-stone-900"
+                }`}
             >
               🎬 Studio (Chat & Video)
             </button>
             <button
               onClick={() => setActiveTab("mychannel")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                activeTab === "mychannel" ? "bg-white text-stone-900 shadow-xs border border-stone-200/80" : "text-stone-600 hover:text-stone-900"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeTab === "mychannel" ? "bg-white text-stone-900 shadow-xs border border-stone-200/80" : "text-stone-600 hover:text-stone-900"
+                }`}
             >
               🏰 Our Channel
             </button>
             <button
               onClick={() => setActiveTab("dashboard")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                activeTab === "dashboard" ? "bg-white text-stone-900 shadow-xs border border-stone-200/80" : "text-stone-600 hover:text-stone-900"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeTab === "dashboard" ? "bg-white text-stone-900 shadow-xs border border-stone-200/80" : "text-stone-600 hover:text-stone-900"
+                }`}
             >
               🎞️ All Runs ({runs.length})
             </button>
             <button
               onClick={() => { setActiveTab("competitors"); if (!competitors) fetchCompetitors(); }}
-              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
-                activeTab === "competitors" ? "bg-white text-stone-900 shadow-xs border border-stone-200/80" : "text-stone-600 hover:text-stone-900"
-              }`}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${activeTab === "competitors" ? "bg-white text-stone-900 shadow-xs border border-stone-200/80" : "text-stone-600 hover:text-stone-900"
+                }`}
             >
               📈 Competitor Spy
             </button>
@@ -365,7 +459,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                   </div>
                 </div>
 
-                <button 
+                <button
                   onClick={handleClearChat}
                   className="text-[11px] text-stone-500 hover:text-stone-800 px-2.5 py-1 rounded-md hover:bg-stone-100 transition border border-stone-200/60"
                 >
@@ -401,6 +495,13 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                 >
                   📋 List All Runs
                 </button>
+                <button
+                  onClick={handleCleanRuns}
+                  className="whitespace-nowrap px-3 py-1 rounded-full bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 transition font-medium flex items-center space-x-1"
+                >
+                  <Trash2 className="w-3 h-3 text-rose-600" />
+                  <span>Clean Output Runs</span>
+                </button>
               </div>
 
               {/* Chat Message Stream - Clean Formatted Markdown */}
@@ -411,11 +512,10 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                     className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     <div
-                      className={`max-w-[88%] rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-xs ${
-                        msg.role === "user"
+                      className={`max-w-[88%] rounded-2xl px-4 py-3 text-xs leading-relaxed shadow-xs ${msg.role === "user"
                           ? "bg-stone-900 text-white rounded-br-none"
                           : "bg-white text-stone-800 border border-stone-200/90 rounded-bl-none shadow-sm"
-                      }`}
+                        }`}
                     >
                       {msg.role === "user" ? (
                         <div className="whitespace-pre-wrap font-medium">{msg.content}</div>
@@ -458,58 +558,85 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                 ))}
                 {isChatLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-stone-200 rounded-2xl rounded-bl-none p-4 text-xs text-stone-700 shadow-sm max-w-[92%] space-y-3">
-                      <div className="flex items-center justify-between border-b border-stone-100 pb-2">
-                        <div className="flex items-center space-x-2">
-                          <RefreshCw className="w-4 h-4 animate-spin text-amber-600" />
-                          <span className="font-bold text-stone-900">AI Showrunner Pipeline In Progress</span>
+                    <div className="bg-white border-2 border-amber-300/80 rounded-2xl rounded-bl-none p-5 text-xs text-stone-800 shadow-md max-w-[95%] w-[580px] space-y-4">
+                      {/* Header with Title and Elapsed Timer */}
+                      <div className="flex items-center justify-between border-b border-stone-200 pb-3">
+                        <div className="flex items-center space-x-2.5">
+                          <RefreshCw className="w-4 h-4 animate-spin text-amber-600 shrink-0" />
+                          <div>
+                            <h4 className="font-extrabold text-stone-900 text-xs">
+                              {liveStatus?.stage_title || "AI Production In Progress"}
+                            </h4>
+                            <p className="text-[11px] text-stone-500 font-medium">
+                              {liveStatus?.title || "Autonomous Fairy Tale Studio"} • {liveStatus?.aspect_ratio || "16:9"}
+                            </p>
+                          </div>
                         </div>
-                        <span className="font-mono text-[11px] bg-amber-50 text-amber-900 border border-amber-200 px-2 py-0.5 rounded-full font-semibold">
-                          ⏱️ {loadingElapsed}s elapsed
+                        <div className="flex flex-col items-end space-y-1 shrink-0">
+                          <span className="font-mono text-[11px] bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-0.5 rounded-full font-bold shadow-2xs">
+                            ⏱️ {liveStatus?.elapsed_seconds !== undefined ? `${liveStatus.elapsed_seconds}s` : `${loadingElapsed}s`} elapsed
+                          </span>
+                          {liveStatus?.estimated_remaining_seconds > 0 && (
+                            <span className="font-mono text-[10px] text-stone-500 font-medium">
+                              ⏳ ~{liveStatus.estimated_remaining_seconds}s remaining
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Progress Bar & Frame Counter */}
+                      <div className="space-y-1.5">
+                        <div className="flex items-center justify-between text-[11px] font-semibold text-stone-700">
+                          <span className="truncate pr-2">{liveStatus?.detail || "Processing step..."}</span>
+                          <span className="font-mono font-bold text-amber-800 shrink-0">{liveStatus?.progress_percent || 0}%</span>
+                        </div>
+                        <div className="w-full bg-stone-100 rounded-full h-2.5 border border-stone-200 overflow-hidden">
+                          <div
+                            className="bg-gradient-to-r from-amber-500 via-rose-400 to-amber-600 h-2.5 rounded-full transition-all duration-500 ease-out"
+                            style={{ width: `${Math.max(5, liveStatus?.progress_percent || 0)}%` }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Stages Checklist */}
+                      <div className="space-y-2 pt-1">
+                        {liveStatus?.stages?.map((st: any, idx: number) => {
+                          const isDone = st.status === "completed";
+                          const isCurrent = st.status === "in_progress";
+                          return (
+                            <div key={st.key || idx} className="flex items-center space-x-2.5 text-stone-700">
+                              <span
+                                className={`w-4 h-4 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${
+                                  isDone
+                                    ? "bg-emerald-100 text-emerald-700"
+                                    : isCurrent
+                                    ? "bg-amber-100 text-amber-800 animate-pulse border border-amber-300"
+                                    : "bg-stone-100 text-stone-400"
+                                }`}
+                              >
+                                {isDone ? "✓" : isCurrent ? "•" : "○"}
+                              </span>
+                              <span className={`text-[11px] ${isCurrent ? "font-bold text-stone-900" : isDone ? "font-medium text-stone-600" : "text-stone-400"}`}>
+                                {st.title}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Control Actions */}
+                      <div className="flex items-center justify-between pt-2 border-t border-stone-100">
+                        <span className="text-[10px] text-stone-500 font-medium">
+                          🛡️ Safe reload: refresh anytime without losing progress
                         </span>
-                      </div>
-
-                      <div className="space-y-2">
-                        <div className="flex items-center space-x-2.5 text-stone-700">
-                          <span className="w-4 h-4 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px] font-bold">✓</span>
-                          <span className="font-medium">1. Channel & Mascot Audit (@WhimsyWandTales memory verified)</span>
-                        </div>
-
-                        <div className="flex items-center space-x-2.5 text-stone-700">
-                          <span className={`w-4 h-4 rounded-full ${loadingElapsed >= 2 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700 animate-pulse"} flex items-center justify-center text-[10px] font-bold`}>
-                            {loadingElapsed >= 2 ? "✓" : "•"}
-                          </span>
-                          <span className="font-medium">2. Competitor Viral Scan (>1M views analyzed for curiosity hooks)</span>
-                        </div>
-
-                        <div className="flex items-center space-x-2.5 text-stone-700">
-                          <span className={`w-4 h-4 rounded-full ${loadingElapsed >= 6 ? "bg-emerald-100 text-emerald-700" : loadingElapsed >= 2 ? "bg-amber-100 text-amber-700 animate-pulse" : "bg-stone-100 text-stone-400"} flex items-center justify-center text-[10px] font-bold`}>
-                            {loadingElapsed >= 6 ? "✓" : "•"}
-                          </span>
-                          <span className="font-medium">3. Script & Frame Breakdown (~3s pacing + persistent character anchors)</span>
-                        </div>
-
-                        <div className="flex items-center space-x-2.5 text-stone-700">
-                          <span className={`w-4 h-4 rounded-full ${loadingElapsed >= 10 ? "bg-amber-100 text-amber-700 animate-pulse" : "bg-stone-100 text-stone-400"} flex items-center justify-center text-[10px] font-bold`}>
-                            •
-                          </span>
-                          <span className="font-medium">4. 3D Disney Pixar Rendering (Local RTX 2050 Diffusers fp16)</span>
-                        </div>
-
-                        <div className="flex items-center space-x-2.5 text-stone-500">
-                          <span className="w-4 h-4 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center text-[10px] font-bold">•</span>
-                          <span>5. Voiceover & Karaoke Subtitles (Strict child neural voices)</span>
-                        </div>
-
-                        <div className="flex items-center space-x-2.5 text-stone-500">
-                          <span className="w-4 h-4 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center text-[10px] font-bold">•</span>
-                          <span>6. Master NVENC Assembly & YouTube SEO Metadata Package</span>
-                        </div>
-                      </div>
-
-                      <div className="pt-2 border-t border-stone-100 text-[10px] text-stone-500 flex items-center justify-between">
-                        <span>Estimated completion: ~30-45s for Shorts • ~3-4m per Long Chapter</span>
-                        <span className="text-amber-800 font-semibold">Running locally on RTX 2050</span>
+                        <button
+                          type="button"
+                          onClick={handleStopProduction}
+                          className="text-[11px] text-rose-700 bg-rose-50 hover:bg-rose-100 border border-rose-200 px-2.5 py-1 rounded-lg font-bold transition-colors cursor-pointer flex items-center space-x-1"
+                        >
+                          <StopCircle className="w-3.5 h-3.5" />
+                          <span>Stop Production</span>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -568,9 +695,8 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
 
                 {runDetail && (
                   <div className="flex items-center space-x-2">
-                    <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
-                      runDetail.aspect_ratio === "9:16" ? "bg-amber-100 text-amber-800 border border-amber-300/60" : "bg-stone-100 text-stone-800 border border-stone-300/60"
-                    }`}>
+                    <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${runDetail.aspect_ratio === "9:16" ? "bg-amber-100 text-amber-800 border border-amber-300/60" : "bg-stone-100 text-stone-800 border border-stone-300/60"
+                      }`}>
                       {runDetail.aspect_ratio === "9:16" ? "9:16 Short" : "16:9 Long"}
                     </span>
                     <span className="text-xs text-stone-600 font-mono font-medium">

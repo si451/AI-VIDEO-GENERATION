@@ -2,6 +2,7 @@ import os
 import sys
 import gc
 import time
+import threading
 import torch
 from pathlib import Path
 
@@ -24,6 +25,14 @@ os.environ["HF_HUB_ENABLE_HF_TRANSFER"] = "1"
 os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
 
 MODEL_ID = "Yntec/DisneyPixarCartoon768"
+
+# Mutex lock to strictly prevent concurrent GPU diffusion runs on RTX 2050 (4GB VRAM)
+gpu_render_lock = threading.Lock()
+
+try:
+    from modules.progress_tracker import tracker
+except Exception:
+    tracker = None
 
 QUALITY_BOOSTER = (
     "3D Disney Pixar animation style, cute character design, volumetric studio lighting, vibrant colors, clean render, 8k"
@@ -142,10 +151,12 @@ def generate_all_frame_images(
     aspect_ratio: str = "9:16",
     master_seed: int = 42,
     auto_free_vram: bool = True,
-    output_dir: Path = None
+    output_dir: Path = None,
+    progress_callback = None
 ) -> list:
     """
     Renders all frames in a story (~3 seconds each), then wipes VRAM.
+    Thread-safe with gpu_render_lock to protect 4GB RTX 2050 from concurrent OOM errors.
     """
     if output_dir is None:
         output_dir = SCENES_DIR
@@ -154,17 +165,27 @@ def generate_all_frame_images(
     rendered_paths = []
     print(f"\n[Visual Engine] Generating {len(frames)} high quality frames ({aspect_ratio}) with Yntec/DisneyPixarCartoon768...")
 
-    try:
-        for idx, frame in enumerate(frames):
-            fid = frame.get("frame_id", frame.get("scene_id", idx + 1))
-            prompt = frame.get("visual_prompt", "")
-            # Increment seed deterministically per frame to get situational diversity while keeping characters consistent
-            frame_seed = master_seed + (fid * 17)
-            path = generate_frame_image(fid, prompt, aspect_ratio=aspect_ratio, seed=frame_seed, output_dir=output_dir)
-            rendered_paths.append(path)
-    finally:
-        if auto_free_vram:
-            free_gpu()
+    with gpu_render_lock:
+        try:
+            for idx, frame in enumerate(frames):
+                fid = frame.get("frame_id", frame.get("scene_id", idx + 1))
+                prompt = frame.get("visual_prompt", "")
+                # Increment seed deterministically per frame to get situational diversity while keeping characters consistent
+                frame_seed = master_seed + (fid * 17)
+                path = generate_frame_image(fid, prompt, aspect_ratio=aspect_ratio, seed=frame_seed, output_dir=output_dir)
+                rendered_paths.append(path)
+                
+                # Report frame-level progress
+                if tracker:
+                    tracker.update_frame(idx + 1, len(frames))
+                if progress_callback:
+                    try:
+                        progress_callback(idx + 1, len(frames), path)
+                    except Exception:
+                        pass
+        finally:
+            if auto_free_vram:
+                free_gpu()
 
     return rendered_paths
 

@@ -28,6 +28,7 @@ from modules.motion_engine import animate_all_frames
 from modules.subtitle_engine import generate_styled_ass
 from modules.audio_mixer import mix_story_audio
 from modules.assembler import assemble_final_video
+from modules.progress_tracker import tracker
 
 RUNS_DIR = OUTPUT_DIR / "runs"
 
@@ -69,6 +70,7 @@ def run_production_pipeline(
 
     # STEP 0: Competitor Research (Optional)
     if use_competitor_trends:
+        tracker.update_stage("competitors", "📈 Scanning Viral Competitors", "Scraping high-retention competitor videos (>1M views)...", 10)
         print("\n[Step 0/6] Researching Trending Competitor Formats on YouTube...")
         try:
             insights = analyze_competitors("bedtime stories for kids cartoon", max_results=5)
@@ -77,12 +79,14 @@ def run_production_pipeline(
             print(f" -> [Notice] Competitor scrape skipped: {e}")
 
     # STEP 1: Story & Character Memory Bible (DeepSeek)
+    tracker.update_stage("script", "✍️ Drafting Script & Storyboard", f"Writing {num_frames} situational frames (~3s each)...", 20)
     target_sec = num_frames * 3
     print(f"\n[Step 1/6] Writing Script & 3-Second Frame Storyboard ({num_frames} frames, ~{target_sec}s total)...")
     story_data = generate_story(prompt_or_topic=topic, num_frames=num_frames, aspect_ratio=aspect_ratio)
     
     frames = story_data.get("frames", story_data.get("scenes", []))
     title = story_data.get("title", "Barnaby Bear Adventure")
+    tracker.title = title
     char_bible = story_data.get("character_bible", {})
 
     print(f" -> Title: {title}")
@@ -100,11 +104,13 @@ def run_production_pipeline(
         json.dump(story_data, f, indent=2, ensure_ascii=False)
 
     # STEP 2: Multi-Character Voiceover with Word Timestamps (STRICT CHILD VOICES ONLY)
+    tracker.update_stage("voice", "🎙️ Child Voiceover & Dialogue", f"Synthesizing {len(frames)} child voices (AnaNeural & ChristopherNeural)...", 35)
     print("\n[Step 2/6] Generating Child-Only Dialogue & Narration (Edge-TTS)...")
     voice_metadata = generate_all_scene_voices(frames, character_bible=char_bible, output_audio_dir=audio_dir)
     print(f" -> Generated {len(voice_metadata)} child voice tracks.")
 
     # STEP 3: Generate Local 3D Disney/Pixar Illustrations (No Repetitions)
+    tracker.update_stage("visuals", "🎨 Rendering 3D Disney/Pixar Frames", f"Generating {len(frames)} frames locally on RTX 2050 ({aspect_ratio})...", 45)
     if use_local_images:
         print(f"\n[Step 3/6] Generating {len(frames)} Disney/Pixar Frames locally on RTX 2050 ({aspect_ratio})...")
         generate_all_frame_images(frames, aspect_ratio=aspect_ratio, master_seed=42, auto_free_vram=True, output_dir=scenes_dir)
@@ -123,6 +129,7 @@ def run_production_pipeline(
     free_gpu()
 
     # STEP 4: Butter-Smooth 2.5D Camera Motion (NVENC 30fps)
+    tracker.update_stage("motion", "🎥 Animating Camera Motion", "Applying smooth slow zoom/pan motion (NVENC 30fps)...", 80)
     print(f"\n[Step 4/6] Animating Frames with Smooth Slow Zoom/Pan (NVENC 30fps)...")
     clip_paths = animate_all_frames(frames, voice_metadata, aspect_ratio=aspect_ratio, scenes_dir=scenes_dir)
 
@@ -138,6 +145,7 @@ def run_production_pipeline(
         })
 
     # STEP 5: Subtitles & Background Music Mixing
+    tracker.update_stage("motion", "📝 Karaoke Subtitles & Ducked BGM", "Styling ASS subtitles and mixing background music...", 88)
     print(f"\n[Step 5/6] Styling Subtitles ({aspect_ratio}) & Mixing Ducked Audio...")
     subtitles_ass = run_dir / "subtitles.ass"
     generate_styled_ass(frames, voice_metadata, subtitles_ass, aspect_ratio=aspect_ratio)
@@ -146,6 +154,7 @@ def run_production_pipeline(
     mix_story_audio(frames, voice_metadata, master_audio, audio_dir=audio_dir)
 
     # STEP 6: Master Assembly (NVENC GPU Stitching & YouTube Metadata)
+    tracker.update_stage("assembly", "🎞️ NVENC Master Video Assembly", "Encoding final 1080p MP4 via NVIDIA hardware...", 94)
     print(f"\n[Step 6/6] Assembling Master Final Video ({aspect_ratio})...")
     final_video = run_dir / "final_video.mp4"
 
@@ -166,6 +175,12 @@ def run_production_pipeline(
     print(f" -> YouTube Title: {metadata.get('youtube_title')}")
     print(f" -> Total Duration: {metadata.get('total_duration_sec', 0):.2f} seconds")
     print(f" -> Run Package: {run_dir.resolve()}")
+
+    tracker.complete_job(
+        reply=f"🎉 Full Video Production Complete!\n- Title: {metadata.get('youtube_title')}\n- Duration: {metadata.get('total_duration_sec', 0):.1f}s\n- Video: {final_video.name}",
+        video_url=f"/media/runs/{run_dir.name}/final_video.mp4",
+        run_dir=str(run_dir)
+    )
 
     return {
         "run_dir": str(run_dir),
