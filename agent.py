@@ -21,7 +21,8 @@ from modules.agent_tools import (
     render_full_video_tool,
     list_completed_runs_tool,
     get_viral_seo_package_tool,
-    compile_omnibus_tool
+    compile_omnibus_tool,
+    produce_bedtime_omnibus_tool
 )
 
 SYSTEM_PROMPT = """You are the Lead Creative Director, Showrunner, and YouTube Growth Strategist for WhimsyWand Tales (@WhimsyWandTales) — an automated Children's Animation Studio (ages 3–7).
@@ -56,9 +57,12 @@ You MUST perform an explicit mathematical target calculation and present a step-
    - 🎨 Stage 4: High-Res 3D Disney Pixar Rendering (Local RTX 2050)
    - 🎙️ Stage 5: Child Voiceover & ASS Subtitle Synchronization
    - 🎞️ Stage 6: Master Assembly & Omnibus Compilation (with timestamps: 0:00, 6:00, 12:00, 18:00, 24:00)
-4. Safe Chapter Pipeline:
-   - Render chapters individually using `render_full_video_tool(topic=..., num_frames=..., aspect_ratio="16:9")`
-   - Once chapters are rendered, invoke `compile_omnibus_tool` to assemble the continuous 30-minute Master Omnibus video!
+4. STRICT SINGLE-FOLDER OMNIBUS DIRECTIVE:
+   - When asked to produce a 30-minute long video or bedtime story omnibus:
+     You MUST invoke `produce_bedtime_omnibus_tool(topic=...)`!
+     This tool automatically creates EXACTLY ONE folder in output/runs/ (e.g. output/runs/run_001_..._30Min_Omnibus/)
+     and saves ALL 5 chapter scenes, audio voiceovers, chapter clips, and final_video.mp4 inside that SINGLE folder!
+   - NEVER create multiple separate run folders for each chapter. Zero folder clutter.
 """
 
 def get_agent():
@@ -82,7 +86,8 @@ def get_agent():
         render_full_video_tool,
         list_completed_runs_tool,
         get_viral_seo_package_tool,
-        compile_omnibus_tool
+        compile_omnibus_tool,
+        produce_bedtime_omnibus_tool
     ]
 
     checkpointer = MemorySaver()

@@ -268,3 +268,28 @@ def compile_omnibus_tool(title: str = "WhimsyWand Tales Bedtime Stories 30-Minut
         )
     except Exception as e:
         return f"Error compiling master omnibus: {str(e)}"
+
+
+@tool
+def produce_bedtime_omnibus_tool(topic: str = "WhimsyWand Bedtime Stories 30-Minute Omnibus") -> str:
+    """
+    Produces the complete 30-minute Bedtime Story Omnibus compilation inside a SINGLE self-contained run folder.
+    Generates all 5 chapters, all 3D Disney/Pixar illustrations, sweet child voiceovers, subtitles,
+    and stitches the master 1080p 16:9 MP4 with continuous YouTube timestamps (0:00, 6:00, 12:00, 18:00, 24:00)
+    ALL within ONE isolated run directory. Zero clutter, zero extra folders.
+    """
+    try:
+        result = harness.run_omnibus_pipeline(topic=topic, num_chapters=5, frames_per_chapter=15, aspect_ratio="16:9")
+        final_video = result.get("final_video")
+        run_dir = result.get("run_dir")
+        metadata = result.get("metadata", {})
+        return (
+            f"🎉 30-Minute Master Bedtime Story Omnibus Successfully Produced in ONE Single Folder!\n\n"
+            f"- **Run Directory**: `{run_dir}`\n"
+            f"- **Master Video File**: `{final_video}`\n"
+            f"- **Total Duration**: {metadata.get('total_duration_sec', 0):.2f}s (~{metadata.get('total_duration_sec', 0)/60:.1f} minutes)\n"
+            f"- **Chapters Included**:\n" + "\n".join(metadata.get('chapters', [])) + "\n\n"
+            f"- **YouTube SEO Title**: {metadata.get('youtube_title')}"
+        )
+    except Exception as e:
+        return f"Error producing bedtime omnibus: {str(e)}"

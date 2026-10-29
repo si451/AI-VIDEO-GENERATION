@@ -55,7 +55,8 @@ def run_production_pipeline(
     num_frames: int = 10,
     aspect_ratio: str = "9:16",
     use_competitor_trends: bool = False,
-    use_local_images: bool = True
+    use_local_images: bool = True,
+    run_dir: Path = None
 ) -> dict:
     """
     Executes the complete high-retention Children's YouTube Harness.
@@ -93,8 +94,13 @@ def run_production_pipeline(
     print(f" -> Frames: {len(frames)} situational shots (~3s each)")
     print(f" -> Characters: {[c.get('name') for c in char_bible.get('characters', [])]}")
 
-    # Setup isolated Run Directory
-    run_dir = get_next_run_dir(title)
+    # Setup isolated Run Directory (use passed run_dir if provided to keep everything in ONE single folder)
+    if run_dir is None:
+        run_dir = get_next_run_dir(title)
+    else:
+        run_dir = Path(run_dir)
+        (run_dir / "scenes").mkdir(parents=True, exist_ok=True)
+        (run_dir / "audio").mkdir(parents=True, exist_ok=True)
     scenes_dir = run_dir / "scenes"
     audio_dir = run_dir / "audio"
     print(f" -> Isolated Run Directory: {run_dir.resolve()}")
@@ -206,3 +212,189 @@ if __name__ == "__main__":
         aspect_ratio=args.aspect,
         use_local_images=not args.skip_images
     )
+
+
+def run_omnibus_pipeline(
+    topic: str = "WhimsyWand Bedtime Stories 30-Minute Omnibus",
+    num_chapters: int = 5,
+    frames_per_chapter: int = 15,
+    aspect_ratio: str = "16:9",
+    use_local_images: bool = True
+) -> dict:
+    """
+    Executes a complete 30-minute Bedtime Story Omnibus compilation inside ONE single run directory.
+    Guarantees:
+    - Exactly ONE folder is created in output/runs/ (e.g. output/runs/run_001_..._30Min_Omnibus/)
+    - All scenes, voices, chapter clips, and final_video.mp4 live inside this single folder.
+    - Zero duplicate runs, zero workspace clutter.
+    """
+    from modules.assembler import stitch_chapter_files
+    
+    title = "WhimsyWand Bedtime Stories 30-Minute Omnibus"
+    run_dir = get_next_run_dir(title)
+    scenes_dir = run_dir / "scenes"
+    audio_dir = run_dir / "audio"
+    chapters_dir = run_dir / "chapters"
+    chapters_dir.mkdir(parents=True, exist_ok=True)
+
+    total_frames = num_chapters * frames_per_chapter
+    tracker.start_job(
+        job_id=run_dir.name[:12],
+        title=title,
+        total_frames=total_frames,
+        aspect_ratio=aspect_ratio
+    )
+
+    CHAPTER_CONFIGS = [
+        {"mascot": "Pip the Baby Dragon", "theme": "Pip and the Lost Star in the Whispering Woods", "title": "Pip's Glowing Star"},
+        {"mascot": "Fern the Forest Fairy", "theme": "Fern and the Glowing Garden Lullaby", "title": "Fern's Lullaby Garden"},
+        {"mascot": "Barnaby Bear", "theme": "Barnaby Bear's Gentle Moon Honey Quest", "title": "Barnaby's Moon Honey"},
+        {"mascot": "Luna the Little Cloud", "theme": "Luna and the Sleepy Raindrop Song", "title": "Luna's Raindrop Song"},
+        {"mascot": "Benny Bunny & Squeaky Squirrel", "theme": "Benny and Squeaky's Cozy Starlight Scarf", "title": "The Starlight Scarf"}
+    ]
+
+    chapter_video_paths = []
+    chapter_titles = []
+    all_story_packages = []
+
+    print("\n" + "="*75)
+    print(f"   AI BEDTIME OMNIBUS PRODUCTION: SINGLE FOLDER PIPELINE [{aspect_ratio}]")
+    print(f"   Target Directory: {run_dir.name}")
+    print(f"   Chapters: {num_chapters} (~6 mins each) • Total Frames: {total_frames}")
+    print("="*75)
+
+    for ch_idx in range(min(num_chapters, len(CHAPTER_CONFIGS))):
+        ch_num = ch_idx + 1
+        cfg = CHAPTER_CONFIGS[ch_idx]
+        ch_title = cfg["title"]
+        ch_theme = cfg["theme"]
+        chapter_titles.append(ch_title)
+
+        tracker.update_stage(
+            "script",
+            f"✍️ Scripting Chapter {ch_num}/{num_chapters}: {ch_title}",
+            f"Writing 3-second frame storyboard for {cfg['mascot']}...",
+            10 + int((ch_idx / num_chapters) * 20)
+        )
+
+        print(f"\n[Omnibus Chapter {ch_num}/{num_chapters}] Writing Script: {ch_title} ({frames_per_chapter} frames)...")
+        ch_story = generate_story(prompt_or_topic=ch_theme, num_frames=frames_per_chapter, aspect_ratio=aspect_ratio)
+        ch_frames = ch_story.get("frames", ch_story.get("scenes", []))
+        ch_bible = ch_story.get("character_bible", {})
+        all_story_packages.append(ch_story)
+
+        # 1. Voiceover for this chapter
+        tracker.update_stage(
+            "voice",
+            f"🎙️ Voices for Chapter {ch_num}/{num_chapters}",
+            f"Synthesizing sweet child voices ({ch_title})...",
+            30 + int((ch_idx / num_chapters) * 15)
+        )
+        print(f"[Omnibus Chapter {ch_num}/{num_chapters}] Generating Child Voices...")
+        ch_voice_metadata = generate_all_scene_voices(ch_frames, character_bible=ch_bible, output_audio_dir=audio_dir)
+
+        # 2. Local 3D Disney/Pixar illustrations into scenes_dir
+        tracker.update_stage(
+            "visuals",
+            f"🎨 Rendering 3D Visuals: Chapter {ch_num}/{num_chapters}",
+            f"Synthesizing frames for {cfg['mascot']} on RTX 2050...",
+            45 + int((ch_idx / num_chapters) * 35)
+        )
+        print(f"[Omnibus Chapter {ch_num}/{num_chapters}] Rendering 3D Pixar Visuals on RTX 2050...")
+        if use_local_images:
+            generate_all_frame_images(ch_frames, aspect_ratio=aspect_ratio, master_seed=42 + (ch_num * 100), auto_free_vram=True, output_dir=scenes_dir)
+        else:
+            from PIL import Image, ImageDraw
+            w, h = (768, 512)
+            for idx, fr in enumerate(ch_frames):
+                fid = fr.get("frame_id", idx + 1)
+                img = Image.new("RGB", (w, h), color=((40 + ch_num*30) % 255, (50 + fid*20) % 255, (80 + fid*15) % 255))
+                draw = ImageDraw.Draw(img)
+                draw.text((30, h//2), f"Ch{ch_num} Frame {fid:02d}", fill=(255, 255, 255))
+                img.save(scenes_dir / f"frame_{fid:02d}.jpg")
+
+        free_gpu()
+
+        # 3. Motion & assembly for this chapter clip
+        tracker.update_stage(
+            "motion",
+            f"🎥 Animating Chapter {ch_num}/{num_chapters}",
+            f"Applying 30fps slow pan/zoom camera motion...",
+            80 + int((ch_idx / num_chapters) * 10)
+        )
+        clip_paths = animate_all_frames(ch_frames, ch_voice_metadata, aspect_ratio=aspect_ratio, scenes_dir=scenes_dir)
+
+        animated_clips = []
+        dur_map = {v.get("frame_id", v.get("scene_id", i+1)): v["duration"] for i, v in enumerate(ch_voice_metadata)}
+        for idx, cp in enumerate(clip_paths):
+            fid = ch_frames[idx].get("frame_id", idx + 1)
+            animated_clips.append({
+                "frame_id": fid,
+                "scene_id": fid,
+                "clip_path": str(cp),
+                "duration": dur_map.get(fid, 3.0)
+            })
+
+        ch_subtitles = run_dir / f"chapter_{ch_num:02d}_subtitles.ass"
+        generate_styled_ass(ch_frames, ch_voice_metadata, ch_subtitles, aspect_ratio=aspect_ratio)
+
+        ch_master_audio = audio_dir / f"chapter_{ch_num:02d}_audio.mp3"
+        mix_story_audio(ch_frames, ch_voice_metadata, ch_master_audio, audio_dir=audio_dir)
+
+        ch_video_path = chapters_dir / f"chapter_{ch_num:02d}.mp4"
+        assemble_final_video(
+            story_data=ch_story,
+            animated_clips=animated_clips,
+            master_audio_path=ch_master_audio,
+            subtitles_ass_path=ch_subtitles,
+            output_video_path=ch_video_path,
+            scenes_dir=scenes_dir,
+            aspect_ratio=aspect_ratio
+        )
+        chapter_video_paths.append(ch_video_path)
+        print(f" -> Chapter {ch_num:02d} rendered: {ch_video_path.name}")
+
+    # Step Final: Stitch all chapters inside THIS SINGLE FOLDER into final_video.mp4!
+    tracker.update_stage(
+        "assembly",
+        "🎞️ Assembling Final 30-Minute Master Video",
+        "Concatenating all 5 chapters with continuous YouTube timestamps...",
+        95
+    )
+    print("\n[Master Omnibus Stitching] Concatenating chapters into final_video.mp4...")
+    metadata = stitch_chapter_files(
+        chapter_video_paths=chapter_video_paths,
+        output_run_dir=run_dir,
+        chapter_titles=chapter_titles,
+        title=title
+    )
+
+    # Save omnibus manifest package
+    with open(run_dir / "story_package.json", "w", encoding="utf-8") as f:
+        json.dump({
+            "title": title,
+            "type": "30_minute_bedtime_omnibus",
+            "chapters": all_story_packages,
+            "metadata": metadata
+        }, f, indent=2, ensure_ascii=False)
+
+    final_video = run_dir / "final_video.mp4"
+    tracker.complete_job(
+        reply=(
+            f"🎉 **30-Minute Master Bedtime Story Omnibus Production Complete!**\n\n"
+            f"- **Single Self-Contained Folder**: `{run_dir.name}` (Zero duplicate folders)\n"
+            f"- **Master Video**: `{final_video.name}`\n"
+            f"- **Duration**: {metadata.get('total_duration_sec', 0):.1f}s (~{metadata.get('total_duration_sec', 0)/60:.1f} minutes)\n"
+            f"- **Chapters Included**:\n" + "\n".join(metadata.get('chapters', [])) + "\n\n"
+            f"- **YouTube SEO Title**: {metadata.get('youtube_title')}"
+        ),
+        video_url=f"/media/runs/{run_dir.name}/final_video.mp4",
+        run_dir=str(run_dir)
+    )
+
+    return {
+        "run_dir": str(run_dir),
+        "final_video": str(final_video),
+        "duration": metadata.get("total_duration_sec", 0),
+        "metadata": metadata
+    }

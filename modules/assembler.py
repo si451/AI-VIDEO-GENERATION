@@ -225,3 +225,87 @@ def stitch_runs_into_omnibus(run_dirs: list, output_run_dir: Path, title: str = 
         json.dump(metadata, f, indent=2, ensure_ascii=False)
 
     return metadata
+
+
+def stitch_chapter_files(
+    chapter_video_paths: list,
+    output_run_dir: Path,
+    chapter_titles: list,
+    title: str = "WhimsyWand Bedtime Stories 30-Minute Omnibus"
+) -> dict:
+    """
+    Concatenates multiple chapter MP4 files located in the SAME run directory into final_video.mp4.
+    Calculates accurate cumulative chapter markers and timestamps for YouTube.
+    Guarantees everything stays inside the single run folder.
+    """
+    output_run_dir.mkdir(parents=True, exist_ok=True)
+    concat_list = output_run_dir / "omnibus_concat.txt"
+    lines = []
+    chapters = []
+    total_time = 0.0
+
+    all_tags = set([
+        "bedtime stories for kids", "cartoon for kids", "30 minutes bedtime story",
+        "whimsywand tales", "disney pixar animation", "sleep story for toddlers",
+        "kids animation", "soothing bedtime stories", "sleep cartoon", "fairy tale compilation"
+    ])
+
+    for idx, cp in enumerate(chapter_video_paths):
+        cp = Path(cp)
+        if not cp.exists():
+            continue
+        
+        cmd_dur = ["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "default=noprint_wrappers=1:nokey=1", str(cp)]
+        try:
+            dur = float(subprocess.check_output(cmd_dur).decode().strip())
+        except Exception:
+            dur = 60.0
+
+        c_title = chapter_titles[idx] if idx < len(chapter_titles) else f"Chapter {idx + 1}"
+        chapters.append(f"{format_chapter_time(total_time)} - Chapter {idx + 1}: {c_title}")
+        safe_path = str(cp.resolve()).replace("\\", "/")
+        lines.append(f"file '{safe_path}'")
+        total_time += dur
+
+    if not lines:
+        raise ValueError("No valid chapter MP4 videos found to concatenate.")
+
+    with open(concat_list, "w", encoding="utf-8") as f:
+        f.write("\n".join(lines))
+
+    final_video = output_run_dir / "final_video.mp4"
+    cmd = [
+        "ffmpeg", "-y",
+        "-f", "concat",
+        "-safe", "0",
+        "-i", str(concat_list),
+        "-c", "copy",
+        str(final_video)
+    ]
+    proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    if proc.returncode != 0:
+        raise RuntimeError(f"Omnibus concatenation failed: {proc.stderr}")
+
+    description = (
+        f"{title}\n\n"
+        f"🌙 A soothing 30-Minute Bedtime Story compilation for toddlers and kids by WhimsyWand Tales (@WhimsyWandTales)!\n"
+        f"Relax and drift off to magical sleep with Pip the Dragon, Fern the Fairy, Barnaby Bear, Luna the Cloud, and Benny Bunny.\n\n"
+        f"⏱️ Chapters & Timestamps:\n" + "\n".join(chapters) + "\n\n"
+        f"🔔 Subscribe to WhimsyWand Tales for weekly magical bedtime stories!\n\n"
+        f"#BedtimeStory #KidsStories #BedtimeCompilation #ToddlerStories #CartoonForKids #WhimsyWandTales #30MinBedtime"
+    )
+
+    metadata = {
+        "youtube_title": f"{title} | 30-Minute Bedtime Stories For Kids | Cartoon Animation",
+        "youtube_description": description,
+        "youtube_tags": list(all_tags),
+        "chapters": chapters,
+        "aspect_ratio": "16:9",
+        "final_video_path": str(final_video),
+        "total_duration_sec": round(total_time, 2)
+    }
+
+    with open(output_run_dir / "final_video_metadata.json", "w", encoding="utf-8") as f:
+        json.dump(metadata, f, indent=2, ensure_ascii=False)
+
+    return metadata
