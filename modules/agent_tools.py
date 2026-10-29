@@ -293,3 +293,40 @@ def produce_bedtime_omnibus_tool(topic: str = "WhimsyWand Bedtime Stories 30-Min
         )
     except Exception as e:
         return f"Error producing bedtime omnibus: {str(e)}"
+
+
+@tool
+def generate_thumbnail_tool(run_id: str = "") -> str:
+    """
+    Synthesizes a bespoke 1280x720 high-CTR YouTube Thumbnail for an existing production run.
+    Creates both clean cinematic 3D poster art and a branded title-stamped version.
+    """
+    try:
+        from modules.thumbnail_engine import generate_video_thumbnail
+        runs_dir = OUTPUT_DIR / "runs"
+        if run_id and (runs_dir / run_id).exists():
+            target_dir = runs_dir / run_id
+        else:
+            completed = sorted([d for d in runs_dir.iterdir() if d.is_dir() and (d / "final_video.mp4").exists()], reverse=True)
+            if not completed:
+                return "No completed video runs found to generate thumbnail for."
+            target_dir = completed[0]
+
+        meta_file = target_dir / "final_video_metadata.json"
+        title = target_dir.name
+        if meta_file.exists():
+            try:
+                with open(meta_file, "r", encoding="utf-8") as f:
+                    title = json.load(f).get("youtube_title", title)
+            except Exception:
+                pass
+
+        thumb_path = generate_video_thumbnail(target_dir, title=title)
+        return (
+            f"🎉 High-CTR YouTube Thumbnail Successfully Generated!\n\n"
+            f"- **Clean 1280x720 Thumbnail**: `{thumb_path}`\n"
+            f"- **Branded Version with Title**: `{target_dir / 'thumbnail_with_title.jpg'}`\n"
+            f"- Ready for 1-click download in WhimsyWand Tales Studio!"
+        )
+    except Exception as e:
+        return f"Error generating thumbnail: {str(e)}"

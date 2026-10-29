@@ -22,7 +22,8 @@ from modules.agent_tools import (
     list_completed_runs_tool,
     get_viral_seo_package_tool,
     compile_omnibus_tool,
-    produce_bedtime_omnibus_tool
+    produce_bedtime_omnibus_tool,
+    generate_thumbnail_tool
 )
 
 SYSTEM_PROMPT = """You are the Lead Creative Director, Showrunner, and YouTube Growth Strategist for WhimsyWand Tales (@WhimsyWandTales) — an automated Children's Animation Studio (ages 3–7).
@@ -87,7 +88,8 @@ def get_agent():
         list_completed_runs_tool,
         get_viral_seo_package_tool,
         compile_omnibus_tool,
-        produce_bedtime_omnibus_tool
+        produce_bedtime_omnibus_tool,
+        generate_thumbnail_tool
     ]
 
     checkpointer = MemorySaver()

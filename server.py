@@ -127,13 +127,18 @@ def get_runs():
             except Exception:
                 pass
 
-        # Find thumbnail (first frame or scene image)
+        # Find thumbnail (prioritize dedicated 1280x720 HD thumbnail)
         thumbnail_url = None
-        first_frame = scenes_dir / "frame_01.jpg"
-        if not first_frame.exists():
-            first_frame = scenes_dir / "scene_1.jpg"
-        if first_frame.exists():
-            thumbnail_url = f"/media/runs/{r.name}/scenes/{first_frame.name}"
+        thumbnail_branded_url = None
+        if (r / "thumbnail.jpg").exists():
+            thumbnail_url = f"/media/runs/{r.name}/thumbnail.jpg"
+        elif (scenes_dir / "frame_01.jpg").exists():
+            thumbnail_url = f"/media/runs/{r.name}/scenes/frame_01.jpg"
+        elif (scenes_dir / "scene_1.jpg").exists():
+            thumbnail_url = f"/media/runs/{r.name}/scenes/scene_1.jpg"
+
+        if (r / "thumbnail_with_title.jpg").exists():
+            thumbnail_branded_url = f"/media/runs/{r.name}/thumbnail_with_title.jpg"
 
         # Frame count
         frames_found = len(list(scenes_dir.glob("frame_*.jpg"))) or len(list(scenes_dir.glob("scene_*.jpg")))
@@ -145,6 +150,7 @@ def get_runs():
             "aspect_ratio": aspect,
             "video_url": f"/media/runs/{r.name}/final_video.mp4" if video_file.exists() else None,
             "thumbnail_url": thumbnail_url,
+            "thumbnail_branded_url": thumbnail_branded_url,
             "tags": tags,
             "chapters": chapters,
             "frame_count": frames_found
@@ -212,6 +218,8 @@ def get_run_details(run_id: str):
         "duration": metadata.get("total_duration_sec", 0.0),
         "aspect_ratio": metadata.get("aspect_ratio", "16:9"),
         "video_url": f"/media/runs/{run_id}/final_video.mp4" if video_file.exists() else None,
+        "thumbnail_url": f"/media/runs/{run_id}/thumbnail.jpg" if (run_dir / "thumbnail.jpg").exists() else None,
+        "thumbnail_branded_url": f"/media/runs/{run_id}/thumbnail_with_title.jpg" if (run_dir / "thumbnail_with_title.jpg").exists() else None,
         "master_audio_url": f"/media/runs/{run_id}/audio/master_audio.mp3" if (audio_dir / "master_audio.mp3").exists() else None,
         "frames": frames,
         "character_bible": story_data.get("character_bible", {})
@@ -390,3 +398,25 @@ if __name__ == "__main__":
     print("Starting AI Video Harness FastAPI Server on http://localhost:8000...")
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
+
+
+@app.post("/api/runs/{run_id}/thumbnail")
+def regenerate_run_thumbnail(run_id: str):
+    run_dir = OUTPUT_DIR / "runs" / run_id
+    if not run_dir.exists():
+        raise HTTPException(status_code=404, detail="Run not found")
+    from modules.thumbnail_engine import generate_video_thumbnail
+    meta_file = run_dir / "final_video_metadata.json"
+    title = run_id
+    if meta_file.exists():
+        try:
+            with open(meta_file, "r", encoding="utf-8") as f:
+                title = json.load(f).get("youtube_title", run_id)
+        except Exception:
+            pass
+    generate_video_thumbnail(run_dir, title=title)
+    return {
+        "status": "success",
+        "thumbnail_url": f"/media/runs/{run_id}/thumbnail.jpg",
+        "thumbnail_branded_url": f"/media/runs/{run_id}/thumbnail_with_title.jpg"
+    }

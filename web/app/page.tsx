@@ -60,6 +60,8 @@ interface RunDetail {
   duration: number;
   aspect_ratio: string;
   video_url: string | null;
+  thumbnail_url?: string | null;
+  thumbnail_branded_url?: string | null;
   master_audio_url: string | null;
   frames: FrameItem[];
   character_bible: any;
@@ -208,6 +210,23 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
 
   // Copy feedback
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
+  const [showBrandedThumb, setShowBrandedThumb] = useState(true);
+  const [isRegeneratingThumb, setIsRegeneratingThumb] = useState(false);
+
+  const handleRegenerateThumbnail = async () => {
+    if (!selectedRunId || isRegeneratingThumb) return;
+    setIsRegeneratingThumb(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/runs/${selectedRunId}/thumbnail`, { method: "POST" });
+      if (res.ok) {
+        await fetchRunDetail(selectedRunId);
+      }
+    } catch (e) {
+      console.warn("Regenerate thumbnail error:", e);
+    } finally {
+      setIsRegeneratingThumb(false);
+    }
+  };
 
   const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text);
@@ -725,6 +744,68 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                   </div>
                 )}
               </div>
+
+              {/* Dedicated High-CTR YouTube Thumbnail Showcase */}
+              {runDetail && (runDetail.thumbnail_url || runDetail.thumbnail_branded_url) && (
+                <div className="p-4 bg-white border-b border-stone-200">
+                  <div className="flex items-center justify-between mb-2">
+                    <div className="flex items-center space-x-2">
+                      <Sparkles className="w-4 h-4 text-amber-600" />
+                      <span className="text-xs font-bold text-stone-900">Official YouTube Thumbnail (1280×720 HD)</span>
+                    </div>
+                    <div className="flex items-center space-x-1.5">
+                      <button
+                        onClick={() => setShowBrandedThumb(true)}
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition ${
+                          showBrandedThumb ? "bg-amber-100 text-amber-900 border border-amber-300" : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                        }`}
+                      >
+                        ✨ Branded Poster
+                      </button>
+                      <button
+                        onClick={() => setShowBrandedThumb(false)}
+                        className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold transition ${
+                          !showBrandedThumb ? "bg-amber-100 text-amber-900 border border-amber-300" : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                        }`}
+                      >
+                        🎨 Clean Art
+                      </button>
+                    </div>
+                  </div>
+
+                  <div className="relative rounded-xl overflow-hidden border border-stone-200 shadow-xs bg-stone-900 max-w-xl mx-auto">
+                    <img
+                      src={`${API_BASE}${showBrandedThumb && runDetail.thumbnail_branded_url ? runDetail.thumbnail_branded_url : runDetail.thumbnail_url}`}
+                      alt="YouTube Thumbnail"
+                      className="w-full h-auto object-cover max-h-[300px]"
+                    />
+                    <div className="p-3 bg-stone-50 border-t border-stone-200 flex items-center justify-between">
+                      <span className="text-[11px] text-stone-500 font-medium">
+                        16:9 High-CTR Poster • Ready for YouTube Studio
+                      </span>
+                      <div className="flex items-center space-x-2">
+                        <button
+                          onClick={handleRegenerateThumbnail}
+                          disabled={isRegeneratingThumb}
+                          className="text-[11px] text-stone-700 hover:text-stone-900 bg-white hover:bg-stone-100 border border-stone-300 px-3 py-1.5 rounded-lg font-medium transition flex items-center space-x-1 shadow-2xs cursor-pointer"
+                        >
+                          <RefreshCw className={`w-3.5 h-3.5 text-stone-500 ${isRegeneratingThumb ? "animate-spin" : ""}`} />
+                          <span>{isRegeneratingThumb ? "Rendering..." : "Regenerate"}</span>
+                        </button>
+                        <a
+                          href={`${API_BASE}${showBrandedThumb && runDetail.thumbnail_branded_url ? runDetail.thumbnail_branded_url : runDetail.thumbnail_url}`}
+                          download={`thumbnail_${runDetail.id}.jpg`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[11px] text-white bg-amber-600 hover:bg-amber-500 px-3 py-1.5 rounded-lg font-bold transition flex items-center space-x-1 shadow-xs cursor-pointer"
+                        >
+                          <span>📥 Download Thumbnail</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* YouTube Metadata Package (Title, Description, Tags) */}
               {runDetail && (

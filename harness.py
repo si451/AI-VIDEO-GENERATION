@@ -28,6 +28,7 @@ from modules.motion_engine import animate_all_frames
 from modules.subtitle_engine import generate_styled_ass
 from modules.audio_mixer import mix_story_audio
 from modules.assembler import assemble_final_video
+from modules.thumbnail_engine import generate_video_thumbnail
 from modules.progress_tracker import tracker
 
 RUNS_DIR = OUTPUT_DIR / "runs"
@@ -177,6 +178,12 @@ def run_production_pipeline(
     print("\n" + "="*75)
     print(f"      PRODUCTION COMPLETE! {aspect_ratio} READY FOR PUBLISHING")
     print("="*75)
+    # Generate High-CTR YouTube Thumbnail
+    try:
+        generate_video_thumbnail(run_dir, title=metadata.get("youtube_title", "Bedtime Stories for Kids"))
+    except Exception as e:
+        print(f" -> [Notice] Thumbnail generation skipped: {e}")
+
     print(f" -> Master Video: {final_video.resolve()}")
     print(f" -> YouTube Title: {metadata.get('youtube_title')}")
     print(f" -> Total Duration: {metadata.get('total_duration_sec', 0):.2f} seconds")
@@ -377,6 +384,12 @@ def run_omnibus_pipeline(
             "chapters": all_story_packages,
             "metadata": metadata
         }, f, indent=2, ensure_ascii=False)
+
+    # Generate High-CTR YouTube Thumbnail
+    try:
+        generate_video_thumbnail(run_dir, title=metadata.get("youtube_title", title))
+    except Exception as e:
+        print(f" -> [Notice] Omnibus thumbnail generation skipped: {e}")
 
     final_video = run_dir / "final_video.mp4"
     tracker.complete_job(
