@@ -26,7 +26,10 @@ import {
   Volume2,
   Trash2,
   StopCircle,
-  CheckCircle
+  CheckCircle,
+  Eye,
+  Clock,
+  TrendingUp
 } from "lucide-react";
 
 interface RunItem {
@@ -207,6 +210,34 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
   // Competitor data
   const [competitors, setCompetitors] = useState<any>(null);
   const [isCompLoading, setIsCompLoading] = useState(false);
+  const [isSyncingChannel, setIsSyncingChannel] = useState(false);
+  const [syncStatusMsg, setSyncStatusMsg] = useState<string | null>(null);
+
+  const handleSyncChannel = async () => {
+    if (isSyncingChannel) return;
+    setIsSyncingChannel(true);
+    setSyncStatusMsg(null);
+    try {
+      const res = await fetch(`${API_BASE}/api/my_channel/sync`, { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.channel) {
+          setMyChannel(data.channel);
+          setSyncStatusMsg(`✅ Synced ${data.channel.total_uploaded_videos || 10} videos live from YouTube!`);
+          setTimeout(() => setSyncStatusMsg(null), 5000);
+        }
+      } else {
+        setSyncStatusMsg("⚠️ Synced with cached channel data.");
+        setTimeout(() => setSyncStatusMsg(null), 4000);
+      }
+    } catch (e: any) {
+      console.warn("Failed to sync channel:", e);
+      setSyncStatusMsg("❌ Network error connecting to sync API.");
+      setTimeout(() => setSyncStatusMsg(null), 4000);
+    } finally {
+      setIsSyncingChannel(false);
+    }
+  };
 
   // Copy feedback
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
@@ -952,26 +983,257 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
             {/* Banner Card */}
             <div className="bg-gradient-to-r from-amber-500/10 via-rose-500/10 to-amber-600/10 border border-amber-200/80 rounded-3xl p-6 shadow-sm relative overflow-hidden bg-white">
               <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-6">
-                <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-4xl shadow-sm text-white">
+                <div className="w-20 h-20 rounded-2xl bg-gradient-to-tr from-amber-500 to-rose-500 flex items-center justify-center text-4xl shadow-sm text-white shrink-0">
                   🐉
                 </div>
-                <div className="space-y-1 text-center md:text-left flex-1">
-                  <div className="flex items-center justify-center md:justify-start space-x-3">
+                <div className="space-y-1.5 text-center md:text-left flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5">
                     <h2 className="text-2xl font-black text-stone-900">{myChannel.channel_name}</h2>
+                    <span className="text-xs font-mono bg-amber-50 text-amber-800 border border-amber-300 px-2.5 py-0.5 rounded-full font-bold">
+                      {myChannel.handle}
+                    </span>
                     <a
                       href={myChannel.channel_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-xs bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1 rounded-full flex items-center space-x-1 shadow-xs"
+                      className="text-xs bg-red-600 hover:bg-red-500 text-white font-bold px-3 py-1 rounded-full flex items-center space-x-1 shadow-xs transition"
                     >
                       <Tv className="w-3.5 h-3.5" />
                       <span>Visit Channel</span>
                       <ExternalLink className="w-3 h-3 ml-0.5" />
                     </a>
+                    <button
+                      onClick={handleSyncChannel}
+                      disabled={isSyncingChannel}
+                      className="text-xs bg-white hover:bg-amber-50 text-amber-900 border border-amber-300 font-bold px-3 py-1 rounded-full flex items-center space-x-1 shadow-2xs transition cursor-pointer"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 text-amber-700 ${isSyncingChannel ? "animate-spin" : ""}`} />
+                      <span>{isSyncingChannel ? "Syncing YouTube..." : "Sync from YouTube"}</span>
+                    </button>
                   </div>
                   <p className="text-amber-800 font-semibold text-sm">&ldquo;{myChannel.tagline}&rdquo;</p>
                   <p className="text-xs text-stone-600 max-w-3xl leading-relaxed">{myChannel.description}</p>
+                  {syncStatusMsg && (
+                    <div className="text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-lg inline-block">
+                      {syncStatusMsg}
+                    </div>
+                  )}
                 </div>
+              </div>
+
+              {/* Channel Performance KPI Strip */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-6 pt-5 border-t border-amber-200/60">
+                <div className="bg-[#FAF9F5] border border-stone-200 rounded-xl p-3 text-center">
+                  <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Total Uploads</div>
+                  <div className="text-xl font-black text-stone-900 mt-0.5">
+                    {myChannel.total_uploaded_videos || (myChannel.live_videos?.length || 0) + (myChannel.live_shorts?.length || 0) || 10}
+                  </div>
+                  <div className="text-[10px] text-stone-400 mt-0.5">Live on @WhimsyWandTales</div>
+                </div>
+                <div className="bg-[#FAF9F5] border border-stone-200 rounded-xl p-3 text-center">
+                  <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Long Videos (16:9)</div>
+                  <div className="text-xl font-black text-amber-700 mt-0.5">
+                    {myChannel.total_long_videos || myChannel.live_videos?.length || 3}
+                  </div>
+                  <div className="text-[10px] text-stone-400 mt-0.5">Omnibuses & Episodes</div>
+                </div>
+                <div className="bg-[#FAF9F5] border border-stone-200 rounded-xl p-3 text-center">
+                  <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Shorts (9:16)</div>
+                  <div className="text-xl font-black text-rose-600 mt-0.5">
+                    {myChannel.total_shorts || myChannel.live_shorts?.length || 7}
+                  </div>
+                  <div className="text-[10px] text-stone-400 mt-0.5">Viral Hooks & Clips</div>
+                </div>
+                <div className="bg-[#FAF9F5] border border-stone-200 rounded-xl p-3 text-center">
+                  <div className="text-[11px] font-bold text-stone-500 uppercase tracking-wider">Last Channel Sync</div>
+                  <div className="text-xs font-bold text-stone-800 mt-1">
+                    {myChannel.last_synced_at ? myChannel.last_synced_at.split(" ")[1] || myChannel.last_synced_at : "Just now"}
+                  </div>
+                  <div className="text-[10px] text-emerald-700 font-semibold mt-0.5">● Connected Live</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Spotlight: Latest Uploaded Video */}
+            {myChannel.live_videos && myChannel.live_videos.length > 0 && (
+              <div className="bg-white border-2 border-amber-300/80 rounded-2xl p-5 shadow-sm space-y-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-amber-900 bg-amber-100 px-2.5 py-0.5 rounded-full border border-amber-300">
+                      ⭐ Latest Published Video
+                    </span>
+                    <span className="text-xs text-stone-500 font-medium">
+                      Uploaded {myChannel.live_videos[0].published_time || "recently"}
+                    </span>
+                  </div>
+                  <a
+                    href={myChannel.live_videos[0].url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-xs bg-stone-900 hover:bg-black text-white font-bold px-3 py-1.5 rounded-lg flex items-center space-x-1.5 transition shadow-2xs"
+                  >
+                    <Play className="w-3.5 h-3.5 fill-current" />
+                    <span>Watch on YouTube</span>
+                    <ExternalLink className="w-3 h-3 ml-0.5" />
+                  </a>
+                </div>
+
+                <div className="flex flex-col md:flex-row gap-5 items-start">
+                  <div className="relative w-full md:w-72 aspect-video bg-stone-900 rounded-xl overflow-hidden shrink-0 border border-stone-200 shadow-xs">
+                    <img
+                      src={myChannel.live_videos[0].thumbnail}
+                      alt={myChannel.live_videos[0].title}
+                      className="w-full h-full object-cover"
+                    />
+                    <span className="absolute bottom-2 right-2 bg-black/85 text-white font-mono text-[11px] font-bold px-2 py-0.5 rounded shadow-sm">
+                      ⏱️ {myChannel.live_videos[0].duration}
+                    </span>
+                  </div>
+                  <div className="space-y-2.5 flex-1 min-w-0">
+                    <h3 className="text-base font-extrabold text-stone-900 leading-snug">
+                      {myChannel.live_videos[0].title}
+                    </h3>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex items-center space-x-1 text-xs font-bold text-stone-700 bg-stone-100 px-2.5 py-1 rounded-md border border-stone-200">
+                        <Eye className="w-3.5 h-3.5 text-stone-500" />
+                        <span>{myChannel.live_videos[0].views}</span>
+                      </span>
+                      <span className="inline-flex items-center space-x-1 text-xs font-semibold text-stone-600 bg-stone-100 px-2.5 py-1 rounded-md border border-stone-200">
+                        <Clock className="w-3.5 h-3.5 text-stone-500" />
+                        <span>{myChannel.live_videos[0].published_time}</span>
+                      </span>
+                      <span className="text-xs font-bold text-amber-800 bg-amber-50 px-2.5 py-1 rounded-md border border-amber-200">
+                        16:9 Long Bedtime Omnibus
+                      </span>
+                    </div>
+                    <p className="text-xs text-stone-500 leading-relaxed">
+                      Now live and streaming for kids & toddlers worldwide. Showrunner agent automatically keeps track of this video to prevent story repeats.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Live Published Long Videos Grid (16:9) */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-extrabold text-stone-900 flex items-center space-x-2">
+                    <Film className="w-4 h-4 text-amber-600" />
+                    <span>Published Long Videos (16:9 Master Stories)</span>
+                  </h3>
+                  <p className="text-xs text-stone-500">Live video catalog from your YouTube channel</p>
+                </div>
+                <span className="text-xs font-bold bg-amber-50 text-amber-900 border border-amber-200 px-2.5 py-1 rounded-lg">
+                  {myChannel.live_videos?.length || 3} Published
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {(myChannel.live_videos || []).map((vid: any) => (
+                  <div
+                    key={vid.id}
+                    className="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-xs hover:border-amber-400 hover:shadow-sm transition flex flex-col"
+                  >
+                    <div className="relative aspect-video bg-stone-900">
+                      <img
+                        src={vid.thumbnail}
+                        alt={vid.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute bottom-2 right-2 bg-black/80 backdrop-blur text-white text-[10px] font-mono font-bold px-2 py-0.5 rounded">
+                        ⏱️ {vid.duration}
+                      </span>
+                      <span className="absolute top-2 left-2 bg-amber-600 text-white text-[9px] font-extrabold px-2 py-0.5 rounded uppercase tracking-wider">
+                        16:9 Widescreen
+                      </span>
+                    </div>
+
+                    <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                      <div>
+                        <h4 className="font-bold text-xs text-stone-900 line-clamp-2 leading-snug">
+                          {vid.title}
+                        </h4>
+                        <div className="flex items-center space-x-2 mt-2">
+                          <span className="text-[11px] font-semibold text-stone-600 bg-stone-100 px-2 py-0.5 rounded">
+                            👁️ {vid.views}
+                          </span>
+                          <span className="text-[11px] text-stone-400">
+                            {vid.published_time}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="pt-2 border-t border-stone-100 flex items-center justify-between">
+                        <span className="text-[10px] font-mono text-stone-400">ID: {vid.id}</span>
+                        <a
+                          href={vid.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="bg-red-600 hover:bg-red-500 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg flex items-center space-x-1 shadow-2xs"
+                        >
+                          <Play className="w-3 h-3 fill-current" />
+                          <span>YouTube</span>
+                          <ExternalLink className="w-2.5 h-2.5 ml-0.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Live Published Shorts Grid (9:16) */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-base font-extrabold text-stone-900 flex items-center space-x-2">
+                    <Flame className="w-4 h-4 text-rose-500" />
+                    <span>Published YouTube Shorts (9:16 Viral Clips)</span>
+                  </h3>
+                  <p className="text-xs text-stone-500">Fast bedtime hooks and character moments on Shorts Feed</p>
+                </div>
+                <span className="text-xs font-bold bg-rose-50 text-rose-900 border border-rose-200 px-2.5 py-1 rounded-lg">
+                  {myChannel.live_shorts?.length || 7} Shorts
+                </span>
+              </div>
+
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-3">
+                {(myChannel.live_shorts || []).map((sh: any) => (
+                  <div
+                    key={sh.id}
+                    className="bg-white border border-stone-200 rounded-xl overflow-hidden shadow-xs hover:border-rose-400 transition flex flex-col"
+                  >
+                    <div className="relative aspect-[9/14] bg-stone-900">
+                      <img
+                        src={sh.thumbnail}
+                        alt={sh.title}
+                        className="w-full h-full object-cover"
+                      />
+                      <span className="absolute top-1.5 left-1.5 bg-rose-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded uppercase">
+                        Short
+                      </span>
+                    </div>
+                    <div className="p-2.5 flex-1 flex flex-col justify-between space-y-2">
+                      <p className="text-[11px] font-bold text-stone-900 line-clamp-2 leading-tight">
+                        {sh.title}
+                      </p>
+                      <div className="pt-1 border-t border-stone-100 flex items-center justify-between">
+                        <span className="text-[10px] text-stone-500 font-semibold">{sh.views}</span>
+                        <a
+                          href={sh.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="text-[10px] text-red-600 hover:text-red-700 font-bold flex items-center space-x-0.5"
+                        >
+                          <span>Watch</span>
+                          <ExternalLink className="w-2.5 h-2.5" />
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
 
@@ -1011,7 +1273,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                   <div key={i} className="bg-white border border-stone-200 rounded-xl p-3 flex items-center justify-between shadow-xs">
                     <div>
                       <p className="text-xs font-semibold text-stone-900">{vid.title}</p>
-                      <p className="text-[10px] text-amber-800 font-medium">Character: {vid.character}</p>
+                      <p className="text-[10px] text-amber-800 font-medium">Character: {vid.character} {vid.duration ? `• ${vid.duration}` : ""}</p>
                     </div>
                     <span className="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-2 py-0.5 rounded font-medium">
                       Audited

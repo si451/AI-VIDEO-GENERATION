@@ -54,6 +54,14 @@
   ],
   "published_video_audit": [
     {
+      "title": "WhimsyWand Bedtime Stories | Bedtime Stories For Kids | Cartoon Animation",
+      "video_id": "cLcQsuAGy6w",
+      "character": "Bedtime Stories",
+      "duration": "4:49",
+      "views": "0 views",
+      "published_time": "55 min ago"
+    },
+    {
       "title": "☁️ The Little Cloud Who Couldn't Rain 🌈 | A Magical Story for Kids",
       "video_id": "AnS6HLct1TM",
       "character": "Luna the Cloud"
@@ -92,6 +100,14 @@
       "title": "The Little Dragon Who Was Afraid to Fly 🐉💛 | Pip's First Flight #Shorts",
       "video_id": "qx9U9mS6NFI",
       "character": "Pip the Dragon"
+    },
+    {
+      "title": "The Star That Lost Its Glow ⭐ | A Magical Bedtime Story for Kids | YouTube Short | Cartoon Animation",
+      "video_id": "2cphN8dE5V8",
+      "character": "Shorts",
+      "duration": "< 60s",
+      "views": "No views",
+      "published_time": "Shorts"
     }
   ],
   "viral_formula_strategy": {
@@ -102,5 +118,114 @@
       "COMPETITOR BORROWING: Search competitor viral hits with >1M views, extract the core conflict (e.g. lost star, sharing a magical seed, helping a lost friend), and retell it using WhimsyWand Tales' tiny heroes.",
       "HIGH CTR TITLES: Use emotional curiosity formulas (e.g. 'Can Pip Save the Whispering Forest? 🐉✨ | Heartwarming Moral Bedtime Story')."
     ]
-  }
+  },
+  "live_videos": [
+    {
+      "id": "cLcQsuAGy6w",
+      "title": "WhimsyWand Bedtime Stories | Bedtime Stories For Kids | Cartoon Animation",
+      "views": "0 views",
+      "published_time": "55 min ago",
+      "duration": "4:49",
+      "thumbnail": "https://i.ytimg.com/vi/cLcQsuAGy6w/hqdefault.jpg",
+      "url": "https://www.youtube.com/watch?v=cLcQsuAGy6w",
+      "type": "long"
+    },
+    {
+      "id": "AnS6HLct1TM",
+      "title": "☁️ The Little Cloud Who Couldn't Rain 🌈 | A Magical Story for Kids",
+      "views": "1 views",
+      "published_time": "1d ago",
+      "duration": "8:30",
+      "thumbnail": "https://i.ytimg.com/vi/AnS6HLct1TM/hqdefault.jpg",
+      "url": "https://www.youtube.com/watch?v=AnS6HLct1TM",
+      "type": "long"
+    },
+    {
+      "id": "ds7tqLaiwvQ",
+      "title": "🧚 The Fairy Whose Tiny Flowers Saved Moonberry Forest 🌸✨ | A Magical Fairy Tale",
+      "views": "1 views",
+      "published_time": "2d ago",
+      "duration": "4:11",
+      "thumbnail": "https://i.ytimg.com/vi/ds7tqLaiwvQ/hqdefault.jpg",
+      "url": "https://www.youtube.com/watch?v=ds7tqLaiwvQ",
+      "type": "long"
+    }
+  ],
+  "live_shorts": [
+    {
+      "id": "2cphN8dE5V8",
+      "title": "The Star That Lost Its Glow ⭐ | A Magical Bedtime Story for Kids | YouTube Short | Cartoon Animation",
+      "views": "No views",
+      "published_time": "Shorts Feed",
+      "duration": "< 60s",
+      "thumbnail": "https://i.ytimg.com/vi/2cphN8dE5V8/hqdefault.jpg",
+      "url": "https://www.youtube.com/shorts/2cphN8dE5V8",
+      "type": "short"
+    },
+    {
+      "id": "r_ujrbC4vBM",
+      "title": "Pip's Roar Was Too Loud to Hear a Tiny Cry! 🐉🐞 #Shorts",
+      "views": "No views",
+      "published_time": "Shorts Feed",
+      "duration": "< 60s",
+      "thumbnail": "https://i.ytimg.com/vi/r_ujrbC4vBM/hqdefault.jpg",
+      "url": "https://www.youtube.com/shorts/r_ujrbC4vBM",
+      "type": "short"
+    },
+    {
+      "id": "JSgqbZrEn58",
+      "title": "The Tiny Flower That Saved a Lost Moth 🌸✨ #Shorts",
+      "views": "No views",
+      "published_time": "Shorts Feed",
+      "duration": "< 60s",
+      "thumbnail": "https://i.ytimg.com/vi/JSgqbZrEn58/hqdefault.jpg",
+      "url": "https://www.youtube.com/shorts/JSgqbZrEn58",
+      "type": "short"
+    },
+    {
+      "id": "x2jpDCSgVFg",
+      "title": "Everyone Had Big Magic—Except Fern 🧚✨ | A Fairy Tale #Shorts",
+      "views": "No views",
+      "published_time": "Shorts Feed",
+      "duration": "< 60s",
+      "thumbnail": "https://i.ytimg.com/vi/x2jpDCSgVFg/hqdefault.jpg",
+      "url": "https://www.youtube.com/shorts/x2jpDCSgVFg",
+      "type": "short"
+    },
+    {
+      "id": "e5QLu8hjBH4",
+      "title": "Pip's Hiccup Turned Every Lantern Dark! 🐉✨ #Shorts",
+      "views": "No views",
+      "published_time": "Shorts Feed",
+      "duration": "< 60s",
+      "thumbnail": "https://i.ytimg.com/vi/e5QLu8hjBH4/hqdefault.jpg",
+      "url": "https://www.youtube.com/shorts/e5QLu8hjBH4",
+      "type": "short"
+    },
+    {
+      "id": "0oEZ6joGcy8",
+      "title": "A Tiny Firefly Helped Benny Bunny Find His Mom 🐰✨ #shorts",
+      "views": "2 views",
+      "published_time": "Shorts Feed",
+      "duration": "< 60s",
+      "thumbnail": "https://i.ytimg.com/vi/0oEZ6joGcy8/hqdefault.jpg",
+      "url": "https://www.youtube.com/shorts/0oEZ6joGcy8",
+      "type": "short"
+    },
+    {
+      "id": "qx9U9mS6NFI",
+      "title": "The Little Dragon Who Was Afraid to Fly 🐉💛 | Pip's First Flight #Shorts",
+      "views": "8 views",
+      "published_time": "Shorts Feed",
+      "duration": "< 60s",
+      "thumbnail": "https://i.ytimg.com/vi/qx9U9mS6NFI/hqdefault.jpg",
+      "url": "https://www.youtube.com/shorts/qx9U9mS6NFI",
+      "type": "short"
+    }
+  ],
+  "total_long_videos": 3,
+  "total_shorts": 7,
+  "total_uploaded_videos": 10,
+  "last_synced_at": "2026-10-29 18:36:02",
+  "sync_status": "synced_live"
 }

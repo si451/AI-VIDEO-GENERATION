@@ -313,10 +313,23 @@ def get_my_channel():
     if channel_file.exists():
         try:
             with open(channel_file, "r", encoding="utf-8") as f:
-                return json.load(f)
+                data = json.load(f)
+                if "live_videos" not in data:
+                    from modules.channel_syncer import sync_channel_metrics
+                    data = sync_channel_metrics()
+                return data
         except Exception as e:
             raise HTTPException(status_code=500, detail=str(e))
     return {}
+
+@app.post("/api/my_channel/sync")
+def sync_my_channel():
+    try:
+        from modules.channel_syncer import sync_channel_metrics
+        data = sync_channel_metrics(force=True)
+        return {"status": "synced", "channel": data}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Channel sync failed: {e}")
 
 @app.post("/api/generate")
 def start_generation(req: GenerateRequest, background_tasks: BackgroundTasks):
