@@ -1,0 +1,25 @@
+{
+  "characters": [
+    {
+      "name": "Barnaby Bear",
+      "role": "main_character",
+      "voice_type": "child_male",
+      "visual_anchor": "Barnaby Bear, a fluffy brown bear cub with a creamy tan muzzle and belly, wearing a small red backpack, big round curious eyes, 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+      "personality": "kind, brave, helpful"
+    },
+    {
+      "name": "Squeaky Squirrel",
+      "role": "main_character",
+      "voice_type": "child_female",
+      "visual_anchor": "Squeaky Squirrel, a small energetic squirrel with russet-orange fur, a big bushy tail, wearing a tiny blue acorn-shaped hat, sparkling bright eyes, 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+      "personality": "cheerful, quick, curious"
+    },
+    {
+      "name": "Lost Star",
+      "role": "supporting_character",
+      "voice_type": "child_female",
+      "visual_anchor": "Lost Star, a small glowing golden star with a sweet smiling face and twinkling eyes, soft radiant light, 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+      "personality": "shy, grateful, twinkly"
+    }
+  ]
+}

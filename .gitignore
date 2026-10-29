@@ -1,0 +1,48 @@
+# Secrets & Environment variables
+.env
+.env.local
+.env.*.local
+
+# Python Cache & Virtual Environments
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Node.js & Next.js Build
+node_modules/
+web/node_modules/
+.next/
+web/.next/
+web/out/
+*.tsbuildinfo
+
+# Large Media Artifacts & Video Runs
+output/
+*.mp4
+*.mp3
+*.wav
+*.ass
+*.srt
+*.jpg
+*.jpeg
+*.png
+*.safetensors
+*.bin
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System & Workspace
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+.gemini/

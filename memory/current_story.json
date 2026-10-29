@@ -1,0 +1,85 @@
+{
+  "episode_id": "ep_001",
+  "title": "Barnaby Bear and Squeaky Squirrel Find the Lost Star! | Bedtime Story for Kids",
+  "target_age": "3-7",
+  "moral_lesson": "Helping friends and working together can light up the darkest night.",
+  "seo_tags": [
+    "Barnaby Bear",
+    "Squeaky Squirrel",
+    "Lost Star",
+    "Whispering Woods",
+    "Bedtime Story",
+    "Kids Adventure",
+    "Friendship",
+    "Teamwork",
+    "Pixar Style",
+    "Children's Story"
+  ],
+  "character_bible": {
+    "characters": [
+      {
+        "name": "Barnaby Bear",
+        "role": "main_character",
+        "voice_type": "child_male",
+        "visual_anchor": "Barnaby Bear, a fluffy brown bear cub with a creamy tan muzzle and belly, wearing a small red backpack, big round curious eyes, 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+        "personality": "kind, brave, helpful"
+      },
+      {
+        "name": "Squeaky Squirrel",
+        "role": "main_character",
+        "voice_type": "child_female",
+        "visual_anchor": "Squeaky Squirrel, a small energetic squirrel with russet-orange fur, a big bushy tail, wearing a tiny blue acorn-shaped hat, sparkling bright eyes, 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+        "personality": "cheerful, quick, curious"
+      },
+      {
+        "name": "Lost Star",
+        "role": "supporting_character",
+        "voice_type": "child_female",
+        "visual_anchor": "Lost Star, a small glowing golden star with a sweet smiling face and twinkling eyes, soft radiant light, 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+        "personality": "shy, grateful, twinkly"
+      }
+    ]
+  },
+  "scenes": [
+    {
+      "scene_id": 1,
+      "speaker": "narrator",
+      "voice_type": "narrator",
+      "dialogue": "One peaceful evening in Whispering Woods, Barnaby Bear and Squeaky Squirrel were taking a walk. Suddenly, they heard a tiny, twinkly sob. 'What's wrong?' asked Barnaby. 'I'm a little star, and I fell from the sky!' said the Lost Star. 'Don't worry,' said Squeaky, 'we'll help you get home!'",
+      "visual_prompt": "Barnaby Bear, a fluffy brown bear cub with a creamy tan muzzle and belly, wearing a small red backpack, big round curious eyes, and Squeaky Squirrel, a small energetic squirrel with russet-orange fur, a big bushy tail, wearing a tiny blue acorn-shaped hat, sparkling bright eyes, are standing in a moonlit forest clearing with tall friendly trees. They are looking down at Lost Star, a small glowing golden star with a sweet smiling face and twinkling eyes, soft radiant light. 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "magic_twinkle",
+      "bgm_mood": "peaceful_bedtime"
+    },
+    {
+      "scene_id": 2,
+      "speaker": "narrator",
+      "voice_type": "narrator",
+      "dialogue": "Barnaby and Squeaky knew they had to get the star back to the sky. 'We need to find the tallest tree in the woods!' said Barnaby. 'Follow me!' chirped Squeaky, scampering ahead. They searched high and low, until they spotted a giant oak tree reaching up to the stars.",
+      "visual_prompt": "Barnaby Bear, a fluffy brown bear cub with a creamy tan muzzle and belly, wearing a small red backpack, big round curious eyes, and Squeaky Squirrel, a small energetic squirrel with russet-orange fur, a big bushy tail, wearing a tiny blue acorn-shaped hat, sparkling bright eyes, are walking through the forest, looking up at a giant oak tree. Lost Star, a small glowing golden star with a sweet smiling face and twinkling eyes, soft radiant light, is floating beside them. 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+      "camera_motion": "pan_right",
+      "sfx_cue": "footsteps",
+      "bgm_mood": "curious_adventure"
+    },
+    {
+      "scene_id": 3,
+      "speaker": "narrator",
+      "voice_type": "narrator",
+      "dialogue": "Barnaby tried to climb, but the branches were too high. 'I can help!' said Squeaky, and she scurried up the tree, carrying the star gently in her bushy tail. But the star was still too low. 'We need one more push!' said Barnaby. Together, they counted, 'One, two, three... heave!' and the star floated up, up, up!",
+      "visual_prompt": "Barnaby Bear, a fluffy brown bear cub with a creamy tan muzzle and belly, wearing a small red backpack, big round curious eyes, is standing at the base of a giant oak tree, reaching up. Squeaky Squirrel, a small energetic squirrel with russet-orange fur, a big bushy tail, wearing a tiny blue acorn-shaped hat, sparkling bright eyes, is climbing the tree, holding Lost Star, a small glowing golden star with a sweet smiling face and twinkling eyes, soft radiant light, in her tail. 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+      "camera_motion": "zoom_out_slow",
+      "sfx_cue": "boing_jump",
+      "bgm_mood": "playful_cheerful"
+    },
+    {
+      "scene_id": 4,
+      "speaker": "narrator",
+      "voice_type": "narrator",
+      "dialogue": "The star soared into the night sky and twinkled brightly. 'Thank you, friends!' it called. Barnaby and Squeaky waved goodnight, feeling warm and happy inside. And from that night on, the star always shone a little brighter over Whispering Woods, reminding them that helping friends makes the world a brighter place.",
+      "visual_prompt": "Barnaby Bear, a fluffy brown bear cub with a creamy tan muzzle and belly, wearing a small red backpack, big round curious eyes, and Squeaky Squirrel, a small energetic squirrel with russet-orange fur, a big bushy tail, wearing a tiny blue acorn-shaped hat, sparkling bright eyes, are standing in the forest clearing, looking up at the night sky. Lost Star, a small glowing golden star with a sweet smiling face and twinkling eyes, soft radiant light, is shining brightly in the sky among other stars. 3D Disney Pixar animation render, soft volumetric lighting, 8k",
+      "camera_motion": "pan_up",
+      "sfx_cue": "happy_chime",
+      "bgm_mood": "peaceful_bedtime"
+    }
+  ]
+}

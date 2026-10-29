@@ -1,0 +1,106 @@
+{
+  "channel_name": "WhimsyWand Tales",
+  "handle": "@WhimsyWandTales",
+  "channel_id": "UCAE3KxfMJ8saqyDD5eiws4g",
+  "channel_url": "https://www.youtube.com/@WhimsyWandTales",
+  "tagline": "Tiny heroes. Magical worlds. Big-hearted endings.",
+  "description": "Welcome to WhimsyWand Tales — where tiny heroes discover magical worlds! Step into a world of friendly dragons, enchanted forests, magical kingdoms, curious fairies, and extraordinary adventures. Original animated fantasy stories and fairy tales filled with imagination, friendship, courage, kindness, and heartwarming surprises.",
+  "target_audience": "Toddlers, Preschoolers & Early Readers (Ages 3-7) and Families",
+  "visual_style": "3D Disney Pixar animation style, rich vibrant fairy-tale lighting, soft volumetric glows, whimsical magical environments, high quality 8k render",
+  "voice_rules": "STRICT CHILD VOICES ONLY (en-US-AnaNeural and en-US-ChristopherNeural). Absolutely no adult or elderly voices.",
+  "core_characters": [
+    {
+      "name": "Pip the Baby Dragon",
+      "role": "main_mascot",
+      "voice_type": "child_male",
+      "visual_anchor": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions",
+      "personality": "Playful, a little clumsy, eager to help, learns to fly and control his warm spark breath"
+    },
+    {
+      "name": "Fern the Forest Fairy",
+      "role": "magical_friend",
+      "voice_type": "child_female",
+      "visual_anchor": "Fern the little flower fairy, wearing a dress woven of pink cherry blossom petals, translucent gossamer dragonfly wings with sparkle dust, large curious emerald eyes, 3D Disney Pixar animation, soft magical bioluminescent glow",
+      "personality": "Gentle, creative, loves planting tiny glowing flowers"
+    },
+    {
+      "name": "Barnaby Bear",
+      "role": "gentle_adventurer",
+      "voice_type": "child_male",
+      "visual_anchor": "Barnaby the baby grizzly cub bear, ultra-soft honey-brown fur, light beige muzzle, chubby rounded ears, wearing a cozy tiny red adventurer backpack, big friendly warm green eyes, playful smile, 3D Disney Pixar character design, soft rim lighting",
+      "personality": "Kind, curious, loyal, loves exploring Whispering Woods"
+    },
+    {
+      "name": "Squeaky Squirrel",
+      "role": "energetic_sidekick",
+      "voice_type": "child_female",
+      "visual_anchor": "Squeaky the red bushy-tailed baby squirrel, copper fur, fluffy white chest, wearing a miniature knitted acorn cap, giant curious dark eyes, twitchy nose, expressive 3D Disney Pixar animation style",
+      "personality": "Fast, energetic, brave, generous with his acorns"
+    },
+    {
+      "name": "Benny Bunny",
+      "role": "sweet_friend",
+      "voice_type": "child_male",
+      "visual_anchor": "Benny the fluffy white baby bunny, long floppy pink-lined ears, wearing a tiny sky-blue neck scarf, twitching pink nose, big warm brown eyes, 3D Disney Pixar animation",
+      "personality": "Timid at first, brave for friends, loves fireflies"
+    },
+    {
+      "name": "Luna the Little Cloud",
+      "role": "magical_friend",
+      "voice_type": "child_female",
+      "visual_anchor": "Luna the adorable fluffy white baby cloud with rosy cheeks, soft golden morning sunshine glow, wearing a tiny pastel rainbow bow, big round expressive eyes, 3D Disney Pixar animation render",
+      "personality": "Gentle, emotional, creates mini rainbows when she giggles"
+    }
+  ],
+  "published_video_audit": [
+    {
+      "title": "☁️ The Little Cloud Who Couldn't Rain 🌈 | A Magical Story for Kids",
+      "video_id": "AnS6HLct1TM",
+      "character": "Luna the Cloud"
+    },
+    {
+      "title": "Pip's Roar Was Too Loud to Hear a Tiny Cry! 🐉🐞 #Shorts",
+      "video_id": "r_ujrbC4vBM",
+      "character": "Pip the Dragon"
+    },
+    {
+      "title": "The Tiny Flower That Saved a Lost Moth 🌸✨ #Shorts",
+      "video_id": "JSgqbZrEn58",
+      "character": "Fern the Fairy"
+    },
+    {
+      "title": "🧚 The Fairy Whose Tiny Flowers Saved Moonberry Forest 🌸✨ | A Magical Fairy Tale",
+      "video_id": "ds7tqLaiwvQ",
+      "character": "Fern the Fairy"
+    },
+    {
+      "title": "Everyone Had Big Magic—Except Fern 🧚✨ | A Fairy Tale #Shorts",
+      "video_id": "x2jpDCSgVFg",
+      "character": "Fern the Fairy"
+    },
+    {
+      "title": "Pip's Hiccup Turned Every Lantern Dark! 🐉✨ #Shorts",
+      "video_id": "e5QLu8hjBH4",
+      "character": "Pip the Dragon"
+    },
+    {
+      "title": "A Tiny Firefly Helped Benny Bunny Find His Mom 🐰✨ #shorts",
+      "video_id": "0oEZ6joGcy8",
+      "character": "Benny Bunny"
+    },
+    {
+      "title": "The Little Dragon Who Was Afraid to Fly 🐉💛 | Pip's First Flight #Shorts",
+      "video_id": "qx9U9mS6NFI",
+      "character": "Pip the Dragon"
+    }
+  ],
+  "viral_formula_strategy": {
+    "problem_identified": "Channel is getting low/no views due to: 1) Static imagery pacing (needs 3-second scene cuts), 2) Adult voiceovers in the past (children connect deeper with child voices), 3) Title formulas that lack curiosity gaps.",
+    "solution_framework": [
+      "HOOK FORMULA: Start with an unexpected magical mystery in the first 2 seconds (e.g. 'Pip's spark turned into a floating golden bubble!').",
+      "RAPID VISUAL CUTS: Every 3.0 seconds, change the camera shot matching the spoken sentence 1:1.",
+      "COMPETITOR BORROWING: Search competitor viral hits with >1M views, extract the core conflict (e.g. lost star, sharing a magical seed, helping a lost friend), and retell it using WhimsyWand Tales' tiny heroes.",
+      "HIGH CTR TITLES: Use emotional curiosity formulas (e.g. 'Can Pip Save the Whispering Forest? 🐉✨ | Heartwarming Moral Bedtime Story')."
+    ]
+  }
+}

@@ -1,0 +1,347 @@
+{
+  "episode_id": "ep_015",
+  "title": "Luna's Raindrop Lullaby",
+  "target_age": "3-7",
+  "aspect_ratio": "16:9",
+  "moral_lesson": "Gentle help can bring sweet dreams to others.",
+  "seo_tags": [
+    "Luna the Little Cloud",
+    "bedtime story",
+    "rain lullaby",
+    "forest sleep",
+    "kids cartoon",
+    "Disney Pixar style",
+    "WhimsyWand Tales",
+    "gentle rain",
+    "friendship"
+  ],
+  "character_bible": {
+    "characters": [
+      {
+        "name": "Luna the Little Cloud",
+        "role": "main_character",
+        "voice_type": "child_female",
+        "visual_anchor": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions",
+        "personality": "Gentle, caring, curious"
+      },
+      {
+        "name": "Fern the Forest Fairy",
+        "role": "supporting_character",
+        "voice_type": "child_female",
+        "visual_anchor": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions",
+        "personality": "Kind, magical, nurturing"
+      },
+      {
+        "name": "Benny Bunny",
+        "role": "supporting_character",
+        "voice_type": "child_male",
+        "visual_anchor": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions",
+        "personality": "Sweet, sleepy, trusting"
+      }
+    ]
+  },
+  "frames": [
+    {
+      "frame_id": 1,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna the little cloud floated over the sleepy forest.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, floating gently above a lush green forest at twilight, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, enchanted forest, soft purple sky",
+      "camera_motion": "pan_right_slow",
+      "sfx_cue": "gentle_wind",
+      "bgm_mood": "soft_lullaby"
+    },
+    {
+      "frame_id": 2,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "She saw the animals yawning and rubbing their eyes.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, looking down at a group of cute forest animals yawning and rubbing their eyes, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, medium shot, forest clearing, twilight glow",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "yawn",
+      "bgm_mood": "soft_lullaby"
+    },
+    {
+      "frame_id": 3,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna felt a tiny raindrop tickle her fluffy tummy.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, giggling as a single tiny raindrop forms and tickles her tummy, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, magical sparkles around",
+      "camera_motion": "static",
+      "sfx_cue": "tickle_giggle",
+      "bgm_mood": "playful_gentle"
+    },
+    {
+      "frame_id": 4,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "But she worried her rain might be too loud.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, looking worried with a tiny frown, holding a small raindrop in her fluffy hand, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, forest background",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "worried_sigh",
+      "bgm_mood": "soft_lullaby"
+    },
+    {
+      "frame_id": 5,
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "Fern the fairy flew up with a gentle smile.",
+      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, flying up to Luna with a warm gentle smile, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, twilight sky",
+      "camera_motion": "tilt_up_slow",
+      "sfx_cue": "fairy_chime",
+      "bgm_mood": "magical_soft"
+    },
+    {
+      "frame_id": 6,
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "Your gentle rain is a lullaby for the forest.",
+      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, gesturing towards the forest with a reassuring expression, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, Luna beside her",
+      "camera_motion": "pan_left_slow",
+      "sfx_cue": "magic_twinkle",
+      "bgm_mood": "magical_soft"
+    },
+    {
+      "frame_id": 7,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna took a deep breath and wiggled her fluffy edges.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, taking a deep breath with eyes closed, her fluffy edges wiggling slightly, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, determined expression",
+      "camera_motion": "static",
+      "sfx_cue": "deep_breath",
+      "bgm_mood": "soft_lullaby"
+    },
+    {
+      "frame_id": 8,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Then she let out a soft, sparkly rain shower.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, releasing a gentle shower of sparkly raindrops that fall softly downward, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, forest below",
+      "camera_motion": "zoom_out_slow",
+      "sfx_cue": "soft_rain",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 9,
+      "speaker": "Benny Bunny",
+      "voice_type": "child_male",
+      "dialogue": "Benny Bunny yawned and snuggled under a mushroom.",
+      "visual_prompt": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, yawning widely and snuggling under a large glowing mushroom, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions, medium shot, gentle rain falling",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "yawn_snuggle",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 10,
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "The flowers closed their petals and whispered goodnight.",
+      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, watching as colorful flowers gently close their petals, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, wide shot, rain droplets on petals",
+      "camera_motion": "pan_right_slow",
+      "sfx_cue": "petals_close",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 11,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna giggled, and a tiny rainbow appeared.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, giggling with rosy cheeks, a tiny rainbow forming from her giggle, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, magical rainbow sparkles",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "giggle_rainbow",
+      "bgm_mood": "magical_soft"
+    },
+    {
+      "frame_id": 12,
+      "speaker": "Benny Bunny",
+      "voice_type": "child_male",
+      "dialogue": "Benny Bunny dreamed of dancing with friendly raindrops.",
+      "visual_prompt": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, sleeping peacefully with a dream bubble showing him dancing with cute raindrop characters, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions, close-up, cozy mushroom bed",
+      "camera_motion": "static",
+      "sfx_cue": "dreamy_chime",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 13,
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "Fern whispered, 'Your rain is a sweet lullaby.'",
+      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, whispering to Luna with a hand near her mouth, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, Luna listening",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "whisper",
+      "bgm_mood": "magical_soft"
+    },
+    {
+      "frame_id": 14,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna smiled and continued her gentle, sparkly rain.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, smiling happily as she continues to release gentle sparkly raindrops over the sleeping forest, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, peaceful night",
+      "camera_motion": "pan_left_slow",
+      "sfx_cue": "soft_rain",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 15,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "The whole forest slept peacefully under Luna's lullaby.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, floating peacefully above the sleeping forest, all animals asleep, stars twinkling, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, serene night sky",
+      "camera_motion": "zoom_out_slow",
+      "sfx_cue": "night_ambience",
+      "bgm_mood": "lullaby_fade"
+    }
+  ],
+  "scenes": [
+    {
+      "frame_id": 1,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna the little cloud floated over the sleepy forest.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, floating gently above a lush green forest at twilight, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, enchanted forest, soft purple sky",
+      "camera_motion": "pan_right_slow",
+      "sfx_cue": "gentle_wind",
+      "bgm_mood": "soft_lullaby"
+    },
+    {
+      "frame_id": 2,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "She saw the animals yawning and rubbing their eyes.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, looking down at a group of cute forest animals yawning and rubbing their eyes, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, medium shot, forest clearing, twilight glow",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "yawn",
+      "bgm_mood": "soft_lullaby"
+    },
+    {
+      "frame_id": 3,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna felt a tiny raindrop tickle her fluffy tummy.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, giggling as a single tiny raindrop forms and tickles her tummy, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, magical sparkles around",
+      "camera_motion": "static",
+      "sfx_cue": "tickle_giggle",
+      "bgm_mood": "playful_gentle"
+    },
+    {
+      "frame_id": 4,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "But she worried her rain might be too loud.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, looking worried with a tiny frown, holding a small raindrop in her fluffy hand, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, forest background",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "worried_sigh",
+      "bgm_mood": "soft_lullaby"
+    },
+    {
+      "frame_id": 5,
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "Fern the fairy flew up with a gentle smile.",
+      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, flying up to Luna with a warm gentle smile, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, twilight sky",
+      "camera_motion": "tilt_up_slow",
+      "sfx_cue": "fairy_chime",
+      "bgm_mood": "magical_soft"
+    },
+    {
+      "frame_id": 6,
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "Your gentle rain is a lullaby for the forest.",
+      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, gesturing towards the forest with a reassuring expression, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, Luna beside her",
+      "camera_motion": "pan_left_slow",
+      "sfx_cue": "magic_twinkle",
+      "bgm_mood": "magical_soft"
+    },
+    {
+      "frame_id": 7,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna took a deep breath and wiggled her fluffy edges.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, taking a deep breath with eyes closed, her fluffy edges wiggling slightly, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, determined expression",
+      "camera_motion": "static",
+      "sfx_cue": "deep_breath",
+      "bgm_mood": "soft_lullaby"
+    },
+    {
+      "frame_id": 8,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Then she let out a soft, sparkly rain shower.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, releasing a gentle shower of sparkly raindrops that fall softly downward, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, forest below",
+      "camera_motion": "zoom_out_slow",
+      "sfx_cue": "soft_rain",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 9,
+      "speaker": "Benny Bunny",
+      "voice_type": "child_male",
+      "dialogue": "Benny Bunny yawned and snuggled under a mushroom.",
+      "visual_prompt": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, yawning widely and snuggling under a large glowing mushroom, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions, medium shot, gentle rain falling",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "yawn_snuggle",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 10,
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "The flowers closed their petals and whispered goodnight.",
+      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, watching as colorful flowers gently close their petals, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, wide shot, rain droplets on petals",
+      "camera_motion": "pan_right_slow",
+      "sfx_cue": "petals_close",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 11,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna giggled, and a tiny rainbow appeared.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, giggling with rosy cheeks, a tiny rainbow forming from her giggle, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, magical rainbow sparkles",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "giggle_rainbow",
+      "bgm_mood": "magical_soft"
+    },
+    {
+      "frame_id": 12,
+      "speaker": "Benny Bunny",
+      "voice_type": "child_male",
+      "dialogue": "Benny Bunny dreamed of dancing with friendly raindrops.",
+      "visual_prompt": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, sleeping peacefully with a dream bubble showing him dancing with cute raindrop characters, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions, close-up, cozy mushroom bed",
+      "camera_motion": "static",
+      "sfx_cue": "dreamy_chime",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 13,
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "Fern whispered, 'Your rain is a sweet lullaby.'",
+      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, whispering to Luna with a hand near her mouth, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, Luna listening",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "whisper",
+      "bgm_mood": "magical_soft"
+    },
+    {
+      "frame_id": 14,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "Luna smiled and continued her gentle, sparkly rain.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, smiling happily as she continues to release gentle sparkly raindrops over the sleeping forest, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, peaceful night",
+      "camera_motion": "pan_left_slow",
+      "sfx_cue": "soft_rain",
+      "bgm_mood": "lullaby_swell"
+    },
+    {
+      "frame_id": 15,
+      "speaker": "Luna the Little Cloud",
+      "voice_type": "child_female",
+      "dialogue": "The whole forest slept peacefully under Luna's lullaby.",
+      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, floating peacefully above the sleeping forest, all animals asleep, stars twinkling, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, serene night sky",
+      "camera_motion": "zoom_out_slow",
+      "sfx_cue": "night_ambience",
+      "bgm_mood": "lullaby_fade"
+    }
+  ]
+}
