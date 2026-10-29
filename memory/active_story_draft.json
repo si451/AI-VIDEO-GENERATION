@@ -1,347 +1,339 @@
 {
-  "episode_id": "ep_015",
-  "title": "Luna's Raindrop Lullaby",
+  "episode_id": "ep_002",
+  "title": "Pip the Baby Dragon and the Sleepy Star",
   "target_age": "3-7",
   "aspect_ratio": "16:9",
-  "moral_lesson": "Gentle help can bring sweet dreams to others.",
+  "moral_lesson": "Even when things feel lost, friendship and a gentle song can bring back the light.",
   "seo_tags": [
-    "Luna the Little Cloud",
     "bedtime story",
-    "rain lullaby",
-    "forest sleep",
-    "kids cartoon",
-    "Disney Pixar style",
-    "WhimsyWand Tales",
-    "gentle rain",
-    "friendship"
+    "baby dragon",
+    "sleepy star",
+    "moonberry forest",
+    "friendship",
+    "kids animation",
+    "Pixar style",
+    "goodnight"
   ],
   "character_bible": {
     "characters": [
       {
-        "name": "Luna the Little Cloud",
+        "name": "Pip the Baby Dragon",
         "role": "main_character",
-        "voice_type": "child_female",
-        "visual_anchor": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions",
-        "personality": "Gentle, caring, curious"
+        "voice_type": "child_male",
+        "visual_anchor": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions",
+        "personality": "Curious, kind, adventurous"
       },
       {
         "name": "Fern the Forest Fairy",
         "role": "supporting_character",
         "voice_type": "child_female",
-        "visual_anchor": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions",
-        "personality": "Kind, magical, nurturing"
-      },
-      {
-        "name": "Benny Bunny",
-        "role": "supporting_character",
-        "voice_type": "child_male",
-        "visual_anchor": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions",
-        "personality": "Sweet, sleepy, trusting"
+        "visual_anchor": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, 3D Disney Pixar animation style, warm golden rim lighting, delicate and sweet",
+        "personality": "Gentle, helpful, magical"
       }
     ]
   },
   "frames": [
     {
       "frame_id": 1,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "Luna the little cloud floated over the sleepy forest.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, floating gently above a lush green forest at twilight, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, enchanted forest, soft purple sky",
-      "camera_motion": "pan_right_slow",
-      "sfx_cue": "gentle_wind",
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip can't sleep without his little star.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, sitting on a cozy mossy bed inside a cave, looking up at an empty dark sky through cave opening, 3D Disney Pixar animation, soft moonlight, 8k",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "gentle_sigh",
       "bgm_mood": "soft_lullaby"
     },
     {
       "frame_id": 2,
-      "speaker": "Luna the Little Cloud",
+      "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "She saw the animals yawning and rubbing their eyes.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, looking down at a group of cute forest animals yawning and rubbing their eyes, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, medium shot, forest clearing, twilight glow",
-      "camera_motion": "zoom_in_slow",
-      "sfx_cue": "yawn",
-      "bgm_mood": "soft_lullaby"
+      "dialogue": "Fern whispers, we'll find your star together.",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, standing beside Pip's cave entrance, gently holding Pip's claw, 3D Disney Pixar animation, enchanted forest moonlight, 8k",
+      "camera_motion": "pan_left",
+      "sfx_cue": "magic_twinkle",
+      "bgm_mood": "hopeful_melody"
     },
     {
       "frame_id": 3,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "Luna felt a tiny raindrop tickle her fluffy tummy.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, giggling as a single tiny raindrop forms and tickles her tummy, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, magical sparkles around",
-      "camera_motion": "static",
-      "sfx_cue": "tickle_giggle",
-      "bgm_mood": "playful_gentle"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip tiptoes softly through Moonberry Forest.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, tiptoeing on mossy path between glowing moonberry bushes, 3D Disney Pixar animation, soft blue forest light, 8k",
+      "camera_motion": "tracking_shot",
+      "sfx_cue": "soft_footsteps",
+      "bgm_mood": "playful_mystery"
     },
     {
       "frame_id": 4,
-      "speaker": "Luna the Little Cloud",
+      "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "But she worried her rain might be too loud.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, looking worried with a tiny frown, holding a small raindrop in her fluffy hand, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, forest background",
+      "dialogue": "Look, tiny star footprints glow on leaves!",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, pointing at glowing star-shaped footprints on a large leaf, 3D Disney Pixar animation, enchanted forest close-up, 8k",
       "camera_motion": "zoom_in_slow",
-      "sfx_cue": "worried_sigh",
-      "bgm_mood": "soft_lullaby"
+      "sfx_cue": "sparkle_chime",
+      "bgm_mood": "curious_playful"
     },
     {
       "frame_id": 5,
-      "speaker": "Fern the Forest Fairy",
-      "voice_type": "child_female",
-      "dialogue": "Fern the fairy flew up with a gentle smile.",
-      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, flying up to Luna with a warm gentle smile, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, twilight sky",
-      "camera_motion": "tilt_up_slow",
-      "sfx_cue": "fairy_chime",
-      "bgm_mood": "magical_soft"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip follows the sparkly trail deeper.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, walking along a glowing trail of star dust through tall ferns, 3D Disney Pixar animation, magical forest glow, 8k",
+      "camera_motion": "tracking_shot",
+      "sfx_cue": "twinkle_trail",
+      "bgm_mood": "adventurous_soft"
     },
     {
       "frame_id": 6,
       "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "Your gentle rain is a lullaby for the forest.",
-      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, gesturing towards the forest with a reassuring expression, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, Luna beside her",
-      "camera_motion": "pan_left_slow",
-      "sfx_cue": "magic_twinkle",
-      "bgm_mood": "magical_soft"
+      "dialogue": "The star is hiding behind a mushroom!",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, peeking behind a giant glowing mushroom, 3D Disney Pixar animation, soft forest light, 8k",
+      "camera_motion": "pan_right",
+      "sfx_cue": "giggle_chime",
+      "bgm_mood": "playful_cheerful"
     },
     {
       "frame_id": 7,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "Luna took a deep breath and wiggled her fluffy edges.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, taking a deep breath with eyes closed, her fluffy edges wiggling slightly, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, determined expression",
-      "camera_motion": "static",
-      "sfx_cue": "deep_breath",
-      "bgm_mood": "soft_lullaby"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip finds the star looking very sleepy.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, kneeling beside a tiny dim star with closed eyes under a mushroom, 3D Disney Pixar animation, gentle moonlight, 8k",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "soft_yawn",
+      "bgm_mood": "tender_lullaby"
     },
     {
       "frame_id": 8,
-      "speaker": "Luna the Little Cloud",
+      "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "Then she let out a soft, sparkly rain shower.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, releasing a gentle shower of sparkly raindrops that fall softly downward, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, forest below",
-      "camera_motion": "zoom_out_slow",
-      "sfx_cue": "soft_rain",
-      "bgm_mood": "lullaby_swell"
+      "dialogue": "We must sing it back to the sky.",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, gently lifting the sleepy star with both hands, 3D Disney Pixar animation, warm glow, 8k",
+      "camera_motion": "tilt_up",
+      "sfx_cue": "magic_whoosh",
+      "bgm_mood": "hopeful_melody"
     },
     {
       "frame_id": 9,
-      "speaker": "Benny Bunny",
+      "speaker": "Pip the Baby Dragon",
       "voice_type": "child_male",
-      "dialogue": "Benny Bunny yawned and snuggled under a mushroom.",
-      "visual_prompt": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, yawning widely and snuggling under a large glowing mushroom, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions, medium shot, gentle rain falling",
-      "camera_motion": "zoom_in_slow",
-      "sfx_cue": "yawn_snuggle",
-      "bgm_mood": "lullaby_swell"
+      "dialogue": "Pip sings a soft and gentle lullaby.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, mouth open singing gently, musical notes floating in air, 3D Disney Pixar animation, starry forest background, 8k",
+      "camera_motion": "close_up",
+      "sfx_cue": "soft_singing",
+      "bgm_mood": "lullaby_melody"
     },
     {
       "frame_id": 10,
       "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "The flowers closed their petals and whispered goodnight.",
-      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, watching as colorful flowers gently close their petals, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, wide shot, rain droplets on petals",
-      "camera_motion": "pan_right_slow",
-      "sfx_cue": "petals_close",
-      "bgm_mood": "lullaby_swell"
+      "dialogue": "Fern adds sparkles to the sleepy star.",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, sprinkling glowing fairy dust over the dim star, 3D Disney Pixar animation, magical sparkles, 8k",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "sparkle_burst",
+      "bgm_mood": "magical_build"
     },
     {
       "frame_id": 11,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "Luna giggled, and a tiny rainbow appeared.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, giggling with rosy cheeks, a tiny rainbow forming from her giggle, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, magical rainbow sparkles",
-      "camera_motion": "zoom_in_slow",
-      "sfx_cue": "giggle_rainbow",
-      "bgm_mood": "magical_soft"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "The little star begins to glow brighter.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, watching the star grow brighter with wide eyes, 3D Disney Pixar animation, radiant light, 8k",
+      "camera_motion": "zoom_in_fast",
+      "sfx_cue": "bright_chime",
+      "bgm_mood": "uplifting"
     },
     {
       "frame_id": 12,
-      "speaker": "Benny Bunny",
-      "voice_type": "child_male",
-      "dialogue": "Benny Bunny dreamed of dancing with friendly raindrops.",
-      "visual_prompt": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, sleeping peacefully with a dream bubble showing him dancing with cute raindrop characters, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions, close-up, cozy mushroom bed",
-      "camera_motion": "static",
-      "sfx_cue": "dreamy_chime",
-      "bgm_mood": "lullaby_swell"
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "Up it floats, twinkling all the way!",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, pointing up as the star floats toward the sky, 3D Disney Pixar animation, night sky, 8k",
+      "camera_motion": "tilt_up",
+      "sfx_cue": "whoosh_twinkle",
+      "bgm_mood": "triumphant_soft"
     },
     {
       "frame_id": 13,
-      "speaker": "Fern the Forest Fairy",
-      "voice_type": "child_female",
-      "dialogue": "Fern whispered, 'Your rain is a sweet lullaby.'",
-      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, whispering to Luna with a hand near her mouth, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, Luna listening",
-      "camera_motion": "zoom_in_slow",
-      "sfx_cue": "whisper",
-      "bgm_mood": "magical_soft"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "The star takes its place above Pip's cave.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, standing outside cave, looking up at the star shining above, 3D Disney Pixar animation, starry night, 8k",
+      "camera_motion": "pan_up",
+      "sfx_cue": "magic_ting",
+      "bgm_mood": "peaceful_resolution"
     },
     {
       "frame_id": 14,
-      "speaker": "Luna the Little Cloud",
+      "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "Luna smiled and continued her gentle, sparkly rain.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, smiling happily as she continues to release gentle sparkly raindrops over the sleeping forest, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, peaceful night",
-      "camera_motion": "pan_left_slow",
-      "sfx_cue": "soft_rain",
-      "bgm_mood": "lullaby_swell"
+      "dialogue": "Now you can sleep, sweet Pip.",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, tucking Pip into his mossy bed, 3D Disney Pixar animation, cozy cave, 8k",
+      "camera_motion": "static",
+      "sfx_cue": "soft_blanket",
+      "bgm_mood": "lullaby_ending"
     },
     {
       "frame_id": 15,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "The whole forest slept peacefully under Luna's lullaby.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, floating peacefully above the sleeping forest, all animals asleep, stars twinkling, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, serene night sky",
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip smiles and drifts to sleep.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, eyes closed with a happy smile, sleeping soundly under a starry sky, 3D Disney Pixar animation, warm night glow, 8k",
       "camera_motion": "zoom_out_slow",
-      "sfx_cue": "night_ambience",
-      "bgm_mood": "lullaby_fade"
+      "sfx_cue": "gentle_snore",
+      "bgm_mood": "soft_lullaby_fade"
     }
   ],
   "scenes": [
     {
       "frame_id": 1,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "Luna the little cloud floated over the sleepy forest.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, floating gently above a lush green forest at twilight, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, enchanted forest, soft purple sky",
-      "camera_motion": "pan_right_slow",
-      "sfx_cue": "gentle_wind",
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip can't sleep without his little star.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, sitting on a cozy mossy bed inside a cave, looking up at an empty dark sky through cave opening, 3D Disney Pixar animation, soft moonlight, 8k",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "gentle_sigh",
       "bgm_mood": "soft_lullaby"
     },
     {
       "frame_id": 2,
-      "speaker": "Luna the Little Cloud",
+      "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "She saw the animals yawning and rubbing their eyes.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, looking down at a group of cute forest animals yawning and rubbing their eyes, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, medium shot, forest clearing, twilight glow",
-      "camera_motion": "zoom_in_slow",
-      "sfx_cue": "yawn",
-      "bgm_mood": "soft_lullaby"
+      "dialogue": "Fern whispers, we'll find your star together.",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, standing beside Pip's cave entrance, gently holding Pip's claw, 3D Disney Pixar animation, enchanted forest moonlight, 8k",
+      "camera_motion": "pan_left",
+      "sfx_cue": "magic_twinkle",
+      "bgm_mood": "hopeful_melody"
     },
     {
       "frame_id": 3,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "Luna felt a tiny raindrop tickle her fluffy tummy.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, giggling as a single tiny raindrop forms and tickles her tummy, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, magical sparkles around",
-      "camera_motion": "static",
-      "sfx_cue": "tickle_giggle",
-      "bgm_mood": "playful_gentle"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip tiptoes softly through Moonberry Forest.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, tiptoeing on mossy path between glowing moonberry bushes, 3D Disney Pixar animation, soft blue forest light, 8k",
+      "camera_motion": "tracking_shot",
+      "sfx_cue": "soft_footsteps",
+      "bgm_mood": "playful_mystery"
     },
     {
       "frame_id": 4,
-      "speaker": "Luna the Little Cloud",
+      "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "But she worried her rain might be too loud.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, looking worried with a tiny frown, holding a small raindrop in her fluffy hand, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, forest background",
+      "dialogue": "Look, tiny star footprints glow on leaves!",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, pointing at glowing star-shaped footprints on a large leaf, 3D Disney Pixar animation, enchanted forest close-up, 8k",
       "camera_motion": "zoom_in_slow",
-      "sfx_cue": "worried_sigh",
-      "bgm_mood": "soft_lullaby"
+      "sfx_cue": "sparkle_chime",
+      "bgm_mood": "curious_playful"
     },
     {
       "frame_id": 5,
-      "speaker": "Fern the Forest Fairy",
-      "voice_type": "child_female",
-      "dialogue": "Fern the fairy flew up with a gentle smile.",
-      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, flying up to Luna with a warm gentle smile, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, twilight sky",
-      "camera_motion": "tilt_up_slow",
-      "sfx_cue": "fairy_chime",
-      "bgm_mood": "magical_soft"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip follows the sparkly trail deeper.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, walking along a glowing trail of star dust through tall ferns, 3D Disney Pixar animation, magical forest glow, 8k",
+      "camera_motion": "tracking_shot",
+      "sfx_cue": "twinkle_trail",
+      "bgm_mood": "adventurous_soft"
     },
     {
       "frame_id": 6,
       "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "Your gentle rain is a lullaby for the forest.",
-      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, gesturing towards the forest with a reassuring expression, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, Luna beside her",
-      "camera_motion": "pan_left_slow",
-      "sfx_cue": "magic_twinkle",
-      "bgm_mood": "magical_soft"
+      "dialogue": "The star is hiding behind a mushroom!",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, peeking behind a giant glowing mushroom, 3D Disney Pixar animation, soft forest light, 8k",
+      "camera_motion": "pan_right",
+      "sfx_cue": "giggle_chime",
+      "bgm_mood": "playful_cheerful"
     },
     {
       "frame_id": 7,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "Luna took a deep breath and wiggled her fluffy edges.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, taking a deep breath with eyes closed, her fluffy edges wiggling slightly, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, determined expression",
-      "camera_motion": "static",
-      "sfx_cue": "deep_breath",
-      "bgm_mood": "soft_lullaby"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip finds the star looking very sleepy.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, kneeling beside a tiny dim star with closed eyes under a mushroom, 3D Disney Pixar animation, gentle moonlight, 8k",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "soft_yawn",
+      "bgm_mood": "tender_lullaby"
     },
     {
       "frame_id": 8,
-      "speaker": "Luna the Little Cloud",
+      "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "Then she let out a soft, sparkly rain shower.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, releasing a gentle shower of sparkly raindrops that fall softly downward, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, forest below",
-      "camera_motion": "zoom_out_slow",
-      "sfx_cue": "soft_rain",
-      "bgm_mood": "lullaby_swell"
+      "dialogue": "We must sing it back to the sky.",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, gently lifting the sleepy star with both hands, 3D Disney Pixar animation, warm glow, 8k",
+      "camera_motion": "tilt_up",
+      "sfx_cue": "magic_whoosh",
+      "bgm_mood": "hopeful_melody"
     },
     {
       "frame_id": 9,
-      "speaker": "Benny Bunny",
+      "speaker": "Pip the Baby Dragon",
       "voice_type": "child_male",
-      "dialogue": "Benny Bunny yawned and snuggled under a mushroom.",
-      "visual_prompt": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, yawning widely and snuggling under a large glowing mushroom, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions, medium shot, gentle rain falling",
-      "camera_motion": "zoom_in_slow",
-      "sfx_cue": "yawn_snuggle",
-      "bgm_mood": "lullaby_swell"
+      "dialogue": "Pip sings a soft and gentle lullaby.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, mouth open singing gently, musical notes floating in air, 3D Disney Pixar animation, starry forest background, 8k",
+      "camera_motion": "close_up",
+      "sfx_cue": "soft_singing",
+      "bgm_mood": "lullaby_melody"
     },
     {
       "frame_id": 10,
       "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "The flowers closed their petals and whispered goodnight.",
-      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, watching as colorful flowers gently close their petals, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, wide shot, rain droplets on petals",
-      "camera_motion": "pan_right_slow",
-      "sfx_cue": "petals_close",
-      "bgm_mood": "lullaby_swell"
+      "dialogue": "Fern adds sparkles to the sleepy star.",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, sprinkling glowing fairy dust over the dim star, 3D Disney Pixar animation, magical sparkles, 8k",
+      "camera_motion": "zoom_in_slow",
+      "sfx_cue": "sparkle_burst",
+      "bgm_mood": "magical_build"
     },
     {
       "frame_id": 11,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "Luna giggled, and a tiny rainbow appeared.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, giggling with rosy cheeks, a tiny rainbow forming from her giggle, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, close-up, magical rainbow sparkles",
-      "camera_motion": "zoom_in_slow",
-      "sfx_cue": "giggle_rainbow",
-      "bgm_mood": "magical_soft"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "The little star begins to glow brighter.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, watching the star grow brighter with wide eyes, 3D Disney Pixar animation, radiant light, 8k",
+      "camera_motion": "zoom_in_fast",
+      "sfx_cue": "bright_chime",
+      "bgm_mood": "uplifting"
     },
     {
       "frame_id": 12,
-      "speaker": "Benny Bunny",
-      "voice_type": "child_male",
-      "dialogue": "Benny Bunny dreamed of dancing with friendly raindrops.",
-      "visual_prompt": "Benny Bunny, fluffy white baby bunny with long floppy pink ears, sky-blue scarf, big innocent eyes, sleeping peacefully with a dream bubble showing him dancing with cute raindrop characters, 3D Disney Pixar animation style, warm golden rim lighting, soft cuddly proportions, close-up, cozy mushroom bed",
-      "camera_motion": "static",
-      "sfx_cue": "dreamy_chime",
-      "bgm_mood": "lullaby_swell"
+      "speaker": "Fern the Forest Fairy",
+      "voice_type": "child_female",
+      "dialogue": "Up it floats, twinkling all the way!",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, pointing up as the star floats toward the sky, 3D Disney Pixar animation, night sky, 8k",
+      "camera_motion": "tilt_up",
+      "sfx_cue": "whoosh_twinkle",
+      "bgm_mood": "triumphant_soft"
     },
     {
       "frame_id": 13,
-      "speaker": "Fern the Forest Fairy",
-      "voice_type": "child_female",
-      "dialogue": "Fern whispered, 'Your rain is a sweet lullaby.'",
-      "visual_prompt": "Fern the forest fairy with flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, whispering to Luna with a hand near her mouth, 3D Disney Pixar animation style, warm golden rim lighting, delicate miniature proportions, medium shot, Luna listening",
-      "camera_motion": "zoom_in_slow",
-      "sfx_cue": "whisper",
-      "bgm_mood": "magical_soft"
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "The star takes its place above Pip's cave.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, standing outside cave, looking up at the star shining above, 3D Disney Pixar animation, starry night, 8k",
+      "camera_motion": "pan_up",
+      "sfx_cue": "magic_ting",
+      "bgm_mood": "peaceful_resolution"
     },
     {
       "frame_id": 14,
-      "speaker": "Luna the Little Cloud",
+      "speaker": "Fern the Forest Fairy",
       "voice_type": "child_female",
-      "dialogue": "Luna smiled and continued her gentle, sparkly rain.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, smiling happily as she continues to release gentle sparkly raindrops over the sleeping forest, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, peaceful night",
-      "camera_motion": "pan_left_slow",
-      "sfx_cue": "soft_rain",
-      "bgm_mood": "lullaby_swell"
+      "dialogue": "Now you can sleep, sweet Pip.",
+      "visual_prompt": "Fern the Forest Fairy, flower petal dress, gossamer dragonfly wings with sparkle dust, emerald eyes, glowing green aura, tucking Pip into his mossy bed, 3D Disney Pixar animation, cozy cave, 8k",
+      "camera_motion": "static",
+      "sfx_cue": "soft_blanket",
+      "bgm_mood": "lullaby_ending"
     },
     {
       "frame_id": 15,
-      "speaker": "Luna the Little Cloud",
-      "voice_type": "child_female",
-      "dialogue": "The whole forest slept peacefully under Luna's lullaby.",
-      "visual_prompt": "Luna the fluffy white baby cloud with rosy cheeks, tiny sparkly star freckles, soft glowing edges, floating peacefully above the sleeping forest, all animals asleep, stars twinkling, 3D Disney Pixar animation style, warm golden rim lighting, adorable miniature proportions, wide shot, serene night sky",
+      "speaker": "Pip the Baby Dragon",
+      "voice_type": "child_male",
+      "dialogue": "Pip smiles and drifts to sleep.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, gentle friendly snout, tiny soft horns, eyes closed with a happy smile, sleeping soundly under a starry sky, 3D Disney Pixar animation, warm night glow, 8k",
       "camera_motion": "zoom_out_slow",
-      "sfx_cue": "night_ambience",
-      "bgm_mood": "lullaby_fade"
+      "sfx_cue": "gentle_snore",
+      "bgm_mood": "soft_lullaby_fade"
     }
   ]
 }
