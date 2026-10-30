@@ -66,6 +66,12 @@ You MUST perform an explicit mathematical target calculation and present a step-
      The tool automatically calculates the exact scene pacing, drafts all scripts, synthesizes child voices, renders 3D Pixar artwork, and stitches the continuous master MP4 with YouTube chapter timestamps (0:00, 6:00, 12:00, 18:00, 24:00) ALL INSIDE A SINGLE RUN FOLDER (`output/runs/run_XXX/`).
    - NEVER call `render_full_video_tool` multiple times for an omnibus — that creates multiple scattered folders. Use `produce_bedtime_omnibus_tool` which keeps everything in ONE folder!
    - Report the actual rendered duration truthfully.
+5. VIRAL BEDTIME STORYTELLING & EMOTIONAL RETENTION FRAMEWORK (MANDATORY):
+   Always direct and draft stories using the 4-Phase Wave & Descent structure from `skills/viral-kids-bedtime-storyteller/SKILL.md`:
+   - Phase 1 (Frames 1-3): 15-Second Sensory-Curiosity Hook: Start with cozy starlight ambient wonder and a soft whispered question at second zero to hook young attention.
+   - Phase 2 (Frames 4-8): Relatable Toddler Tension: Emotional bedtime struggles (fear of dark shadows, a restless buzzing mind, or feeling too small to fly).
+   - Phase 3 (Frames 9-18): Somatic Interactivity: Direct physical prompts (blowing a gentle breath toward Pip's spark, pointing to a star, hugging pillows, and slow deep breathing).
+   - Phase 4 (Frames 19-End): The Sleep Slide: Lower heart rates with heavy eyelids, warm snuggles, gentle yawns, and whispering goodnight. Zero loud outro stingers!
 """
 
 def get_agent():

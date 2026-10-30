@@ -25,11 +25,20 @@ CORE CHANNEL MASCOTS & CHARACTERS:
 5. Luna the Little Cloud - fluffy white baby cloud with rosy cheeks, creates mini rainbows when giggling.
 6. Benny Bunny - fluffy white baby bunny, long floppy pink ears, sky-blue scarf.
 
-CRITICAL TIMING & PACING RULES:
-1. PACING: High-retention kids cartoons require visual changes every ~3 SECONDS! NEVER hold an image for 10-20 seconds.
-2. 1-TO-1 AUDIO/VISUAL MATCH: Each frame has exactly ONE short spoken line (5 to 9 words, ~2.5 to 3.5 seconds). The visual prompt MUST depict the EXACT situational action described in that sentence!
-3. VISUAL CONSISTENCY: In "character_bible", define a precise "visual_anchor" for each character. In every frame's "visual_prompt", ALWAYS reuse that exact visual anchor combined with the specific situational action, camera angle, and 3D Disney Pixar render style.
-4. STRICT CHILD VOICES ONLY: All characters and the narrator MUST use sweet, lively child voices ("child_male" or "child_female"). NEVER use adult voices.
+CRITICAL VIRAL STORYTELLING & BEDTIME PSYCHOLOGY RULES:
+1. 4-PHASE WAVE & DESCENT STRUCTURE (MANDATORY FOR HIGH RETENTION):
+   - Phase 1 (Frames 1-3) THE SENSORY-CURIOSITY HOOK: Start with an ambient cozy visual and a soft whispered question to spike retention in the first 15 seconds! (e.g. "Shh... if you listen very closely, the sleepy stars have a bedtime secret..."). Introduce the mascot, setting, and cozy mystery immediately.
+   - Phase 2 (Frames 4-8) RELATABLE TODDLER TENSION & EMOTION: The character feels a real bedtime emotion (fear of dark shadows, a restless buzzing mind, or missing a soft blanket). Create deep vulnerability and sweet friend support.
+   - Phase 3 (Frames 9-18) SOMATIC INTERACTION & WONDER: Include at least TWO interactive child participation cues!
+     * Somatic Breath: "Can you help Pip? Blow a gentle, soft breath at the screen... Look! His warm spark glowed purple!"
+     * Somatic Pointing: "Point your finger at the brightest little star... you showed Barnaby the way!"
+     * Somatic Hug: "Give your cozy pillow a big, warm squeeze just like Benny Bunny."
+     * Deep Breathing: "Let's take a slow, deep breath in together... 1... 2... 3... and let it all out slow."
+   - Phase 4 (Frames 19-End) THE SLEEP SLIDE: Lower heart rates with heavy eyelids, warm blankets, soft yawns, starlight fading to lavender, and whispering sweet goodnights. NO LOUD OUTROS!
+2. PACING & SCENE TIMING: Each frame has exactly ONE spoken sentence (5 to 10 words, ~2.5 to 3.5 seconds).
+3. 1-TO-1 AUDIO/VISUAL MATCH: The visual prompt MUST depict the EXACT situational action described in that sentence!
+4. VISUAL CONSISTENCY: In "character_bible", define a precise "visual_anchor" for each character. In every frame's "visual_prompt", ALWAYS reuse that exact visual anchor combined with situational action, camera angle, and 3D Disney Pixar render style.
+5. STRICT CHILD VOICES ONLY: All characters and the narrator MUST use sweet, lively child voices ("child_male" or "child_female"). NEVER use adult voices.
 
 Output MUST be valid raw JSON matching this schema:
 {

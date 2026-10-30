@@ -29,7 +29,11 @@ import {
   CheckCircle,
   Eye,
   Clock,
-  TrendingUp
+  TrendingUp,
+  Plus,
+  PanelLeftClose,
+  PanelLeftOpen,
+  MessageSquarePlus
 } from "lucide-react";
 
 interface RunItem {
@@ -73,6 +77,15 @@ interface RunDetail {
 interface ChatMessage {
   role: "user" | "assistant";
   content: string;
+  timestamp?: string;
+}
+
+interface ConversationSummary {
+  id: string;
+  title: string;
+  created_at: string;
+  updated_at: string;
+  message_count: number;
 }
 
 const API_BASE = "http://localhost:8000";
@@ -84,6 +97,12 @@ export default function Home() {
   const [selectedRunId, setSelectedRunId] = useState<string>("");
   const [runDetail, setRunDetail] = useState<RunDetail | null>(null);
   const [myChannel, setMyChannel] = useState<any>(null);
+
+  // Conversations state & history
+  const [conversations, setConversations] = useState<ConversationSummary[]>([]);
+  const [activeConvId, setActiveConvId] = useState<string>("");
+  const [isConvSidebarOpen, setIsConvSidebarOpen] = useState(true);
+  const [isCreatingConv, setIsCreatingConv] = useState(false);
 
   // Chat state
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -147,6 +166,8 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
             }
             fetchStats();
             fetchRuns();
+            if (activeConvId) fetchConversationMessages(activeConvId);
+            fetchConversations();
           }
         }
       } catch (e) {
@@ -210,6 +231,81 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
   // Competitor data
   const [competitors, setCompetitors] = useState<any>(null);
   const [isCompLoading, setIsCompLoading] = useState(false);
+
+  const fetchConversations = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/api/conversations`);
+      if (res.ok) {
+        const data: ConversationSummary[] = await res.json();
+        setConversations(data);
+        if (data.length > 0 && !activeConvId) {
+          setActiveConvId(data[0].id);
+          fetchConversationMessages(data[0].id);
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to fetch conversations:", e);
+    }
+  };
+
+  const fetchConversationMessages = async (convId: string) => {
+    try {
+      const res = await fetch(`${API_BASE}/api/conversations/${convId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setActiveConvId(convId);
+        if (data.messages && Array.isArray(data.messages) && data.messages.length > 0) {
+          setMessages(data.messages);
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to fetch conversation detail:", e);
+    }
+  };
+
+  const handleCreateNewConversation = async () => {
+    if (isCreatingConv) return;
+    setIsCreatingConv(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/conversations`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ title: "New Production Chat" })
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setActiveConvId(data.id);
+        setMessages(data.messages || []);
+        setChatInput("");
+        await fetchConversations();
+      }
+    } catch (e) {
+      console.warn("Create conversation error:", e);
+    } finally {
+      setIsCreatingConv(false);
+    }
+  };
+
+  const handleDeleteConversation = async (convId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!confirm("Are you sure you want to delete this conversation thread?")) return;
+    try {
+      const res = await fetch(`${API_BASE}/api/conversations/${convId}`, { method: "DELETE" });
+      if (res.ok) {
+        const remaining = conversations.filter(c => c.id !== convId);
+        setConversations(remaining);
+        if (activeConvId === convId) {
+          if (remaining.length > 0) {
+            fetchConversationMessages(remaining[0].id);
+          } else {
+            handleCreateNewConversation();
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("Delete conversation error:", e);
+    }
+  };
   const [isSyncingChannel, setIsSyncingChannel] = useState(false);
   const [syncStatusMsg, setSyncStatusMsg] = useState<string | null>(null);
 
@@ -326,6 +422,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
     fetchStats();
     fetchRuns();
     fetchMyChannel();
+    fetchConversations();
 
     // Check if an existing production job is in progress on the server (handles page refresh seamlessly)
     const checkActiveJob = async () => {
@@ -397,8 +494,9 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
       const res = await fetch(`${API_BASE}/api/agent/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, thread_id: activeConvId || "default_user" }),
       });
+      fetchConversations();
       if (res.ok) {
         const data = await res.json();
         if (data.status === "busy") {
@@ -494,28 +592,102 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
         {activeTab === "studio" && (
           <div className="h-[calc(100vh-62px)] flex flex-col md:flex-row divide-y md:divide-y-0 md:divide-x divide-stone-200">
             {/* ------------------------------------------------------------ */}
-            {/* LEFT PANE: AGENT CHAT (45% Width)                            */}
+            {/* LEFT PANE: CONVERSATION SIDEBAR + AGENT CHAT (48% Width)    */}
             {/* ------------------------------------------------------------ */}
-            <div className="w-full md:w-[45%] h-full flex flex-col bg-[#FDFCF7]">
-              {/* Chat Header */}
-              <div className="px-5 py-2.5 border-b border-stone-200 bg-white flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-200">
-                    <Wand2 className="w-4 h-4" />
+            <div className="w-full md:w-[48%] h-full flex divide-x divide-stone-200 bg-[#FDFCF7] min-w-0">
+              {/* Conversation History Drawer */}
+              {isConvSidebarOpen && (
+                <div className="w-56 md:w-60 h-full bg-white flex flex-col shrink-0 border-r border-stone-200/70">
+                  {/* Top Bar: New Conversation Button */}
+                  <div className="p-3 border-b border-stone-100">
+                    <button
+                      onClick={handleCreateNewConversation}
+                      disabled={isCreatingConv}
+                      className="w-full bg-gradient-to-r from-amber-500 via-rose-400 to-amber-600 hover:opacity-95 text-white font-bold py-2 px-3 rounded-xl shadow-xs flex items-center justify-center space-x-1.5 text-xs transition cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>New Chat</span>
+                    </button>
                   </div>
-                  <div>
-                    <h2 className="text-xs font-bold text-stone-900">AI Showrunner Agent</h2>
-                    <p className="text-[10px] text-emerald-700 font-medium">Autonomous Producer for @WhimsyWandTales</p>
+
+                  {/* Conversation List */}
+                  <div className="flex-1 overflow-y-auto p-2 space-y-1">
+                    <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-stone-400 flex items-center justify-between">
+                      <span>Saved Chats ({conversations.length})</span>
+                    </div>
+
+                    {conversations.map((c) => {
+                      const isActive = c.id === activeConvId;
+                      return (
+                        <div
+                          key={c.id}
+                          onClick={() => fetchConversationMessages(c.id)}
+                          className={`group px-3 py-2 rounded-xl border text-xs cursor-pointer transition flex items-center justify-between ${
+                            isActive
+                              ? "bg-amber-50/90 border-amber-300 text-amber-950 font-bold shadow-2xs"
+                              : "bg-transparent border-transparent hover:bg-stone-50 text-stone-600"
+                          }`}
+                        >
+                          <div className="flex-1 min-w-0 pr-1">
+                            <p className="truncate text-xs leading-snug">{c.title || "Untitled Chat"}</p>
+                            <p className="text-[10px] text-stone-400 font-normal mt-0.5">
+                              {c.updated_at ? c.updated_at.split(" ")[1] : "Today"} • {c.message_count} msgs
+                            </p>
+                          </div>
+                          <button
+                            onClick={(e) => handleDeleteConversation(c.id, e)}
+                            className="opacity-0 group-hover:opacity-100 text-stone-400 hover:text-rose-600 p-1 rounded transition"
+                            title="Delete conversation"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
+              )}
 
-                <button
-                  onClick={handleClearChat}
-                  className="text-[11px] text-stone-500 hover:text-stone-800 px-2.5 py-1 rounded-md hover:bg-stone-100 transition border border-stone-200/60"
-                >
-                  Clear Chat
-                </button>
-              </div>
+              {/* Main Chat Conversation View */}
+              <div className="flex-1 h-full flex flex-col min-w-0">
+                {/* Chat Header with Sidebar Toggle & Actions */}
+                <div className="px-4 py-2.5 border-b border-stone-200 bg-white flex items-center justify-between">
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => setIsConvSidebarOpen(!isConvSidebarOpen)}
+                      className="text-stone-500 hover:text-stone-800 p-1.5 rounded-lg hover:bg-stone-100 border border-stone-200/60 transition"
+                      title={isConvSidebarOpen ? "Hide chat history" : "Show chat history"}
+                    >
+                      {isConvSidebarOpen ? <PanelLeftClose className="w-4 h-4" /> : <PanelLeftOpen className="w-4 h-4" />}
+                    </button>
+                    <div className="w-7 h-7 rounded-lg bg-amber-50 text-amber-700 flex items-center justify-center border border-amber-200">
+                      <Wand2 className="w-4 h-4" />
+                    </div>
+                    <div className="min-w-0">
+                      <h2 className="text-xs font-bold text-stone-900 truncate max-w-[200px]">
+                        {conversations.find(c => c.id === activeConvId)?.title || "AI Showrunner Agent"}
+                      </h2>
+                      <p className="text-[10px] text-emerald-700 font-medium">Autonomous Producer for @WhimsyWandTales</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center space-x-1.5">
+                    <button
+                      onClick={handleCreateNewConversation}
+                      className="text-[11px] text-amber-800 bg-amber-50 hover:bg-amber-100 px-2.5 py-1 rounded-md transition border border-amber-200/80 font-medium flex items-center space-x-1"
+                      title="Start a fresh conversation"
+                    >
+                      <Plus className="w-3 h-3" />
+                      <span>New Chat</span>
+                    </button>
+                    <button
+                      onClick={handleClearChat}
+                      className="text-[11px] text-stone-500 hover:text-stone-800 px-2.5 py-1 rounded-md hover:bg-stone-100 transition border border-stone-200/60"
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </div>
 
               {/* Quick Action Suggestion Chips */}
               <div className="px-4 py-2 border-b border-stone-200/70 bg-stone-50/70 flex space-x-2 overflow-x-auto text-[11px] no-scrollbar">
@@ -720,11 +892,12 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                 </form>
               </div>
             </div>
+          </div>
 
             {/* ------------------------------------------------------------ */}
-            {/* RIGHT PANE: GENERATED VIDEOS, IMAGES & METADATA (55% Width)   */}
+            {/* RIGHT PANE: GENERATED VIDEOS, IMAGES & METADATA (52% Width)   */}
             {/* ------------------------------------------------------------ */}
-            <div className="w-full md:w-[55%] h-full flex flex-col bg-white overflow-y-auto">
+            <div className="w-full md:w-[52%] h-full flex flex-col bg-white overflow-y-auto">
               {/* Top Bar: Selector & Duration */}
               <div className="p-3.5 border-b border-stone-200 bg-[#FAF9F5]/90 sticky top-0 z-20 backdrop-blur flex items-center justify-between">
                 <div className="flex items-center space-x-2.5">

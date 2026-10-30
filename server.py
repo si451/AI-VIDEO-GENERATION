@@ -226,9 +226,11 @@ def get_run_details(run_id: str):
     }
 
 def _run_agent_worker(job_id: str, message: str, thread_id: str):
+    from modules.conversation_manager import append_message
     tracker.start_job(job_id=job_id, title=message[:50], total_frames=15, aspect_ratio="16:9")
     try:
         reply = run_agent_message(message, thread_id=thread_id)
+        append_message(thread_id, "assistant", reply)
         if tracker.is_active:
             tracker.complete_job(reply=reply)
         else:
@@ -237,24 +239,56 @@ def _run_agent_worker(job_id: str, message: str, thread_id: str):
         import traceback
         traceback.print_exc()
         tracker.fail_job(str(e))
+        append_message(thread_id, "assistant", f"❌ Error: {str(e)}")
+
+@app.get("/api/conversations")
+def get_conversations():
+    from modules.conversation_manager import list_conversations
+    return list_conversations()
+
+class CreateConvReq(BaseModel):
+    title: Optional[str] = None
+
+@app.post("/api/conversations")
+def create_new_conv(req: Optional[CreateConvReq] = None):
+    from modules.conversation_manager import create_conversation
+    title = req.title if req else None
+    return create_conversation(title=title)
+
+@app.get("/api/conversations/{conv_id}")
+def get_single_conv(conv_id: str):
+    from modules.conversation_manager import get_conversation
+    return get_conversation(conv_id)
+
+@app.delete("/api/conversations/{conv_id}")
+def delete_single_conv(conv_id: str):
+    from modules.conversation_manager import delete_conversation
+    ok = delete_conversation(conv_id)
+    return {"status": "deleted" if ok else "not_found"}
 
 @app.post("/api/agent/chat")
 def chat_with_agent(req: ChatRequest):
     job_id = str(uuid.uuid4())[:8]
+    thread_id = req.thread_id or "default_user"
+    from modules.conversation_manager import append_message
+    append_message(thread_id, "user", req.message)
+
     if tracker.is_active:
+        busy_msg = f"A production task is already running: {tracker.detail}"
+        append_message(thread_id, "assistant", f"⏳ {busy_msg}")
         return {
             "status": "busy",
             "job_id": tracker.job_id,
-            "message": f"A production task is already running: {tracker.detail}"
+            "message": busy_msg
         }
     
     t = threading.Thread(
         target=_run_agent_worker,
-        args=(job_id, req.message, req.thread_id or "default_user"),
+        args=(job_id, req.message, thread_id),
         daemon=True
     )
     t.start()
-    return {"status": "started", "job_id": job_id}
+    return {"status": "started", "job_id": job_id, "thread_id": thread_id}
 
 @app.get("/api/agent/status")
 @app.get("/api/production/status")

@@ -232,3 +232,4 @@ if __name__ == "__main__":
     print(f"Sync complete! Total videos: {result.get('total_uploaded_videos')}")
     print(f"Live Long Videos: {len(result.get('live_videos', []))}")
     print(f"Live Shorts: {len(result.get('live_shorts', []))}")
+

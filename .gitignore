@@ -48,3 +48,5 @@ Thumbs.db
 .gemini/
 
 memory/current_job.json
+
+scratch/
