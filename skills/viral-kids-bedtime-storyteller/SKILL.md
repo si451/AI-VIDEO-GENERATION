@@ -81,3 +81,4 @@ Curiosity Question    Relatable Toddler Fear    Micro-pauses, Blowing,      Heav
 3. **Fern the Forest Fairy**: Represents gentleness, quiet nature magic, and soft whispers. She sprinkles dream-dust on flowers that bloom sweet lullabies.
 4. **Benny Bunny**: Represents comfort, coziness, and overcoming shyness. His floppy ears droop when he's sleepy, showing children that it's okay to rest.
 5. **Luna the Cloud**: Represents emotional release, soft pastel rain, and drifting weightlessly through the twilight sky.
+

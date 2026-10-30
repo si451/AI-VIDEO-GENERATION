@@ -131,3 +131,4 @@ def delete_conversation(conv_id: str) -> bool:
         except Exception as e:
             logger.error(f"Error deleting conversation {conv_id}: {e}")
     return False
+

@@ -47,7 +47,8 @@ def generate_styled_ass(
     frames: list,
     voice_metadata: list,
     output_file: Path,
-    aspect_ratio: str = "9:16"
+    aspect_ratio: str = "9:16",
+    min_duration_sec: float = 0.0
 ) -> Path:
     """
     Generates a beautifully styled .ass subtitle file with exact frame-accurate word timing.
@@ -102,7 +103,8 @@ def generate_styled_ass(
             diag = frame.get("dialogue", "")
             lines.append(f"Dialogue: 0,{start_str},{end_str},CartoonDefault,,0,0,0,,{diag}")
 
-        current_time_offset += duration
+        scene_step = max(duration + 0.5, min_duration_sec) if min_duration_sec > 0 else duration
+        current_time_offset += scene_step
 
     output_file.parent.mkdir(parents=True, exist_ok=True)
     with open(output_file, "w", encoding="utf-8") as f:

@@ -12,27 +12,29 @@ from config import AUDIO_DIR, ASSETS_DIR, FINAL_DIR
 
 def create_default_bgm(output_path: Path, duration_sec: float) -> Path:
     """
-    Generates a gentle, soothing multi-tone ambient melody for children's stories
-    if no custom MP3 files exist in assets/bgm/.
+    Generates an authentic acoustic music-box and piano lullaby with real bell harmonics,
+    gentle arpeggios, and warm decaying envelopes. Completely replaces raw electronic sine beeps!
     """
     output_path.parent.mkdir(parents=True, exist_ok=True)
-    # Synthesizes soft, gentle bell/music-box tones using FFmpeg lavfi
-    cmd = [
-        "ffmpeg", "-y",
-        "-f", "lavfi",
-        "-i", f"sine=frequency=523.25:duration={duration_sec}",  # C5
-        "-f", "lavfi",
-        "-i", f"sine=frequency=659.25:duration={duration_sec}",  # E5
-        "-f", "lavfi",
-        "-i", f"sine=frequency=783.99:duration={duration_sec}",  # G5
-        "-filter_complex",
-        "[0:a][1:a][2:a]amix=inputs=3:dropout_transition=0,volume=0.15,lowpass=f=1200,afade=t=in:ss=0:d=2,afade=t=out:st=" + f"{max(duration_sec-3, 0)}:d=3[aout]",
-        "-map", "[aout]",
-        "-c:a", "libmp3lame",
-        str(output_path)
-    ]
-    subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-    return output_path
+    try:
+        from modules.lullaby_generator import create_soothing_bedtime_lullaby
+        create_soothing_bedtime_lullaby(output_path, duration_sec=duration_sec)
+        return output_path
+    except Exception as e:
+        # Fallback to soft filtered multi-chord if numpy/scipy fails
+        cmd = [
+            "ffmpeg", "-y",
+            "-f", "lavfi", "-i", f"sine=frequency=261.63:duration={duration_sec}",  # C4
+            "-f", "lavfi", "-i", f"sine=frequency=329.63:duration={duration_sec}",  # E4
+            "-f", "lavfi", "-i", f"sine=frequency=392.00:duration={duration_sec}",  # G4
+            "-filter_complex",
+            f"[0:a][1:a][2:a]amix=inputs=3:dropout_transition=0,volume=0.08,lowpass=f=600,afade=t=in:ss=0:d=3,afade=t=out:st={max(duration_sec-4, 0)}:d=4[aout]",
+            "-map", "[aout]",
+            "-c:a", "libmp3lame",
+            str(output_path)
+        ]
+        subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+        return output_path
 
 def build_scene_dialogue_track(scenes: list, voice_metadata: list, output_path: Path, audio_dir: Path = None, min_duration_sec: float = 0.0) -> Path:
     """

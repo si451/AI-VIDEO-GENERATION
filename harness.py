@@ -398,7 +398,7 @@ def run_omnibus_pipeline(
             })
 
         ch_subtitles = run_dir / f"chapter_{ch_num:02d}_subtitles.ass"
-        generate_styled_ass(ch_frames, ch_voice_metadata, ch_subtitles, aspect_ratio=aspect_ratio)
+        generate_styled_ass(ch_frames, ch_voice_metadata, ch_subtitles, aspect_ratio=aspect_ratio, min_duration_sec=effective_seconds_per_scene)
 
         ch_master_audio = audio_dir / f"chapter_{ch_num:02d}_audio.mp3"
         mix_story_audio(

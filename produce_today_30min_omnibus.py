@@ -122,3 +122,4 @@ if __name__ == "__main__":
 
     dry_run = "--dry-run" in sys.argv
     produce_todays_30min_omnibus(target_minutes=target_m, dry_run_visuals=dry_run)
+

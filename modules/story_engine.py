@@ -142,11 +142,22 @@ def generate_story(
             "4. Formulate an irresistible curiosity-gap title formula that kids and parents will click!"
         )
 
+    if aspect_ratio == "16:9":
+        duration_desc = f"~{num_frames * 10} seconds (~10.0 seconds per frame, slow soothing bedtime pacing)"
+        pacing_rule = (
+            "- FULL IMMERSIVE BEDTIME DIALOGUE: To prevent long empty silences in 16:9 widescreen videos, "
+            "each frame's dialogue MUST be 18 to 26 words (2 to 3 rich, soothing spoken sentences, ~7.5 to 8.5 seconds of voice). "
+            "This leaves only a gentle 1.5s musical lullaby breathing pause before the next scene, ensuring continuous comforting storytelling throughout the entire video!"
+        )
+    else:
+        duration_desc = f"~{num_frames * 3} seconds (~3.0 seconds per frame)"
+        pacing_rule = "- Each frame's dialogue MUST be 1 short sentence (6 to 10 words, ~2.5 to 3.5 seconds) matching rapid visual cuts."
+
     user_instructions = f"""{user_goal}
 
 Format: {aspect_ratio} {'Vertical YouTube Short' if aspect_ratio == '9:16' else 'Widescreen Story Episode'}.
 Exact Number of Frames: {num_frames}.
-Estimated Duration: {num_frames * 3} seconds (~3.0 seconds per frame).
+Estimated Duration: {duration_desc}.
 Target Audience: Toddlers & Young Kids (Ages 3-7).
 
 {channel_context}
@@ -154,7 +165,7 @@ Target Audience: Toddlers & Young Kids (Ages 3-7).
 
 CRITICAL RULES:
 - Generate EXACTLY {num_frames} frames in the "frames" list.
-- Each frame's dialogue MUST be 1 short sentence (5 to 9 words, ~2.5 to 3.5 seconds).
+{pacing_rule}
 - Every single frame must have a unique situational visual prompt matching the exact spoken action.
 - STRICT SWEET CHILD VOICES ONLY ("child_male" or "child_female").
 - Keep visuals in 3D Disney Pixar animation style with rich fairy-tale lighting."""
