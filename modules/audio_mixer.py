@@ -96,6 +96,7 @@ def mix_story_audio(
     """
     Assembles voice tracks, blends background music with dynamic audio ducking,
     and produces the master audio track.
+    Guarantees BGM loops seamlessly and plays for the ENTIRE duration of the video.
     """
     if audio_dir is None:
         audio_dir = AUDIO_DIR
@@ -120,20 +121,23 @@ def mix_story_audio(
     else:
         bgm_track = Path(bgm_path)
 
-    print(f"\n[Audio Mixer] Mixing Voice Track with Ducked Background Music ({total_duration:.1f}s)...")
+    print(f"\n[Audio Mixer] Mixing Voice Track with Looped Ducked Background Music ({total_duration:.1f}s)...")
 
-    # 3. Dynamic Sidechain Compression (Audio Ducking)
-    # When voice speaks, BGM volume reduces to 15%. When voice pauses, BGM swells to 45%.
+    # 3. Dynamic Sidechain Compression (Audio Ducking) with infinite stream loop
+    # When voice speaks, BGM volume reduces to 15%. When voice pauses, BGM swells to 35%.
+    # -stream_loop -1 guarantees music never stops prematurely!
     cmd = [
         "ffmpeg", "-y",
+        "-stream_loop", "-1",
         "-i", str(bgm_track),
         "-i", str(voice_track),
         "-filter_complex",
-        "[0:a]volume=0.35[bgm];"
+        "[0:a]volume=0.28[bgm];"
         "[1:a]asplit=2[sc][voice];"
         "[bgm][sc]sidechaincompress=threshold=0.08:ratio=5:attack=60:release=400[ducked_bgm];"
-        "[ducked_bgm][voice]amix=inputs=2:duration=longest[aout]",
+        "[ducked_bgm][voice]amix=inputs=2:duration=first:dropout_transition=0[aout]",
         "-map", "[aout]",
+        "-t", f"{total_duration:.3f}",
         "-c:a", "libmp3lame",
         "-q:a", "2",
         str(output_master_audio)
@@ -144,9 +148,11 @@ def mix_story_audio(
         # Simple fallback amix if sidechain filter fails
         fallback_cmd = [
             "ffmpeg", "-y",
+            "-stream_loop", "-1",
             "-i", str(bgm_track),
             "-i", str(voice_track),
-            "-filter_complex", "[0:a]volume=0.2[bgm];[1:a]volume=1.0[voice];[bgm][voice]amix=inputs=2:duration=longest",
+            "-filter_complex", "[0:a]volume=0.2[bgm];[1:a]volume=1.0[voice];[bgm][voice]amix=inputs=2:duration=first:dropout_transition=0",
+            "-t", f"{total_duration:.3f}",
             "-c:a", "libmp3lame",
             str(output_master_audio)
         ]

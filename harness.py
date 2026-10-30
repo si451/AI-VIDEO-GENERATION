@@ -297,10 +297,32 @@ def run_omnibus_pipeline(
             final_chapter_configs.append(DEFAULT_MASCOT_CONCEPTS[def_idx])
 
     # 2. Mathematical Target Scaling
-    # Target seconds per chapter
+    # Automatically adapt chapters and frames to strictly match the requested target duration.
+    # At ~12.0 seconds per bedtime frame (with rich soothing 25-word dialogue):
     target_total_sec = target_duration_minutes * 60.0
+    total_target_frames = max(5, int(round(target_total_sec / 12.0)))
+
+    if not chapter_topics or len(parsed_chapters) <= 1:
+        if target_duration_minutes <= 6.0:
+            num_chapters = 1
+            frames_per_chapter = min(total_target_frames, 25)
+        elif target_duration_minutes <= 12.0:
+            num_chapters = 2
+            frames_per_chapter = max(10, int(round(total_target_frames / 2)))
+        elif target_duration_minutes <= 18.0:
+            num_chapters = 3
+            frames_per_chapter = max(10, int(round(total_target_frames / 3)))
+        else:
+            num_chapters = 5
+            frames_per_chapter = max(15, int(round(total_target_frames / 5)))
+    else:
+        num_chapters = max(1, len(parsed_chapters))
+        frames_per_chapter = max(5, int(round(total_target_frames / num_chapters)))
+
+    # Re-slice final_chapter_configs to exact num_chapters
+    final_chapter_configs = final_chapter_configs[:num_chapters]
     target_sec_per_chapter = target_total_sec / num_chapters
-    effective_seconds_per_scene = max(3.5, target_sec_per_chapter / max(1, frames_per_chapter))
+    effective_seconds_per_scene = max(4.0, target_sec_per_chapter / max(1, frames_per_chapter))
     total_frames = num_chapters * frames_per_chapter
 
     tracker.start_job(

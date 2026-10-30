@@ -255,7 +255,11 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
         const data = await res.json();
         setActiveConvId(convId);
         if (data.messages && Array.isArray(data.messages) && data.messages.length > 0) {
-          setMessages(data.messages);
+          setMessages((prev) => {
+            // Never overwrite with fewer messages or wipe an active assistant reply
+            if (prev.length > data.messages.length) return prev;
+            return data.messages;
+          });
         }
       }
     } catch (e) {
