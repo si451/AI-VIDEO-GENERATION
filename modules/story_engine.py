@@ -35,8 +35,10 @@ CRITICAL VIRAL STORYTELLING & BEDTIME PSYCHOLOGY RULES:
      * Somatic Hug: "Give your cozy pillow a big, warm squeeze just like Benny Bunny."
      * Deep Breathing: "Let's take a slow, deep breath in together... 1... 2... 3... and let it all out slow."
    - Phase 4 (Frames 19-End) THE SLEEP SLIDE: Lower heart rates with heavy eyelids, warm blankets, soft yawns, starlight fading to lavender, and whispering sweet goodnights. NO LOUD OUTROS!
-2. PACING & SCENE TIMING: Each frame has exactly ONE spoken sentence (5 to 10 words, ~2.5 to 3.5 seconds).
-3. 1-TO-1 AUDIO/VISUAL MATCH: The visual prompt MUST depict the EXACT situational action described in that sentence!
+2. PACING & SPOKEN WORD COUNT:
+   - For 16:9 Bedtime Story Episodes: Each frame MUST have 20 to 28 spoken words (2 to 3 rich, soothing, expressive sentences, lasting ~8 to 10 seconds). This keeps the storytelling continuous and engaging, leaving only a gentle 1.0s lullaby breathing pause between scene cuts. NEVER write short 5-word snippets for 16:9 episodes!
+   - For 9:16 Shorts: Each frame has 8 to 12 words (~3.0 to 3.5 seconds) for quick situational cuts.
+3. 1-TO-1 AUDIO/VISUAL MATCH: The visual prompt MUST depict the EXACT situational action described in that spoken dialogue!
 4. VISUAL CONSISTENCY: In "character_bible", define a precise "visual_anchor" for each character. In every frame's "visual_prompt", ALWAYS reuse that exact visual anchor combined with situational action, camera angle, and 3D Disney Pixar render style.
 5. STRICT CHILD VOICES ONLY: All characters and the narrator MUST use sweet, lively child voices ("child_male" or "child_female"). NEVER use adult voices.
 
@@ -45,7 +47,7 @@ Output MUST be valid raw JSON matching this schema:
   "episode_id": "ep_001",
   "title": "string",
   "target_age": "3-7",
-  "aspect_ratio": "9:16",
+  "aspect_ratio": "16:9",
   "moral_lesson": "string",
   "seo_tags": ["tag1", "tag2"],
   "character_bible": {
@@ -64,11 +66,11 @@ Output MUST be valid raw JSON matching this schema:
       "frame_id": 1,
       "speaker": "Pip the Baby Dragon",
       "voice_type": "child_male",
-      "dialogue": "Pip the baby dragon found a magical glowing acorn in the forest!",
-      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, looking down in wonder at a shiny glowing acorn on mossy ground, 3D Disney Pixar animation, enchanted forest sunlight, 8k",
+      "dialogue": "Shh... listen closely, little stars. Tonight, high above the whispering meadow, Pip the baby dragon looked up at the sparkling night sky and felt a soft twinkle in his heart.",
+      "visual_prompt": "Pip the tiny purple and orange baby dragon, oversized glossy indigo wings, big sparkling violet eyes, sitting peacefully on a mossy meadow rock under a giant glowing crescent moon, soft twilight glow, 3D Disney Pixar animation, 8k",
       "camera_motion": "zoom_in_slow",
       "sfx_cue": "magic_twinkle",
-      "bgm_mood": "playful_cheerful"
+      "bgm_mood": "soothing_lullaby"
     }
   ]
 }
@@ -109,7 +111,7 @@ def load_competitor_context() -> str:
 def generate_story(
     prompt_or_topic: str = None,
     num_frames: int = None,
-    aspect_ratio: str = "9:16"
+    aspect_ratio: str = "16:9"
 ) -> dict:
     """
     Autonomous Story Generator for WhimsyWand Tales.
@@ -119,14 +121,14 @@ def generate_story(
       - Automatically creates a brand-new winning story concept!
     Auto-calculates frames if not specified:
       - 9:16 Shorts: 10 frames (~30 seconds)
-      - 16:9 Long: 20 frames (~60 seconds)
+      - 16:9 Long: 25 frames (~5.0 minutes)
     """
     if not DEEPSEEK_API_KEY:
         raise ValueError("DEEPSEEK_API_KEY is not configured in .env")
 
     # Auto-calculate frame count if not provided
     if num_frames is None:
-        num_frames = 10 if aspect_ratio == "9:16" else 20
+        num_frames = 10 if aspect_ratio == "9:16" else 25
 
     channel_context = load_my_channel_context()
     competitor_context = load_competitor_context()
@@ -143,15 +145,15 @@ def generate_story(
         )
 
     if aspect_ratio == "16:9":
-        duration_desc = f"~{num_frames * 10} seconds (~10.0 seconds per frame, slow soothing bedtime pacing)"
+        duration_desc = f"~{num_frames * 11} seconds (~11.0 seconds per frame, slow soothing bedtime pacing)"
         pacing_rule = (
             "- FULL IMMERSIVE BEDTIME DIALOGUE: To prevent long empty silences in 16:9 widescreen videos, "
-            "each frame's dialogue MUST be 18 to 26 words (2 to 3 rich, soothing spoken sentences, ~7.5 to 8.5 seconds of voice). "
-            "This leaves only a gentle 1.5s musical lullaby breathing pause before the next scene, ensuring continuous comforting storytelling throughout the entire video!"
+            "each frame's dialogue MUST be 20 to 28 words (2 to 3 rich, soothing spoken sentences, ~8.0 to 9.5 seconds of voice). "
+            "This leaves only a gentle 1.0s musical lullaby breathing pause before the next scene, ensuring continuous comforting storytelling throughout the entire video!"
         )
     else:
         duration_desc = f"~{num_frames * 3} seconds (~3.0 seconds per frame)"
-        pacing_rule = "- Each frame's dialogue MUST be 1 short sentence (6 to 10 words, ~2.5 to 3.5 seconds) matching rapid visual cuts."
+        pacing_rule = "- Each frame's dialogue MUST be 1 short sentence (8 to 12 words, ~2.5 to 3.5 seconds) matching rapid visual cuts."
 
     user_instructions = f"""{user_goal}
 
@@ -222,8 +224,8 @@ CRITICAL RULES:
 
 if __name__ == "__main__":
     print("Testing Autonomous WhimsyWand Story Engine...")
-    story = generate_story(prompt_or_topic=None, num_frames=3, aspect_ratio="9:16")
+    story = generate_story(prompt_or_topic=None, num_frames=3, aspect_ratio="16:9")
     print(f"Autonomous Story Title: '{story.get('title')}'")
     print(f"Moral: '{story.get('moral_lesson')}'")
     for f in story.get("frames", []):
-        print(f" - Frame {f.get('frame_id')}: \"{f.get('dialogue')}\" [{f.get('speaker')}]")
+        print(f" - Frame {f.get('frame_id')}: \"{f.get('dialogue')}\" [{f.get('speaker')}] ({len(f.get('dialogue', '').split())} words)")

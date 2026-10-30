@@ -53,6 +53,7 @@ def generate_styled_ass(
     """
     Generates a beautifully styled .ass subtitle file with exact frame-accurate word timing.
     Adjusts layout and font size for 9:16 vertical shorts (clear of YouTube UI) or 16:9 widescreen.
+    Guarantees 100% synchronization with video clips and audio tracks.
     """
     if aspect_ratio == "9:16":
         width, height = SHORTS_WIDTH, SHORTS_HEIGHT
@@ -77,8 +78,12 @@ def generate_styled_ass(
         duration = meta.get("duration", 3.0)
         word_timestamps = meta.get("word_timestamps", [])
 
+        # The scene step matches animate_all_frames and build_scene_dialogue_track exactly
+        scene_step = max(duration + 0.8, min_duration_sec) if min_duration_sec > 0 else (duration + 0.8)
+
         scene_start = current_time_offset
-        scene_end = scene_start + duration
+        # Let the last chunk linger until right before scene ends so kids and parents can read comfortably
+        scene_end = scene_start + max(duration + 0.5, scene_step - 0.2)
 
         if word_timestamps:
             # Group words into clean 4-6 word readable chunks
@@ -103,7 +108,6 @@ def generate_styled_ass(
             diag = frame.get("dialogue", "")
             lines.append(f"Dialogue: 0,{start_str},{end_str},CartoonDefault,,0,0,0,,{diag}")
 
-        scene_step = max(duration + 0.5, min_duration_sec) if min_duration_sec > 0 else duration
         current_time_offset += scene_step
 
     output_file.parent.mkdir(parents=True, exist_ok=True)

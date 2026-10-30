@@ -1,82 +1,40 @@
 {
-  "niche_query": "bedtime stories for kids cartoon",
+  "niche_query": "bedtime stories for kids cartoon 30 minutes",
   "total_analyzed": 6,
   "top_videos": [
     {
-      "title": "Yes Yes Bedtime Song | @CoComelon Nursery Rhymes & Kids Songs",
-      "views": 1858392416,
-      "channel": "Cocomelon - Nursery Rhymes",
+      "title": "Our Favorite Bedtime Songs | Twinkle Twinkle Little Star, Sweet Dreams, & Little Snowflake",
+      "views": 108384170,
+      "channel": "Super Simple Songs - Kids Songs",
       "tags": [
-        "kindergarten",
-        "nursery rhymes",
-        "sing-along",
-        "children songs",
-        "kids animation",
-        "abckidtv",
-        "kids entertainment",
-        "toddler"
+        "kids songs",
+        "bedtime songs",
+        "goodnight song",
+        "lullaby songs",
+        "super simple songs",
+        "lullaby",
+        "twinkle twinkle little star",
+        "sweet dreams"
       ]
     },
     {
-      "title": "Peppa Pig Adventures | Swimming with Peppa and George Family Kids Cartoon",
-      "views": 350423993,
-      "channel": "Peppa Pig - Official Channel",
+      "title": "Peekaboo, Where Are You? | Fun Game and Story for Kids | Super Simple Storybooks",
+      "views": 99496869,
+      "channel": "Super Simple Storytime",
       "tags": [
-        "peppa pig",
-        "pepa pig",
-        "peppa pig song",
-        "pig peppa pig",
-        "peppa pig cartoon",
-        "funny peppa pig",
-        "peppa pig songs",
-        "cartoon"
-      ]
-    },
-    {
-      "title": "The Very Hungry Caterpillar - Official Animated Film | Made For Kids | Eric Carle Book",
-      "views": 306742097,
-      "channel": "Illuminated Films",
-      "tags": [
-        "eric carle",
-        "very hungry caterpillar",
-        "mixed up chameleon",
-        "papa please get the moon for me",
-        "i see a song",
-        "very quiet cricket",
-        "childrens book",
-        "popup book"
-      ]
-    },
-    {
-      "title": "The Gingerbread Man | Full Story | Animated Fairy Tales For Children | 4K UHD",
-      "views": 235745248,
-      "channel": "Geethanjali Kids - Rhymes and Stories",
-      "tags": [
-        "gingerbread man",
-        "bedtime stories",
+        "storybooks for kids",
+        "peekaboo",
+        "super simple storybooks",
+        "peekabook cat storybook",
         "stories for kids",
-        "stories for children",
-        "english stories for kids",
-        "short stories for kids",
-        "fairy tales for kids",
-        "short stories"
-      ]
-    },
-    {
-      "title": "Toy Train Disaster | CURIOUS GEORGE",
-      "views": 87859399,
-      "channel": "Universal Jr.",
-      "tags": [
-        "universal kids",
-        "universal kids preschool",
-        "unikids",
-        "peacock jr",
-        "peachicks"
+        "stories for toddlers",
+        "reading for kids",
+        "super simple"
       ]
     },
     {
       "title": "Caterpillar Shoes | Sweet rhyming bedtime story for kids!",
-      "views": 84141701,
+      "views": 84147595,
       "channel": "The Old Branch",
       "tags": [
         "Caterpillar Shoes",
@@ -88,23 +46,68 @@
         "entertainment",
         "kids entertainment"
       ]
+    },
+    {
+      "title": "Sleepytime 🌙 | S2 E26 | Full Episode | Bluey | @disneyjr",
+      "views": 61377929,
+      "channel": "Disney Jr. ",
+      "tags": [
+        "bluey",
+        "bingo",
+        "bluey season 3",
+        "bluey and bingo",
+        "bluey disney junior",
+        "bluey disney",
+        "bluey disney jr",
+        "disney junior"
+      ]
+    },
+    {
+      "title": "Twinkle's Magic Sleepy Song | 💤 Bedtime, Wind Down, and Sleep with Moonbug Kids",
+      "views": 58097099,
+      "channel": "Cozy Bedtime Club",
+      "tags": [
+        "alphabet",
+        "animated",
+        "asmr",
+        "baby jj",
+        "baby sleep",
+        "baby songs",
+        "baby time",
+        "bedtime"
+      ]
+    },
+    {
+      "title": "Room # 333 | Haunted Classroom | Horror Story in Hindi",
+      "views": 39195098,
+      "channel": "Thriller Tales",
+      "tags": [
+        "Room 333",
+        "haunted",
+        "classroom",
+        "haunted classroom",
+        "scary stories",
+        "horror",
+        "creepy",
+        "scary"
+      ]
     }
   ],
   "top_keywords": [
-    "unikids",
-    "stories for children",
+    "bedtime songs",
+    "bingo",
+    "Room 333",
+    "for kids",
     "children",
-    "peppa pig",
-    "universal kids preschool",
-    "universal kids",
-    "children songs",
-    "pepa pig",
-    "peacock jr",
-    "eric carle",
-    "sing-along",
-    "pig peppa pig",
-    "i see a song",
-    "papa please get the moon for me",
-    "english stories for kids"
+    "scary stories",
+    "peekabook cat storybook",
+    "bluey",
+    "bluey and bingo",
+    "bluey season 3",
+    "classroom",
+    "goodnight song",
+    "lullaby songs",
+    "animated",
+    "haunted classroom"
   ]
 }

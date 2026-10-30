@@ -24,8 +24,8 @@ def build_smooth_motion_filter(
     fps: int = 30
 ) -> str:
     """
-    Constructs butter-smooth, jitter-free FFmpeg camera motion filters.
-    Eliminates sub-pixel shaking by using incremental zoom steps with high-resolution pre-scaling.
+    Constructs cinematic, jitter-free FFmpeg camera motion filters.
+    Applies real visible progressive camera motion (zoom in, zoom out, pan) across the full clip duration.
     Supports both 9:16 vertical shorts and 16:9 widescreen.
     """
     total_frames = max(int(duration_sec * fps), 30)
@@ -37,45 +37,43 @@ def build_smooth_motion_filter(
         out_w, out_h = LONG_WIDTH, LONG_HEIGHT          # 1280x720
         scale_w, scale_h = 1920, 1080
 
-    # Gentle zoom rate: over ~3 seconds (90 frames), zoom from 1.00 to ~1.08
-    # Rate per frame = 0.08 / total_frames
-    zoom_step = round(0.08 / max(total_frames, 1), 6)
+    # Progressive step per frame across total_frames
+    zoom_step = round(0.18 / max(total_frames, 1), 6)
+    pan_step = round(60.0 / max(total_frames, 1), 3)
 
     if motion_type == "zoom_in_slow":
-        # Ultra smooth slow push-in towards center
+        # Smooth slow push-in towards center (from 1.00 to ~1.20)
         filter_str = (
             f"scale={scale_w}:{scale_h}:force_original_aspect_ratio=increase,"
             f"crop={scale_w}:{scale_h},"
-            f"zoompan=z='min(zoom+{zoom_step},1.12)':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
+            f"zoompan=z='min(zoom+{zoom_step},1.22)':d={total_frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
         )
     elif motion_type == "zoom_out_slow":
-        # Ultra smooth pull-back
+        # Smooth pull-back (from ~1.20 down towards 1.02)
         filter_str = (
             f"scale={scale_w}:{scale_h}:force_original_aspect_ratio=increase,"
             f"crop={scale_w}:{scale_h},"
-            f"zoompan=z='if(lte(zoom,1.0),1.10,max(1.001,zoom-{zoom_step}))':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
+            f"zoompan=z='if(lte(on,1),1.20,max(1.001,zoom-{zoom_step}))':d={total_frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
         )
     elif motion_type == "pan_right":
         # Smooth gentle drift right
-        pan_step = round(40.0 / max(total_frames, 1), 3)
         filter_str = (
             f"scale={scale_w}:{scale_h}:force_original_aspect_ratio=increase,"
             f"crop={scale_w}:{scale_h},"
-            f"zoompan=z='1.08':d=1:x='min(x+{pan_step},iw-iw/zoom)':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
+            f"zoompan=z='1.12':d={total_frames}:x='if(lte(on,1),0,min(x+{pan_step},iw-iw/zoom))':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
         )
     elif motion_type == "pan_left":
         # Smooth gentle drift left
-        pan_step = round(40.0 / max(total_frames, 1), 3)
         filter_str = (
             f"scale={scale_w}:{scale_h}:force_original_aspect_ratio=increase,"
             f"crop={scale_w}:{scale_h},"
-            f"zoompan=z='1.08':d=1:x='max(x-{pan_step},0)':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
+            f"zoompan=z='1.12':d={total_frames}:x='if(lte(on,1),iw-iw/zoom,max(x-{pan_step},0))':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
         )
     else:  # default gentle zoom in
         filter_str = (
             f"scale={scale_w}:{scale_h}:force_original_aspect_ratio=increase,"
             f"crop={scale_w}:{scale_h},"
-            f"zoompan=z='min(zoom+{zoom_step},1.08)':d=1:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
+            f"zoompan=z='min(zoom+{zoom_step},1.22)':d={total_frames}:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)':s={out_w}x{out_h}:fps={fps}"
         )
 
     return filter_str
@@ -92,13 +90,12 @@ def animate_frame_image(
 ) -> Path:
     """
     Converts a static illustration into a dynamic 30fps clip using GPU-accelerated NVENC.
-    Guarantees exact audio duration lock and butter-smooth motion.
+    Guarantees exact audio duration lock and butter-smooth continuous camera motion.
     """
     filter_expr = build_smooth_motion_filter(motion_type, duration_sec, aspect_ratio=aspect_ratio, fps=VIDEO_FPS)
 
     cmd = [
         "ffmpeg", "-y",
-        "-loop", "1",
         "-i", str(image_path),
         "-vf", filter_expr,
         "-t", f"{duration_sec:.3f}",
@@ -149,7 +146,7 @@ def animate_all_frames(
         fid = frame.get("frame_id", frame.get("scene_id", idx + 1))
         motion = frame.get("camera_motion", "zoom_in_slow")
         voice_dur = dur_map.get(fid, 3.0)
-        dur = max(voice_dur + 0.5, min_duration_sec) if min_duration_sec > 0 else voice_dur
+        dur = max(voice_dur + 0.8, min_duration_sec) if min_duration_sec > 0 else (voice_dur + 0.8)
 
         # Look for frame_01.jpg or scene_1.jpg
         img_path = scenes_dir / f"frame_{fid:02d}.jpg"

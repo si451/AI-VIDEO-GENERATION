@@ -57,7 +57,8 @@ def run_production_pipeline(
     aspect_ratio: str = "9:16",
     use_competitor_trends: bool = False,
     use_local_images: bool = True,
-    run_dir: Path = None
+    run_dir: Path = None,
+    min_duration_sec: float = 0.0
 ) -> dict:
     """
     Executes the complete high-retention Children's YouTube Harness.
@@ -138,27 +139,27 @@ def run_production_pipeline(
     # STEP 4: Butter-Smooth 2.5D Camera Motion (NVENC 30fps)
     tracker.update_stage("motion", "🎥 Animating Camera Motion", "Applying smooth slow zoom/pan motion (NVENC 30fps)...", 80)
     print(f"\n[Step 4/6] Animating Frames with Smooth Slow Zoom/Pan (NVENC 30fps)...")
-    clip_paths = animate_all_frames(frames, voice_metadata, aspect_ratio=aspect_ratio, scenes_dir=scenes_dir)
+    clip_paths = animate_all_frames(frames, voice_metadata, aspect_ratio=aspect_ratio, scenes_dir=scenes_dir, min_duration_sec=min_duration_sec)
 
     animated_clips = []
-    dur_map = {v.get("frame_id", v.get("scene_id", i+1)): v["duration"] for i, v in enumerate(voice_metadata)}
+    dur_map = {v.get("frame_id", v.get("scene_id", i+1)): max(v["duration"] + 0.8, min_duration_sec) if min_duration_sec > 0 else (v["duration"] + 0.8) for i, v in enumerate(voice_metadata)}
     for idx, cp in enumerate(clip_paths):
         fid = frames[idx].get("frame_id", idx + 1)
         animated_clips.append({
             "frame_id": fid,
             "scene_id": fid,
             "clip_path": str(cp),
-            "duration": dur_map.get(fid, 3.0)
+            "duration": dur_map.get(fid, 3.8)
         })
 
     # STEP 5: Subtitles & Background Music Mixing
     tracker.update_stage("motion", "📝 Karaoke Subtitles & Ducked BGM", "Styling ASS subtitles and mixing background music...", 88)
     print(f"\n[Step 5/6] Styling Subtitles ({aspect_ratio}) & Mixing Ducked Audio...")
     subtitles_ass = run_dir / "subtitles.ass"
-    generate_styled_ass(frames, voice_metadata, subtitles_ass, aspect_ratio=aspect_ratio)
+    generate_styled_ass(frames, voice_metadata, subtitles_ass, aspect_ratio=aspect_ratio, min_duration_sec=min_duration_sec)
 
     master_audio = audio_dir / "master_audio.mp3"
-    mix_story_audio(frames, voice_metadata, master_audio, audio_dir=audio_dir)
+    mix_story_audio(frames, voice_metadata, master_audio, audio_dir=audio_dir, min_duration_sec=min_duration_sec)
 
     # STEP 6: Master Assembly (NVENC GPU Stitching & YouTube Metadata)
     tracker.update_stage("assembly", "🎞️ NVENC Master Video Assembly", "Encoding final 1080p MP4 via NVIDIA hardware...", 94)
@@ -387,7 +388,7 @@ def run_omnibus_pipeline(
         )
 
         animated_clips = []
-        dur_map = {v.get("frame_id", v.get("scene_id", i+1)): max(v["duration"] + 0.5, effective_seconds_per_scene) for i, v in enumerate(ch_voice_metadata)}
+        dur_map = {v.get("frame_id", v.get("scene_id", i+1)): max(v["duration"] + 0.8, effective_seconds_per_scene) for i, v in enumerate(ch_voice_metadata)}
         for idx, cp in enumerate(clip_paths):
             fid = ch_frames[idx].get("frame_id", idx + 1)
             animated_clips.append({

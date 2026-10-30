@@ -699,6 +699,13 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                   <span>Audit WhimsyWand vs Competitors</span>
                 </button>
                 <button
+                  onClick={() => handleSendMessage("Produce a 5-minute Bedtime Story episode for WhimsyWand Tales (16:9 widescreen, target_duration_minutes=5.0, 25 frames) starring Barnaby Bear and friends, using our viral 4-phase bedtime framework, strict child voices, continuous dialogue, smooth camera zoom motion, and music-box lullaby.")}
+                  className="whitespace-nowrap px-3 py-1 rounded-full bg-indigo-50 hover:bg-indigo-100 text-indigo-900 border border-indigo-200 transition flex items-center space-x-1.5 font-semibold"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                  <span>🌙 5-Min Bedtime Story (Test Run)</span>
+                </button>
+                <button
                   onClick={() => handleSendMessage("Analyze our channel @WhimsyWandTales and research viral competitor hits, then outline a 30-minute Bedtime Story Omnibus compilation (5 sequential chapters) starring Pip the Dragon, Fern the Fairy, Barnaby Bear, Luna the Cloud, and Benny Bunny.")}
                   className="whitespace-nowrap px-3 py-1 rounded-full bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 transition flex items-center space-x-1.5 font-semibold"
                 >

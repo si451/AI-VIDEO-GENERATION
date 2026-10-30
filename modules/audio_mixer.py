@@ -61,7 +61,7 @@ def build_scene_dialogue_track(scenes: list, voice_metadata: list, output_path: 
             inputs.extend(["-i", str(voice_file.resolve())])
             v_meta = meta_map.get(scene_id, {})
             voice_dur = v_meta.get("duration", 3.0)
-            target_dur = max(voice_dur + 0.5, min_duration_sec) if min_duration_sec > 0 else voice_dur
+            target_dur = max(voice_dur + 0.8, min_duration_sec) if min_duration_sec > 0 else (voice_dur + 0.8)
             if target_dur > voice_dur:
                 filter_parts.append(f"[{count}:a]apad=whole_dur={target_dur:.3f}[a{count}];")
             else:
@@ -168,4 +168,3 @@ if __name__ == "__main__":
         print(f"SUCCESS! Master audio saved to: {out_master}")
     else:
         print("Run tts_engine.py first to create voice metadata.")
-
