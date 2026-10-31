@@ -280,29 +280,38 @@ def stitch_chapter_files(
         "-safe", "0",
         "-i", str(concat_list),
         "-c", "copy",
+        "-movflags", "+faststart",
         str(final_video)
     ]
     proc = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     if proc.returncode != 0:
         raise RuntimeError(f"Omnibus concatenation failed: {proc.stderr}")
 
+    dur_mins = int(round(total_time / 60.0))
+    dur_label = f"{dur_mins}-Minute " if dur_mins >= 2 else ""
+
     description = (
         f"{title}\n\n"
-        f"🌙 A soothing 30-Minute Bedtime Story compilation for toddlers and kids by WhimsyWand Tales (@WhimsyWandTales)!\n"
+        f"🌙 A soothing {dur_label}Bedtime Story compilation for toddlers and kids by WhimsyWand Tales (@WhimsyWandTales)!\n"
         f"Relax and drift off to magical sleep with Pip the Dragon, Fern the Fairy, Barnaby Bear, Luna the Cloud, and Benny Bunny.\n\n"
         f"⏱️ Chapters & Timestamps:\n" + "\n".join(chapters) + "\n\n"
         f"🔔 Subscribe to WhimsyWand Tales for weekly magical bedtime stories!\n\n"
-        f"#BedtimeStory #KidsStories #BedtimeCompilation #ToddlerStories #CartoonForKids #WhimsyWandTales #30MinBedtime"
+        f"#BedtimeStory #KidsStories #BedtimeCompilation #ToddlerStories #CartoonForKids #WhimsyWandTales"
     )
 
     metadata = {
-        "youtube_title": f"{title} | 30-Minute Bedtime Stories For Kids | Cartoon Animation",
+        "youtube_title": f"{title} | {dur_label}Bedtime Stories For Kids | Cartoon Animation",
         "youtube_description": description,
         "youtube_tags": list(all_tags),
         "chapters": chapters,
         "aspect_ratio": "16:9",
         "final_video_path": str(final_video),
-        "total_duration_sec": round(total_time, 2)
+        "total_duration_sec": round(total_time, 2),
+        "youtube_optimizations": {
+            "faststart": True,
+            "recommended_cards_time": format_chapter_time(max(0, total_time - 25)),
+            "recommended_endscreen_time": format_chapter_time(max(0, total_time - 20))
+        }
     }
 
     with open(output_run_dir / "final_video_metadata.json", "w", encoding="utf-8") as f:
