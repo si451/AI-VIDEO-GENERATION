@@ -288,19 +288,32 @@ def stitch_chapter_files(
         raise RuntimeError(f"Omnibus concatenation failed: {proc.stderr}")
 
     dur_mins = int(round(total_time / 60.0))
-    dur_label = f"{dur_mins}-Minute " if dur_mins >= 2 else ""
+    dur_label = f"{dur_mins}-Min " if dur_mins >= 2 else ""
+
+    clean_title = title.split("|")[0].strip()
+    for delim in ["—", "–", ": "]:
+        if delim in clean_title and len(clean_title.split(delim)[0]) > 8:
+            clean_title = clean_title.split(delim)[0].strip()
+            break
+    if len(clean_title) > 48:
+        clean_title = clean_title[:45].rsplit(" ", 1)[0].strip()
+
+    youtube_title = f"{clean_title} 🌙 {dur_label}Soothing Bedtime Stories For Kids | Cartoon Animation"
 
     description = (
-        f"{title}\n\n"
-        f"🌙 A soothing {dur_label}Bedtime Story compilation for toddlers and kids by WhimsyWand Tales (@WhimsyWandTales)!\n"
-        f"Relax and drift off to magical sleep with Pip the Dragon, Fern the Fairy, Barnaby Bear, Luna the Cloud, and Benny Bunny.\n\n"
-        f"⏱️ Chapters & Timestamps:\n" + "\n".join(chapters) + "\n\n"
-        f"🔔 Subscribe to WhimsyWand Tales for weekly magical bedtime stories!\n\n"
-        f"#BedtimeStory #KidsStories #BedtimeCompilation #ToddlerStories #CartoonForKids #WhimsyWandTales"
+        f"{clean_title} 🌙 | {dur_label}Soothing Bedtime Story For Kids\n\n"
+        f"Put this on when your little one is fighting sleep! A gentle bedtime journey through enchanted dreamlands with Barnaby Bear, Pip the Dragon, and friends.\n\n"
+        f"⏱️ Chapters & Sleep Timestamps:\n" + "\n".join(chapters) + "\n\n"
+        f"✨ Features:\n"
+        f"• 100% Sweet Child Voices\n"
+        f"• Soothing Disney/Pixar-style animations with slow camera drifts\n"
+        f"• Calming acoustic lullaby background music box\n\n"
+        f"🔔 Subscribe to WhimsyWand Tales (@WhimsyWandTales) for weekly magical bedtime stories!\n\n"
+        f"#BedtimeStories #KidsStories #SleepStory #ToddlerBedtime #WhimsyWandTales"
     )
 
     metadata = {
-        "youtube_title": f"{title} | {dur_label}Bedtime Stories For Kids | Cartoon Animation",
+        "youtube_title": youtube_title,
         "youtube_description": description,
         "youtube_tags": list(all_tags),
         "chapters": chapters,

@@ -453,12 +453,20 @@ def run_omnibus_pipeline(
         95
     )
     print("\n[Master Omnibus Stitching] Concatenating chapters into final_video.mp4...")
-    actual_title = f"{topic} | Bedtime Stories For Kids | Cartoon Animation"
+    # Extract clean, punchy title without run-on sentences
+    clean_topic = topic.strip()
+    for delim in ["—", "–", ": ", " - "]:
+        if delim in clean_topic and len(clean_topic.split(delim)[0]) > 8:
+            clean_topic = clean_topic.split(delim)[0].strip()
+            break
+    if len(clean_topic) > 48:
+        clean_topic = clean_topic[:45].rsplit(" ", 1)[0].strip()
+
     metadata = stitch_chapter_files(
         chapter_video_paths=chapter_video_paths,
         output_run_dir=run_dir,
         chapter_titles=chapter_titles,
-        title=actual_title
+        title=clean_topic
     )
 
     # Calculate actual runtime
