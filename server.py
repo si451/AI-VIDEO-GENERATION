@@ -440,13 +440,6 @@ def save_character_bible(data: dict):
         json.dump(data, f, indent=2, ensure_ascii=False)
     return {"status": "saved"}
 
-if __name__ == "__main__":
-    import uvicorn
-    print("Starting AI Video Harness FastAPI Server on http://localhost:8000...")
-    uvicorn.run(app, host="0.0.0.0", port=8000)
-
-
-
 @app.post("/api/runs/{run_id}/thumbnail")
 def regenerate_run_thumbnail(run_id: str):
     run_dir = OUTPUT_DIR / "runs" / run_id
@@ -467,3 +460,8 @@ def regenerate_run_thumbnail(run_id: str):
         "thumbnail_url": f"/media/runs/{run_id}/thumbnail.jpg",
         "thumbnail_branded_url": f"/media/runs/{run_id}/thumbnail_with_title.jpg"
     }
+
+if __name__ == "__main__":
+    import uvicorn
+    print("Starting AI Video Harness FastAPI Server on http://localhost:8000...")
+    uvicorn.run(app, host="0.0.0.0", port=8000)

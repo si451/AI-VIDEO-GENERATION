@@ -343,6 +343,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
   const [showBrandedThumb, setShowBrandedThumb] = useState(true);
   const [isRegeneratingThumb, setIsRegeneratingThumb] = useState(false);
+  const [thumbTimestamp, setThumbTimestamp] = useState<number>(Date.now());
 
   const handleRegenerateThumbnail = async () => {
     if (!selectedRunId || isRegeneratingThumb) return;
@@ -351,6 +352,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
       const res = await fetch(`${API_BASE}/api/runs/${selectedRunId}/thumbnail`, { method: "POST" });
       if (res.ok) {
         await fetchRunDetail(selectedRunId);
+        setThumbTimestamp(Date.now());
       }
     } catch (e) {
       console.warn("Regenerate thumbnail error:", e);
@@ -990,7 +992,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
 
                   <div className="relative rounded-xl overflow-hidden border border-stone-200 shadow-xs bg-stone-900 max-w-xl mx-auto">
                     <img
-                      src={`${API_BASE}${showBrandedThumb && runDetail.thumbnail_branded_url ? runDetail.thumbnail_branded_url : runDetail.thumbnail_url}`}
+                      src={`${API_BASE}${showBrandedThumb && runDetail.thumbnail_branded_url ? runDetail.thumbnail_branded_url : runDetail.thumbnail_url}?t=${thumbTimestamp}`}
                       alt="YouTube Thumbnail"
                       className="w-full h-auto object-cover max-h-[300px]"
                     />
@@ -1008,7 +1010,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                           <span>{isRegeneratingThumb ? "Rendering..." : "Regenerate"}</span>
                         </button>
                         <a
-                          href={`${API_BASE}${showBrandedThumb && runDetail.thumbnail_branded_url ? runDetail.thumbnail_branded_url : runDetail.thumbnail_url}`}
+                          href={`${API_BASE}${showBrandedThumb && runDetail.thumbnail_branded_url ? runDetail.thumbnail_branded_url : runDetail.thumbnail_url}?t=${thumbTimestamp}`}
                           download={`thumbnail_${runDetail.id}.jpg`}
                           target="_blank"
                           rel="noopener noreferrer"
