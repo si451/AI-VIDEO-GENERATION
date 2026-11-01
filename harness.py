@@ -69,6 +69,7 @@ def run_production_pipeline(
     """
     print("\n" + "="*75)
     print(f"   AI CHILDREN'S STUDIO: PRODUCTION PIPELINE [{aspect_ratio}]")
+    tracker.aspect_ratio = aspect_ratio
     print("="*75)
 
     # STEP 0: Competitor Research (Optional)

@@ -227,7 +227,8 @@ def get_run_details(run_id: str):
 
 def _run_agent_worker(job_id: str, message: str, thread_id: str):
     from modules.conversation_manager import append_message
-    tracker.start_job(job_id=job_id, title=message[:50], total_frames=15, aspect_ratio="16:9")
+    aspect = "9:16" if ("9:16" in message or "short" in message.lower()) else "16:9"
+    tracker.start_job(job_id=job_id, title=message[:50], total_frames=15, aspect_ratio=aspect)
     try:
         reply = run_agent_message(message, thread_id=thread_id)
         append_message(thread_id, "assistant", reply)
