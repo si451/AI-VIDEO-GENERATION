@@ -182,7 +182,7 @@ def run_production_pipeline(
     print("="*75)
     # Generate High-CTR YouTube Thumbnail
     try:
-        generate_video_thumbnail(run_dir, title=metadata.get("youtube_title", "Bedtime Stories for Kids"))
+        generate_video_thumbnail(run_dir, title=metadata.get("youtube_title", "Bedtime Stories for Kids"), aspect_ratio=aspect_ratio)
     except Exception as e:
         print(f" -> [Notice] Thumbnail generation skipped: {e}")
 

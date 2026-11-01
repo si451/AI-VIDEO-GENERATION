@@ -990,15 +990,16 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                     </div>
                   </div>
 
-                  <div className="relative rounded-xl overflow-hidden border border-stone-200 shadow-xs bg-stone-900 max-w-xl mx-auto">
+                  <div className={`relative rounded-xl overflow-hidden border border-stone-200 shadow-xs bg-stone-900 mx-auto ${runDetail.aspect_ratio === "9:16" ? "max-w-xs" : "max-w-xl"}`}>
+
                     <img
                       src={`${API_BASE}${showBrandedThumb && runDetail.thumbnail_branded_url ? runDetail.thumbnail_branded_url : runDetail.thumbnail_url}?t=${thumbTimestamp}`}
                       alt="YouTube Thumbnail"
-                      className="w-full h-auto object-cover max-h-[300px]"
+                      className={`w-full h-auto object-cover ${runDetail.aspect_ratio === "9:16" ? "max-h-[440px]" : "max-h-[300px]"}`}
                     />
                     <div className="p-3 bg-stone-50 border-t border-stone-200 flex items-center justify-between">
                       <span className="text-[11px] text-stone-500 font-medium">
-                        16:9 High-CTR Poster • Ready for YouTube Studio
+                        {runDetail.aspect_ratio === "9:16" ? "9:16 Vertical Short Cover • Ready for YouTube Shorts" : "16:9 High-CTR Poster • Ready for YouTube Studio"}
                       </span>
                       <div className="flex items-center space-x-2">
                         <button
@@ -1496,7 +1497,7 @@ Tell me what you'd like to create, or ask for a **30-minute Bedtime Story Omnibu
                   key={r.id}
                   className="bg-white border border-stone-200 rounded-2xl overflow-hidden shadow-xs hover:border-amber-400 hover:shadow-sm transition flex flex-col"
                 >
-                  <div className="relative aspect-video bg-stone-100 flex items-center justify-center">
+                  <div className={`relative ${r.aspect_ratio === "9:16" ? "aspect-[9/16] max-h-[340px]" : "aspect-video"} bg-stone-900 flex items-center justify-center overflow-hidden`}>
                     {r.thumbnail_url ? (
                       <img src={`${API_BASE}${r.thumbnail_url}`} alt={r.title} className="w-full h-full object-cover" />
                     ) : (

@@ -318,6 +318,50 @@ def produce_bedtime_omnibus_tool(
 
 
 @tool
+def produce_short_tool(
+    topic: str = "",
+    target_duration_seconds: float = 30.0
+) -> str:
+    """
+    Produces ONE single high-retention 9:16 vertical YouTube Short (under 60s) in ONE single run folder.
+    - Aspect Ratio: STRICT 9:16 Vertical (720x1280).
+    - Duration: Typically 25-35 seconds (3s fast-paced visual cuts).
+    - Visuals: 100% 9:16 vertical Disney/Pixar illustrations.
+    - Thumbnail: 100% bespoke 9:16 vertical YouTube Short cover artwork.
+    - Voices: Sweet child voice narration (AnaNeural / ChristopherNeural).
+    - Subtitles: ASS animated karaoke subtitles in bottom third.
+    - STRICT RULE: Runs ONCE and produces ONE short. NEVER call this tool repeatedly.
+    """
+    try:
+        # Pacing: 8-10 frames for ~25-35 seconds
+        num_frames = max(6, min(14, round(target_duration_seconds / 3.0)))
+        print(f"\n[AI Studio] Producing Single 9:16 YouTube Short: '{topic}' ({num_frames} frames, ~{target_duration_seconds}s target)...")
+        
+        result = harness.run_production_pipeline(
+            topic=topic if topic else None,
+            num_frames=num_frames,
+            aspect_ratio="9:16",
+            use_local_images=True
+        )
+        final_video = result.get("final_video")
+        run_dir = result.get("run_dir")
+        duration = result.get("duration", 0)
+        metadata = result.get("metadata", {})
+        
+        return (
+            f"🎉 9:16 YouTube Short Production Complete!\n\n"
+            f"- **Format**: 9:16 Vertical (720x1280)\n"
+            f"- **Title**: {metadata.get('youtube_title')}\n"
+            f"- **Duration**: {duration:.1f} seconds ({num_frames} frames)\n"
+            f"- **Folder**: `{run_dir}`\n"
+            f"- **Final Video**: `{final_video}`\n"
+            f"- **Vertical 9:16 Thumbnail**: `{run_dir / 'thumbnail.jpg'}`\n\n"
+            f"✅ ONE single short produced. Production is 100% finished — do not call any other tools."
+        )
+    except Exception as e:
+        return f"Error producing short: {str(e)}"
+
+@tool
 def generate_thumbnail_tool(run_id: str = "") -> str:
     """
     Synthesizes a bespoke 1280x720 high-CTR YouTube Thumbnail for an existing production run.

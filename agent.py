@@ -23,6 +23,7 @@ from modules.agent_tools import (
     get_viral_seo_package_tool,
     compile_omnibus_tool,
     produce_bedtime_omnibus_tool,
+    produce_short_tool,
     generate_thumbnail_tool
 )
 
@@ -58,14 +59,17 @@ You MUST perform an explicit mathematical target calculation and present a step-
    - 🎨 Stage 4: High-Res 3D Disney Pixar Rendering (Local RTX 2050)
    - 🎙️ Stage 5: Child Voiceover & ASS Subtitle Synchronization
    - 🎞️ Stage 6: Master Assembly & Omnibus Compilation (with timestamps: 0:00, 6:00, 12:00, 18:00, 24:00)
-4. STRICT SINGLE-FOLDER PRODUCTION & RUNTIME DIRECTIVE:
-   - When asked to produce a video of ANY duration (e.g. 5 minutes, 15 minutes, or 30 minutes):
-     You MUST invoke `produce_bedtime_omnibus_tool`!
-     Supply your researched custom chapter titles via `chapter_topics` (e.g. "Barnaby's Blanket of Stars, Squeaky's Acorn Lullaby, Pip's Starlight Compass, Fern's Whispering Grove, Benny's Moonbeam Dream").
-     Set `target_duration_minutes` to the requested runtime (e.g. 30.0 for 30 minutes, or 5.0 for 5 minutes).
-     The tool automatically calculates the exact scene pacing, drafts all scripts, synthesizes child voices, renders 3D Pixar artwork, and stitches the continuous master MP4 with YouTube chapter timestamps (0:00, 6:00, 12:00, 18:00, 24:00) ALL INSIDE A SINGLE RUN FOLDER (`output/runs/run_XXX/`).
-   - NEVER call `render_full_video_tool` multiple times for an omnibus — that creates multiple scattered folders. Use `produce_bedtime_omnibus_tool` which keeps everything in ONE folder!
-   - Report the actual rendered duration truthfully.
+4. STRICT SINGLE-FOLDER & NO-DUPLICATE PRODUCTION DIRECTIVE:
+   A. FOR YOUTUBE SHORTS / 9:16 VERTICAL CONTENT (e.g. 30 seconds, under 60s, Short):
+      - You MUST invoke `produce_short_tool` EXACTLY ONCE!
+      - Supply `topic` and `target_duration_seconds` (default: 30.0).
+      - The tool generates ONE single 9:16 vertical MP4 and a matching 9:16 vertical thumbnail inside ONE run folder.
+      - NEVER call `produce_short_tool` or `render_full_video_tool` multiple times! Once it finishes, stop calling tools immediately and output your final delivery report.
+   B. FOR LONG-FORM BEDTIME OMNIBUS COMPILATIONS (e.g. 5 minutes, 15 minutes, 30 minutes):
+      - You MUST invoke `produce_bedtime_omnibus_tool` EXACTLY ONCE!
+      - Supply custom chapter titles via `chapter_topics` and set `target_duration_minutes`.
+      - Stitches the continuous master MP4 with YouTube timestamps in ONE single folder.
+      - NEVER call tools repeatedly! Once it finishes, stop calling tools immediately and output your final delivery report.
 5. VIRAL BEDTIME STORYTELLING & EMOTIONAL RETENTION FRAMEWORK (MANDATORY):
    Always direct and draft stories using the 4-Phase Wave & Descent structure from `skills/viral-kids-bedtime-storyteller/SKILL.md`:
    - Phase 1 (Frames 1-3): 15-Second Sensory-Curiosity Hook: Start with cozy starlight ambient wonder and a soft whispered question at second zero to hook young attention.
@@ -97,6 +101,7 @@ def get_agent():
         get_viral_seo_package_tool,
         compile_omnibus_tool,
         produce_bedtime_omnibus_tool,
+        produce_short_tool,
         generate_thumbnail_tool
     ]
 
